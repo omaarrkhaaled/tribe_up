@@ -36,51 +36,56 @@ class UIUtils {
       barrierDismissible: false,
       builder: (context) => Center(
         child: Dialog(
+          shape: BeveledRectangleBorder(),
           backgroundColor: Colors.transparent,
+          insetPadding: EdgeInsets.all(40.w),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
-              padding: EdgeInsets.all(20.w),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    ColorManager.primary,
-                    ColorManager.primary.withOpacity(0.7),
+            child: SizedBox(
+              width: 130,
+              child: Container(
+                padding: EdgeInsets.all(20.w),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      ColorManager.primary,
+                      ColorManager.primary.withOpacity(0.7),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 20,
+                      offset: Offset(0, 8),
+                    ),
                   ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 20,
-                    offset: Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Lottie.asset(
-                    AnimationAssets.loadingAnimation,
-                    width: 120.w,
-                    height: 120.w,
-                    fit: BoxFit.contain,
-                  ),
-                  SizedBox(height: 15.h),
-                  Shimmer.fromColors(
-                    baseColor: Colors.white,
-                    highlightColor: Colors.yellowAccent,
-                    child: Text(
-                      text ?? 'Loading...',
-                      style: getBoldStyle(
-                        color: Colors.white,
-                        fontSize: Sizes.s18.sp,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset(
+                      AnimationAssets.loadingAnimation,
+                      width: 100.w,
+                      height: 100.w,
+                      fit: BoxFit.contain,
+                    ),
+                    SizedBox(height: 15.h),
+                    Shimmer.fromColors(
+                      baseColor: Colors.white,
+                      highlightColor: Colors.yellowAccent,
+                      child: Text(
+                        text ?? 'Loading...',
+                        style: getBoldStyle(
+                          color: Colors.white,
+                          fontSize: Sizes.s18.sp,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -119,6 +124,22 @@ class UIUtils {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  static void showDotLottieLoadingOverlay(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.transparent,
+      builder: (context) => Center(
+        child: Lottie.asset(
+          AnimationAssets.trailLoading,
+          width: 300.w,
+          height: 300.w,
+          fit: BoxFit.contain,
         ),
       ),
     );

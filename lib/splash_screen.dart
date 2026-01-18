@@ -13,7 +13,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-
   late final AnimationController _lottieController;
   late final AnimationController _gradientController;
   late final AnimationController _fadeController;
@@ -36,9 +35,10 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 300),
     );
 
-    _fadeAnimation = Tween(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(parent: _fadeController, curve: Curves.easeOut),
-    );
+    _fadeAnimation = Tween(
+      begin: 1.0,
+      end: 0.0,
+    ).animate(CurvedAnimation(parent: _fadeController, curve: Curves.easeOut));
   }
 
   @override
@@ -73,8 +73,11 @@ class _SplashScreenState extends State<SplashScreen>
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color.lerp(ColorManager.purpleDark, ColorManager.purpleMain,
-                      _gradientController.value)!,
+                  Color.lerp(
+                    ColorManager.purpleDark,
+                    ColorManager.purpleMain,
+                    _gradientController.value,
+                  )!,
                   ColorManager.purpleSoft,
                 ],
               ),

@@ -56,7 +56,6 @@ class AppTheme {
         foregroundColor: ColorManager.white,
         elevation: 0,
         shadowColor: Colors.transparent,
-        fixedSize: Size(double.infinity, 56.h),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
         textStyle: TextStyle(
           fontSize: 16.sp,
