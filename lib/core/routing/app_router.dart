@@ -5,7 +5,7 @@ import 'package:tribe_up/welcome_screen.dart';
 
 abstract class AppRouter {
   static GoRouter router = GoRouter(
-    initialLocation: AppRoutesConstants.splash,
+    initialLocation: AppRoutesConstants.welcome,
     routes: [
       GoRoute(
         path: AppRoutesConstants.splash,

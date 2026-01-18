@@ -4,7 +4,6 @@ import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/assets_managar.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/core/resources/styles_manager.dart';
-import 'package:tribe_up/core/utils/ui_utils.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});

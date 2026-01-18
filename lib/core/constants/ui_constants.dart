@@ -35,6 +35,7 @@ class UiConstants {
   static const String ok = 'Ok';
   static const String cancel = 'Cancel';
   static const String success = 'Success';
+  static const String welcomeMessage = 'Hey there 💜 ,\nwelcome to TribeUp!';
 }
 
 class GoogleFontsKeys {
