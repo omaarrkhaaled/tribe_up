@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/assets_managar.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
@@ -42,7 +44,9 @@ class WelcomeScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 50.h,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.pushNamed(AppRoutesConstants.signUp);
+                  },
                   child: Text(
                     UiConstants.joinNow,
                     style: getMediumStyle(
