@@ -40,35 +40,48 @@ class Validator {
     }
   }
 
-  static String? validateUsername(String? val) {
-    final RegExp usernameRegex = RegExp(r'^[a-zA-Z0-9,.-]+$');
-    if (val == null) {
-      return 'This field is required';
-    } else if (val.isEmpty) {
-      return 'This field is required';
-    } else if (!usernameRegex.hasMatch(val)) {
-      return 'Enter valid username';
-    } else {
-      return null;
+  static String? validateUsername(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Username is required';
     }
+
+    final username = value.trim();
+
+    if (username.length < 4 || username.length > 20) {
+      return 'Username must be 4–20 characters';
+    }
+
+    final validRegex = RegExp(r'^[a-zA-Z0-9._]+$');
+    if (!validRegex.hasMatch(username)) {
+      return 'Only letters, numbers, _ and . are allowed';
+    }
+
+    if (username.startsWith('_') ||
+        username.startsWith('.') ||
+        username.endsWith('_') ||
+        username.endsWith('.')) {
+      return 'Username cannot start or end with . or _';
+    }
+
+    if (username.contains('..') || username.contains('__')) {
+      return 'Username cannot contain repeated symbols';
+    }
+
+    return null;
   }
 
-  static String? validateLastName(String? val) {
-    if (val == null || val.isEmpty) {
+  static String? validateName(String? value) {
+    if (value == null || value.trim().isEmpty) {
       return 'This field is required';
-    } else {
-      return null;
     }
-  }
 
-  static String? validateFirstName(String? val) {
-    if (val == null || val.isEmpty) {
-      return 'This field is required';
-    } else if (val[0] == val[0].toUpperCase()) {
-      return 'First letter must be lowercase';
-    } else {
-      return null;
+    final nameRegex = RegExp(r'^[A-Za-z]+$');
+
+    if (!nameRegex.hasMatch(value.trim())) {
+      return 'Only letters are allowed';
     }
+
+    return null;
   }
 
   static String? validatePhoneNumber(String? val) {
@@ -78,6 +91,14 @@ class Validator {
       return 'Enter numbers only';
     } else if (val.trim().length != 11) {
       return 'Enter value must equal 11 digit';
+    } else {
+      return null;
+    }
+  }
+
+  static String? validateRequired(String? val) {
+    if (val == null || val.isEmpty) {
+      return 'This field is required';
     } else {
       return null;
     }
