@@ -99,12 +99,13 @@ class UIUtils {
   static void showPremiumMessage(
     BuildContext context,
     String message, {
+    Color? backgroundColor,
     IconData? icon,
   }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: ColorManager.primary,
+        backgroundColor: backgroundColor ?? ColorManager.primary,
         duration: Duration(seconds: 3),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content: Row(

@@ -6,7 +6,10 @@ class ApiConstants {
 
 class CacheConstants {
   static const String tokenKey = 'token';
+  static const String refreshTokenKey = 'refreshToken';
   static const String tokenBoxName = 'tokenBox';
   static const String userBoxName = 'userBox';
   static const String currentUserKey = 'currentUser';
+  static const String deviceIdBoxName = 'deviceIdBox';
+  static const String deviceIdKey = 'deviceId';
 }

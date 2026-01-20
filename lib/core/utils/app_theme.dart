@@ -56,7 +56,7 @@ class AppTheme {
         foregroundColor: ColorManager.white,
         elevation: 0,
         shadowColor: Colors.transparent,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
         textStyle: TextStyle(
           fontSize: 16.sp,
           fontWeight: FontWeight.w500,

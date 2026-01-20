@@ -17,11 +17,14 @@ class $AssetsAnimationsGen {
   /// File path: assets/animations/loading.json
   String get loading => 'assets/animations/loading.json';
 
+  /// File path: assets/animations/trail_loading.json
+  String get trailLoading => 'assets/animations/trail_loading.json';
+
   /// File path: assets/animations/welcome.json
   String get welcome => 'assets/animations/welcome.json';
 
   /// List of all assets
-  List<String> get values => [loading, welcome];
+  List<String> get values => [loading, trailLoading, welcome];
 }
 
 class $AssetsImagesGen {

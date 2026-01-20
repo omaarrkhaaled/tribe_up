@@ -17,8 +17,21 @@ class RemoteException extends AppException {
         case DioExceptionType.receiveTimeout:
           return const RemoteException(message: 'Receive timeout');
         case DioExceptionType.badResponse:
+          final data = e.response?.data;
+          String? errorMessage;
+
+          if (data is Map<String, dynamic>) {
+            if (data['Errors'] is List) {
+              errorMessage = (data['Errors'] as List).join('\n');
+            } else if (data['Message'] != null) {
+              errorMessage = data['Message'];
+            } else if (data['message'] != null) {
+              errorMessage = data['message'];
+            }
+          }
+
           return RemoteException(
-            message: 'Bad response: ${e.response?.statusCode} ${e.response?.data['message']}',
+            message: errorMessage ?? 'Bad response: ${e.response?.statusCode}',
           );
         case DioExceptionType.connectionError:
           return RemoteException(message: 'Connection error: ${e.message}');

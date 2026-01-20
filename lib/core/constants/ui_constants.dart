@@ -30,12 +30,17 @@ class UiConstants {
   static const String joinNow = 'Join Now';
   static const String findYourPeople =
       'Find your people, share your vibe, and\n build your tribe.';
-  static const String createNewAccount = 'Create New Account';
+  static const String createAccount = 'Create Account';
   static const String loading = 'Loading...';
   static const String ok = 'Ok';
   static const String cancel = 'Cancel';
   static const String success = 'Success';
   static const String welcomeMessage = 'Hey there 💜 ,\nwelcome to TribeUp!';
+  static const String createAccountMessage =
+      'Create your account and\n join the fun, your tribe is waiting!';
+  static const String failedToCreateAccount = 'Failed To Create Account';
+  static const String yourAccountHasBeenCreatedSuccessfully =
+      'Your account has been created successfully! 🤍';
 }
 
 class GoogleFontsKeys {
