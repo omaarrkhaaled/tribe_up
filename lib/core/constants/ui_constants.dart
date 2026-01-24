@@ -41,6 +41,8 @@ class UiConstants {
   static const String failedToCreateAccount = 'Failed To Create Account';
   static const String yourAccountHasBeenCreatedSuccessfully =
       'Your account has been created successfully! 🤍';
+
+  static const String welocometotribeUp = 'Welcome to TribeUp!';
 }
 
 class GoogleFontsKeys {
