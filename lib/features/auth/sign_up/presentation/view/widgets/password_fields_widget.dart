@@ -28,11 +28,12 @@ class PasswordFieldsWidget extends StatelessWidget {
           decoration: const InputDecoration(
             labelText: UiConstants.password,
             hintText: UiConstants.enterPassword,
+            helperText: '',
           ),
           validator: Validator.validatePassword,
           onChanged: (v) => cubit.doIntent(PasswordChanged(v)),
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: 8.h),
         TextFormField(
           controller: confirmPassword,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -40,6 +41,7 @@ class PasswordFieldsWidget extends StatelessWidget {
           decoration: const InputDecoration(
             labelText: UiConstants.confirmPassword,
             hintText: UiConstants.confirmPassword,
+            helperText: '',
           ),
           validator: (v) => Validator.validateConfirmPassword(v, password.text),
           onChanged: (v) => cubit.doIntent(ConfirmPasswordChanged(v)),

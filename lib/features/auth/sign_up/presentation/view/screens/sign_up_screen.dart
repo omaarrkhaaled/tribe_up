@@ -14,7 +14,7 @@ import 'package:tribe_up/features/auth/sign_up/presentation/cubit/sign_up_states
 import 'package:tribe_up/features/auth/sign_up/presentation/cubit/sign_up_ui_intents.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/view/widgets/email_field_widget.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/view/widgets/name_field_widget.dart';
-import 'package:tribe_up/features/auth/sign_up/presentation/view/widgets/password_field_widget.dart';
+import 'package:tribe_up/features/auth/sign_up/presentation/view/widgets/password_fields_widget.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/view/widgets/sign_up_button_widget.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/view/widgets/user_name_field_widget.dart';
 
@@ -55,10 +55,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             icon: Icons.error,
           );
           break;
-        case NavigateToFeedIntent(message: final message):
+        case NavigateToLoginIntent(message: final message):
           UIUtils.hideLoading(context);
           UIUtils.showPremiumMessage(context, message);
-          context.pushNamed(AppRoutesConstants.feed);
+          context.pushNamed(AppRoutesConstants.login);
           break;
       }
     });
@@ -95,23 +95,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           lastName: _lastName,
                           cubit: _signUpCubit,
                         ),
-                        SizedBox(height: 7.h),
+                        SizedBox(height: 8.h),
                         EmailFieldWidget(
                           controller: _email,
                           cubit: _signUpCubit,
                         ),
-                        SizedBox(height: 16.h),
+                        SizedBox(height: 8.h),
                         UserNameFieldWidget(
                           controller: _userName,
                           cubit: _signUpCubit,
                         ),
-                        SizedBox(height: 16.h),
+                        SizedBox(height: 8.h),
                         PasswordFieldsWidget(
                           password: _password,
                           confirmPassword: _confirmPassword,
                           cubit: _signUpCubit,
                         ),
-                        SizedBox(height: 20.h),
+                        SizedBox(height: 8.h),
                         BlocBuilder<SignUpCubit, SignUpStates>(
                           builder: (_, state) {
                             return SignUpButtonWidget(
@@ -126,7 +126,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           width: double.infinity,
                           height: 50.h,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.pushReplacementNamed(
+                                AppRoutesConstants.login,
+                              );
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: ColorManager.white,
                               foregroundColor: ColorManager.black,

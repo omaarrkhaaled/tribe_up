@@ -22,6 +22,7 @@ class UserNameFieldWidget extends StatelessWidget {
       decoration: const InputDecoration(
         labelText: UiConstants.userName,
         hintText: UiConstants.enterUserName,
+        helperText: '',
       ),
       validator: (v) => Validator.validateUsername(v),
       onChanged: (v) => cubit.doIntent(UserNameChanged(v)),
