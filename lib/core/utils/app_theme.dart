@@ -22,14 +22,14 @@ class AppTheme {
     ),
     //------------------- Input Decoration Theme ------------------//
     inputDecorationTheme: InputDecorationTheme(
-      floatingLabelBehavior: FloatingLabelBehavior.always,
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
 
       labelStyle: getRegularStyle(color: ColorManager.grey),
 
       floatingLabelStyle: TextStyle(
         fontSize: 18.sp,
         fontWeight: FontWeightManager.regular,
-        color: ColorManager.grey,
+        color: ColorManager.grey,        
       ),
 
       hintStyle: TextStyle(
