@@ -109,7 +109,7 @@ class SignUpCubit extends Cubit<SignUpStates> {
     switch (response) {
       case SuccessResponse<SignUpResponseEntity>():
         _uiIntentController.add(
-          NavigateToFeedIntent(
+          NavigateToLoginIntent(
             message: UiConstants.yourAccountHasBeenCreatedSuccessfully,
           ),
         );

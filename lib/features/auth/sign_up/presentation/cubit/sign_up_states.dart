@@ -14,28 +14,28 @@ class SignUpStates extends BaseState<SignUpResponseEntity> {
     super.data,
     super.errorMessage,
     super.isLoading,
-   this.firstName = '',
-   this.lastName = '',
-   this.email = '',
-   this.password = '',
-   this.confirmPassword = '',
-   this.isFormValid = false,
-   this.userName = '',
+    this.firstName = '',
+    this.lastName = '',
+    this.email = '',
+    this.password = '',
+    this.confirmPassword = '',
+    this.isFormValid = false,
+    this.userName = '',
   });
 
   @override
   List<Object?> get props => [
-        firstName,
-        lastName,
-        email,
-        password,
-        confirmPassword,
-        isFormValid,
-        userName,
-        errorMessage,
-        isLoading,
-        data,
-      ];
+    firstName,
+    lastName,
+    email,
+    password,
+    confirmPassword,
+    isFormValid,
+    userName,
+    errorMessage,
+    isLoading,
+    data,
+  ];
 
   SignUpStates copyWith({
     String? firstName,

@@ -22,6 +22,7 @@ class EmailFieldWidget extends StatelessWidget {
       decoration: const InputDecoration(
         labelText: UiConstants.email,
         hintText: UiConstants.enterEmail,
+        helperText: '',
       ),
       validator: (v) => Validator.validateEmail(v),
       onChanged: (v) => cubit.doIntent(EmailChanged(v)),

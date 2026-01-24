@@ -25,17 +25,6 @@ class SignUpRequestModel {
 
   Map<String, dynamic> toJson() => _$SignUpRequestModelToJson(this);
 
-  SignUpRequestEntity toEntity() {
-    return SignUpRequestEntity(
-      firstName: firstName,
-      lastName: lastName,
-      userName: userName,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-    );
-  }
-
   factory SignUpRequestModel.fromEntity(SignUpRequestEntity entity) {
     return SignUpRequestModel(
       firstName: entity.firstName,
