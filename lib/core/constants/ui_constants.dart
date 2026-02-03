@@ -43,6 +43,16 @@ class UiConstants {
       'Your account has been created successfully! 🤍';
 
   static const String welocometotribeUp = 'Welcome to TribeUp!';
+  static const String pleaseEnterYourCurrentPassword = 'Please enter your current password';
+  static const String pleaseEnterYourNewPassword = 'Please enter your new password';
+  static const String pleaseEnterYourConfirmPassword = 'Please enter your confirm password';
+  static const String passwordsDoNotMatch = 'Passwords do not match';
+  static const String passwordUpdatedSuccessfully = 'Password updated successfully';
+  static const String failedToChangePassword = 'Failed To Change Password';
+  static const String newPasswordSameAsOld = 'New password is same as old password';
+  static const String resetPassword = 'Reset Password';
+  static const String updatePassword = 'Update Password';
+
 }
 
 class GoogleFontsKeys {

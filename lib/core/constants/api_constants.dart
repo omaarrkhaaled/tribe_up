@@ -2,6 +2,7 @@ class ApiConstants {
   static const String baseUrl = 'http://tribeup.runasp.net/api/';
   static const String loginEndPoint = 'Authentication/Login';
   static const String registerEndPoint = 'Authentication/Register';
+  static const String changePassordEndPOint = 'Authentication/Change-Password';
 }
 
 class CacheConstants {
