@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
+import 'package:tribe_up/features/auth/change_password/presentation/screens/change_password_screen.dart';
 import 'package:tribe_up/features/auth/login/presentation/view/screens/login_screen.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/view/screens/sign_up_screen.dart';
 import 'package:tribe_up/feed_screen.dart';
@@ -34,6 +35,11 @@ abstract class AppRouter {
         path: AppRoutesConstants.login,
         name: AppRoutesConstants.login,
         builder: (context, state) => const LoginScreen(),
+      ),
+       GoRoute(
+        path: AppRoutesConstants.changePassword,
+        name: AppRoutesConstants.changePassword,
+        builder: (context, state) => const ChangePasswordScreen(),
       ),
     ],
   );
