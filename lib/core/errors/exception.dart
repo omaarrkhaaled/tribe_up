@@ -19,14 +19,24 @@ class RemoteException extends AppException {
         case DioExceptionType.badResponse:
           final data = e.response?.data;
           String? errorMessage;
-
           if (data is Map<String, dynamic>) {
-            if (data['Errors'] is List) {
-              errorMessage = (data['Errors'] as List).join('\n');
-            } else if (data['Message'] != null) {
-              errorMessage = data['Message'];
-            } else if (data['message'] != null) {
-              errorMessage = data['message'];
+            if (data['errors'] is Map) {
+              final errors = data['errors'] as Map;
+              errorMessage = errors.values
+                  .expand((e) => e is List ? e : [e])
+                  .map((e) => e.toString())
+                  .join('\n');
+            }
+            if (errorMessage == null || errorMessage.isEmpty) {
+              if (data['Errors'] is List) {
+                errorMessage = (data['Errors'] as List).join('\n');
+              } else if (data['title'] != null) {
+                errorMessage = data['title'];
+              } else if (data['Message'] != null) {
+                errorMessage = data['Message'];
+              } else if (data['message'] != null) {
+                errorMessage = data['message'];
+              }
             }
           }
 

@@ -4,11 +4,12 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tribe_up/core/constants/api_constants.dart';
 import 'package:tribe_up/core/network/device_id_manager.dart';
+
 @module
 abstract class DioModule {
   @lazySingleton
-  Dio dio(DeviceIdManager deviceIdManager) {
-    return Dio(
+  Dio dio(DeviceIdManager deviceIdManager, Box<String> tokenBox) {
+    final dio = Dio(
       BaseOptions(
         baseUrl: ApiConstants.baseUrl,
         headers: {
@@ -20,6 +21,20 @@ abstract class DioModule {
         receiveTimeout: const Duration(seconds: 30),
       ),
     );
+
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          final token = tokenBox.get(CacheConstants.tokenKey);
+          if (token != null && token.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          return handler.next(options);
+        },
+      ),
+    );
+
+    return dio;
   }
 }
 

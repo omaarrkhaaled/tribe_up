@@ -7,7 +7,7 @@ import 'package:tribe_up/features/auth/login/data/models/login_request/login_req
 import 'package:tribe_up/features/auth/login/data/models/login_response/login_response_model.dart';
 part 'login_api_client.g.dart';
 
-@singleton
+@injectable
 @RestApi()
 abstract class LoginApiClient {
   @factoryMethod

@@ -16,7 +16,7 @@ class UIUtils {
       ..indicatorSize = 60.0
       ..loadingStyle = EasyLoadingStyle.custom
       ..radius = 20.0
-      ..backgroundColor = ColorManager.primary.withOpacity(0.85)
+      ..backgroundColor = ColorManager.primary.withValues(alpha: 0.85)
       ..indicatorColor = Colors.white
       ..textColor = Colors.white
       ..maskType = EasyLoadingMaskType.black
@@ -49,7 +49,7 @@ class UIUtils {
                   gradient: LinearGradient(
                     colors: [
                       ColorManager.primary,
-                      ColorManager.primary.withOpacity(0.7),
+                      ColorManager.primary.withValues(alpha: 0.7),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -130,17 +130,53 @@ class UIUtils {
     );
   }
 
-  static void showDotLottieLoadingOverlay(BuildContext context) {
+  static void showDotLottieLoadingOverlay(
+    BuildContext context, {
+    String status = 'Loading...',
+  }) {
     showDialog(
       context: context,
       barrierDismissible: false,
-      barrierColor: Colors.transparent,
-      builder: (context) => Center(
-        child: Lottie.asset(
-          AnimationAssets.trailLoading,
-          width: 300.w,
-          height: 300.w,
-          fit: BoxFit.contain,
+      barrierColor: Colors.black54,
+      builder: (context) => PopScope(
+        canPop: false,
+        child: Center(
+          child: Container(
+            padding: EdgeInsets.all(24.w),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Lottie.asset(
+                  AnimationAssets.trailLoading,
+                  width: 150.w,
+                  height: 150.w,
+                  fit: BoxFit.contain,
+                  frameRate: FrameRate.max,
+                  repeat: true,
+                ),
+                SizedBox(height: 16.h),
+                Text(
+                  status,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[700],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
