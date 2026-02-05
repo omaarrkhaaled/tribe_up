@@ -19,6 +19,7 @@ class UiConstants {
   static const String confirmPassword = 'Confirm Password';
   static const String phoneNumber = 'Phone number';
   static const String enterPhoneNumber = 'Enter phone number';
+  static const String forgottenPassword = 'Forgotten Password ?';
   static const String alreadyHaveAccount = 'Already have an account? ';
   static const String login = 'Login';
   static const String loginSuccessful = "Login successful";
@@ -43,16 +44,30 @@ class UiConstants {
       'Your account has been created successfully! 🤍';
 
   static const String welocometotribeUp = 'Welcome to TribeUp!';
-  static const String pleaseEnterYourCurrentPassword = 'Please enter your current password';
-  static const String pleaseEnterYourNewPassword = 'Please enter your new password';
-  static const String pleaseEnterYourConfirmPassword = 'Please enter your confirm password';
+  static const String pleaseEnterYourCurrentPassword =
+      'Please enter your current password';
+  static const String pleaseEnterYourNewPassword =
+      'Please enter your new password';
+  static const String pleaseEnterYourConfirmPassword =
+      'Please enter your confirm password';
   static const String passwordsDoNotMatch = 'Passwords do not match';
-  static const String passwordUpdatedSuccessfully = 'Password updated successfully';
+  static const String passwordUpdatedSuccessfully =
+      'Password updated successfully';
   static const String failedToChangePassword = 'Failed To Change Password';
-  static const String newPasswordSameAsOld = 'New password is same as old password';
+  static const String newPasswordSameAsOld =
+      'New password is same as old password';
   static const String resetPassword = 'Reset Password';
   static const String updatePassword = 'Update Password';
-
+  static const String changePassword = 'Change Password';
+  static const String pleaseEnterYourEmail = 'Please enter your email';
+  static const String emailSentSuccessfully = 'Email sent successfully';
+  static const String pleaseEnterYourEmailAssociatedToYourAccount =
+      'Please enter your email associated to your account';
+  static const String confirm = 'Confirm';
+  static const String emailSent = 'Email sent';
+  static const String weSentPasswordResetInstructionsTo = "We've sent password reset instructions to";
+  static const String backToLogin = 'Back to login';
+  static const String resendEmail = 'Resend Email';
 }
 
 class GoogleFontsKeys {

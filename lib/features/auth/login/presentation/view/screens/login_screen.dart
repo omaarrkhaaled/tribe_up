@@ -83,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Form(
                     key: formKey,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 7.h),
                         EmailFieldWidget(
@@ -94,7 +95,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           password: _password,
                           cubit: _loginCubit,
                         ),
-                        SizedBox(height: 20.h),
+                        InkWell(
+                          onTap: () => context.pushNamed(
+                            AppRoutesConstants.forgetPassword,
+                          ),
+                          child: Text(
+                            UiConstants.forgottenPassword,
+                            style: Theme.of(context).textTheme.headlineSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline,
+                                ),
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
                         BlocBuilder<LoginCubit, LoginStates>(
                           builder: (_, state) {
                             return LoginButtonWidget(

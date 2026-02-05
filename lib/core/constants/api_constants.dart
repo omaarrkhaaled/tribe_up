@@ -3,6 +3,7 @@ class ApiConstants {
   static const String loginEndPoint = 'Authentication/Login';
   static const String registerEndPoint = 'Authentication/Register';
   static const String changePassordEndPOint = 'Authentication/Change-Password';
+  static const String forgetPasswordEndPoint = 'Authentication/Forgot-Password';
 }
 
 class CacheConstants {

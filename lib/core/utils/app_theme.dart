@@ -29,7 +29,7 @@ class AppTheme {
       floatingLabelStyle: TextStyle(
         fontSize: 18.sp,
         fontWeight: FontWeightManager.regular,
-        color: ColorManager.grey,        
+        color: ColorManager.grey,
       ),
 
       hintStyle: TextStyle(
@@ -53,10 +53,12 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: ColorManager.primary,
-        foregroundColor: ColorManager.white,
+        foregroundColor: ColorManager.white, 
         elevation: 0,
         shadowColor: Colors.transparent,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.r),
+        ),
         textStyle: TextStyle(
           fontSize: 16.sp,
           fontWeight: FontWeight.w500,
@@ -67,6 +69,43 @@ class AppTheme {
     ),
 
     textSelectionTheme: TextSelectionThemeData(cursorColor: ColorManager.black),
+
+    textTheme: TextTheme(
+      headlineLarge: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.w500,
+        color: ColorManager.black,
+      ),
+      headlineMedium: TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.w500,
+        color: ColorManager.black,
+      ),
+      headlineSmall: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w400,
+        color: ColorManager.black,
+      ),
+      titleLarge: TextStyle(
+        fontSize: 18,
+        color: ColorManager.black,
+        fontWeight: FontWeight.w500,
+      ),
+      titleMedium: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: ColorManager.black,
+      ),
+      titleSmall: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: ColorManager.black,
+      ),
+
+      bodyMedium: TextStyle(color: ColorManager.black),
+
+      bodySmall: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+    ),
   );
 }
 

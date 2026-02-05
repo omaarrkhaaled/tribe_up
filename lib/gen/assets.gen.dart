@@ -30,11 +30,14 @@ class $AssetsAnimationsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/email.png
+  AssetGenImage get email => const AssetGenImage('assets/images/email.png');
+
   /// File path: assets/images/welcome.png
   AssetGenImage get welcome => const AssetGenImage('assets/images/welcome.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [welcome];
+  List<AssetGenImage> get values => [email, welcome];
 }
 
 class Assets {
