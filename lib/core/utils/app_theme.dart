@@ -53,7 +53,7 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: ColorManager.primary,
-        foregroundColor: ColorManager.white,
+        foregroundColor: ColorManager.white, 
         elevation: 0,
         shadowColor: Colors.transparent,
         shape: RoundedRectangleBorder(
