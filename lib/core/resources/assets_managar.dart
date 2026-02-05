@@ -1,6 +1,7 @@
 class ImageAssets {
   static const String imagePath = 'assets/images';
   static const String welcomeImage = '$imagePath/welcome.png';
+  static const String emailImage = '$imagePath/email.png';
 }
 
 class AnimationAssets {

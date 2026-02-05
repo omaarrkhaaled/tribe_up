@@ -84,7 +84,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return BlocProvider.value(
       value: _passwordCubit,
       child: Scaffold(
-        appBar: AppBar(title: Text(UiConstants.resetPassword)),
+        appBar: AppBar(title: Text(UiConstants.changePassword)),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Form(
