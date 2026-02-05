@@ -8,6 +8,6 @@ abstract class AppRoutesConstants {
   static const String profile = '/profile';
   static const String editProfile = '/editProfile';
   static const String changePassword = '/changePassword';
-
+  static const String verifyEmail = '/verifyEmail';
 }
 
