@@ -51,11 +51,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordStates> {
     }
   }
 
-  bool? _validate({
-    String? currentPass,
-    String? newPass,
-    String? confirmPass,
-  }) {
+  bool? _validate({String? currentPass, String? newPass, String? confirmPass}) {
     final currentPassword = currentPass ?? state.currentPassword;
     final newPassword = newPass ?? state.newPassword;
     final confirmPassword = confirmPass ?? state.confirmPassword;

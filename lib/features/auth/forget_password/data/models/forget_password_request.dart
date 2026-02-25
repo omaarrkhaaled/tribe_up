@@ -9,15 +9,11 @@ class ForgetPasswordRequest {
   const ForgetPasswordRequest({required this.email});
 
   factory ForgetPasswordRequest.fromJson(Map<String, dynamic> json) {
-    return ForgetPasswordRequest(
-      email: json['email'] as String,
-    );
+    return ForgetPasswordRequest(email: json['email'] as String);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'email': email,
-    };
+    return {'email': email};
   }
 
   factory ForgetPasswordRequest.fromEntity(ForgetPasswordRequestEntity entity) {

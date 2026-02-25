@@ -50,7 +50,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           break;
 
         case ShowErrorIntent():
-          UIUtils.hideLoading(context);
           UIUtils.showPremiumMessage(
             context,
             intent.message,

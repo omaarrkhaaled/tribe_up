@@ -12,12 +12,7 @@ class ForgetPasswordStates extends BaseState {
   });
 
   @override
-  List<Object?> get props => [
-    errorMessage,
-    isLoading,
-    email,
-    isValidForm,
-  ];
+  List<Object?> get props => [errorMessage, isLoading, email, isValidForm];
 
   ForgetPasswordStates copyWith({
     String? errorMessage,

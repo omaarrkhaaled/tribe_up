@@ -10,7 +10,9 @@ class SignUpUseCase {
 
   SignUpUseCase(this.repository);
 
-  Future<BaseResponse<SignUpResponseEntity>> call(SignUpRequestEntity requestEntity) {
+  Future<BaseResponse<SignUpResponseEntity>> call(
+    SignUpRequestEntity requestEntity,
+  ) {
     return repository.signUp(requestEntity);
   }
 }
