@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:injectable/injectable.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tribe_up/core/constants/api_constants.dart';
+import 'package:tribe_up/core/network/auth_interceptor.dart';
 import 'package:tribe_up/core/network/device_id_manager.dart';
 
 @module
@@ -23,14 +25,19 @@ abstract class DioModule {
     );
 
     dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          final token = tokenBox.get(CacheConstants.tokenKey);
-          if (token != null && token.isNotEmpty) {
-            options.headers['Authorization'] = 'Bearer $token';
-          }
-          return handler.next(options);
-        },
+      AuthInterceptor(
+        tokenBox: tokenBox,
+        deviceIdManager: deviceIdManager,
+        baseUrl: ApiConstants.baseUrl,
+      ),
+    );
+    dio.interceptors.add(
+      PrettyDioLogger(
+        request: true,
+        error: true,
+        requestBody: true,
+        compact: true,
+        responseBody: true,
       ),
     );
 
