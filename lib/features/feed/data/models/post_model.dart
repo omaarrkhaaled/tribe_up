@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:tribe_up/features/feed/api/models/media_model.dart';
+import 'package:tribe_up/features/feed/data/models/media_model.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
 part 'post_model.g.dart';
 
@@ -23,6 +23,8 @@ class PostModel {
   final int likesCount;
   @JsonKey(name: 'commentCount')
   final int commentCount;
+  @JsonKey(name: 'isAuthor')
+  final bool isAuthor;
   @JsonKey(name: 'isLikedByCurrentUser')
   final bool isLikedByCurrentUser;
   @JsonKey(name: 'feedScore')
@@ -31,8 +33,8 @@ class PostModel {
   final String createdAt;
   @JsonKey(name: 'media')
   final List<MediaModel> media;
-  @JsonKey(name: 'groupPermissions')
-  final Map<String, dynamic> groupPermissions;
+  @JsonKey(name: 'postPermissions')
+  final Map<String, dynamic> postPermissions;
   @JsonKey(name: 'isDenied')
   final bool isDenied;
 
@@ -46,11 +48,12 @@ class PostModel {
     required this.groupProfilePicture,
     required this.likesCount,
     required this.commentCount,
+    required this.isAuthor,
     required this.isLikedByCurrentUser,
     required this.feedScore,
     required this.createdAt,
     required this.media,
-    required this.groupPermissions,
+    required this.postPermissions,
     required this.isDenied,
   });
 

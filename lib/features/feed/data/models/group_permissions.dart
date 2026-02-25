@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'group_permissions.g.dart';
 
 @JsonSerializable()
-class GroupPermissions {
+class PostPermission {
   @JsonKey(name: 'canFollow')
   final bool canFollow;
   @JsonKey(name: 'canJoin')
@@ -22,7 +22,7 @@ class GroupPermissions {
   @JsonKey(name: 'canDeleteGroup')
   final bool canDeleteGroup;
 
-  const GroupPermissions({
+  const PostPermission({
     required this.canFollow,
     required this.canJoin,
     required this.canPost,
@@ -34,8 +34,8 @@ class GroupPermissions {
     required this.canDeleteGroup,
   });
 
-  factory GroupPermissions.fromJson(Map<String, dynamic> json) =>
-      _$GroupPermissionsFromJson(json);
+  factory PostPermission.fromJson(Map<String, dynamic> json) =>
+      _$PostPermissionFromJson(json);
 
-  Map<String, dynamic> toJson() => _$GroupPermissionsToJson(this);
+  Map<String, dynamic> toJson() => _$PostPermissionToJson(this);
 }

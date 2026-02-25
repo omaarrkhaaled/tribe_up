@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:tribe_up/features/feed/api/models/post_model.dart';
+import 'package:tribe_up/features/feed/data/models/post_model.dart';
 import 'package:tribe_up/features/feed/domain/entities/feed_response_entity.dart';
 
 part 'feed_response.g.dart';
@@ -17,7 +17,7 @@ class FeedResponse {
   @JsonKey(name: 'hasMore')
   final bool hasMore;
 
-  FeedResponse({
+  const FeedResponse({
     required this.items,
     required this.page,
     required this.pageSize,

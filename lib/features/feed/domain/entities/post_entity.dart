@@ -1,4 +1,4 @@
-import 'package:tribe_up/features/feed/api/models/media_model.dart';
+import 'package:tribe_up/features/feed/data/models/media_model.dart';
 
 class PostEntity {
   final int postId;

@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/features/feed/api/api_client/feed_api_client.dart';
-import 'package:tribe_up/features/feed/api/models/feed_response.dart';
+import 'package:tribe_up/features/feed/data/models/feed_response.dart';
 import 'package:tribe_up/features/feed/data/data_sources/feed_remote_data_source.dart';
 
 @Injectable(as: FeedRemoteDataSource)
