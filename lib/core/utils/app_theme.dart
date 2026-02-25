@@ -53,7 +53,7 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: ColorManager.primary,
-        foregroundColor: ColorManager.white, 
+        foregroundColor: ColorManager.white,
         elevation: 0,
         shadowColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -101,10 +101,6 @@ class AppTheme {
         fontWeight: FontWeight.w500,
         color: ColorManager.black,
       ),
-
-      bodyMedium: TextStyle(color: ColorManager.black),
-
-      bodySmall: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
     ),
   );
 }

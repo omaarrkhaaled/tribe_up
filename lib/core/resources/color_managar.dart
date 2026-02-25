@@ -11,4 +11,5 @@ static Color red = const Color(0xFFFF0000);
 static Color purpleDark  = Color(0xFF6D28D9);
 static Color purpleMain  = Color(0xFF8B5CF6);
 static Color purpleSoft  = Color.fromARGB(255, 202, 193, 246);
+static Color blue = const Color(0xFF2563EB);
 }
