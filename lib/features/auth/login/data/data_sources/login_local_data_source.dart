@@ -5,4 +5,10 @@ abstract class LoginLocalDataSource {
     required String token,
     required String refreshToken,
   });
+
+  Future<String?> getAccessToken();
+
+  Future<String?> getRefreshToken();
+
+  Future<void> clearTokens();
 }

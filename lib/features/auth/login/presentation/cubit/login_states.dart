@@ -10,20 +10,20 @@ class LoginStates extends BaseState<LoginResponseEntity> {
     super.data,
     super.errorMessage,
     super.isLoading,
-   this.email = '',
-   this.password = '',
-   this.isFormValid = false,
+    this.email = '',
+    this.password = '',
+    this.isFormValid = false,
   });
 
   @override
   List<Object?> get props => [
-        email,
-        password,
-        isFormValid,
-        errorMessage,
-        isLoading,
-        data,
-      ];
+    email,
+    password,
+    isFormValid,
+    errorMessage,
+    isLoading,
+    data,
+  ];
 
   LoginStates copyWith({
     String? email,

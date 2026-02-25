@@ -1,15 +1,13 @@
-import 'package:json_annotation/json_annotation.dart';
-part 'login_response_entity.g.dart';
+import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
 
-@JsonSerializable()
 class LoginResponseEntity {
-   final String? accessToken;
+  final String? accessToken;
   final String? refreshToken;
+  final UserSummaryEntity? userSummary;
 
-  const LoginResponseEntity({this.accessToken, this.refreshToken});
-  
-  factory LoginResponseEntity.fromJson(Map<String, dynamic> json) =>
-      _$LoginResponseEntityFromJson(json);
-
-  Map<String, dynamic> toJson() => _$LoginResponseEntityToJson(this);
+  const LoginResponseEntity({
+    this.accessToken,
+    this.refreshToken,
+    this.userSummary,
+  });
 }

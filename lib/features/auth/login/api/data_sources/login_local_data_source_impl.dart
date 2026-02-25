@@ -19,4 +19,20 @@ class LoginLocalDataSourceImpl implements LoginLocalDataSource {
     await _box.put(CacheConstants.refreshTokenKey, refreshToken);
     return SuccessResponse<void>(data: null);
   }
+
+  @override
+  Future<String?> getAccessToken() async {
+    return _box.get(CacheConstants.tokenKey);
+  }
+
+  @override
+  Future<String?> getRefreshToken() async {
+    return _box.get(CacheConstants.refreshTokenKey);
+  }
+
+  @override
+  Future<void> clearTokens() async {
+    await _box.delete(CacheConstants.tokenKey);
+    await _box.delete(CacheConstants.refreshTokenKey);
+  }
 }

@@ -33,6 +33,9 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _loginCubit = getIt<LoginCubit>();
+    _email.clear();
+    _password.clear();
+
     _loginCubit.uiIntents.listen((event) {
       if (!mounted) return;
 
@@ -52,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
         case NavigateToFeedIntent():
           UIUtils.hideLoading(context);
           UIUtils.showPremiumMessage(context, UiConstants.welocometotribeUp);
-          context.pushNamed(AppRoutesConstants.feed);
+          context.goNamed(AppRoutesConstants.feed);
           break;
       }
     });
@@ -90,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _email,
                           cubit: _loginCubit,
                         ),
-                        SizedBox(height: 10.h),
+                        SizedBox(height: 15.h),
                         PasswordFieldWidget(
                           password: _password,
                           cubit: _loginCubit,
@@ -142,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 80.h),
+                        SizedBox(height: 250.h),
                         Align(
                           alignment: Alignment.center,
                           child: Text(
