@@ -17,12 +17,10 @@ class EmailFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: controller,
       decoration: const InputDecoration(
         labelText: UiConstants.email,
         hintText: UiConstants.enterEmail,
-        helperText: "",
       ),
       validator: (v) => Validator.validateEmail(v),
       onChanged: (v) => cubit.doIntent(EmailChanged(v)),

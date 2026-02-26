@@ -3,5 +3,7 @@ import 'package:tribe_up/features/auth/sign_up/domain/entities/sign_up_request/s
 import 'package:tribe_up/features/auth/sign_up/domain/entities/sign_up_response/sign_up_response_entity.dart';
 
 abstract class SignUpRepository {
-  Future<BaseResponse<SignUpResponseEntity>> signUp(SignUpRequestEntity requestEntity);
+  Future<BaseResponse<SignUpResponseEntity>> signUp(
+    SignUpRequestEntity requestEntity,
+  );
 }

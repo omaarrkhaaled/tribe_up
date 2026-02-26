@@ -65,9 +65,28 @@ class UiConstants {
       'Please enter your email associated to your account';
   static const String confirm = 'Confirm';
   static const String emailSent = 'Email sent';
-  static const String weSentPasswordResetInstructionsTo = "We've sent password reset instructions to";
+  static const String weSentPasswordResetInstructionsTo =
+      "We've sent password reset instructions to";
   static const String backToLogin = 'Back to login';
   static const String resendEmail = 'Resend Email';
+  static const String home = 'Home';
+  static const String search = 'Search';
+  static const String groups = 'Groups';
+  static const String notifications = 'Notifications';
+  static const String chat = 'Chat';
+  static const String feed = 'Feed';
+  static const String page = 'page';
+  static const String pageSize = 'pageSize';
+  static const String back = 'Back';
+  static const String menu = 'Menu';
+  static const String myTribes = 'My Tribes';
+  static const String logout = 'Logout';
+  static const String areYouSureYouWantToLogout =
+      'Are you sure you want to logout?';
+  static const String yes = 'Yes';
+  static const String no = 'No';
+  static const String notification = 'Notification';
+  static const String setting = 'Setting';
 }
 
 class GoogleFontsKeys {

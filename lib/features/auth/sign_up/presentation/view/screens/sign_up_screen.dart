@@ -58,7 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         case NavigateToLoginIntent(message: final message):
           UIUtils.hideLoading(context);
           UIUtils.showPremiumMessage(context, message);
-          context.pushNamed(AppRoutesConstants.login);
+          context.pushReplacementNamed(AppRoutesConstants.login);
           break;
       }
     });

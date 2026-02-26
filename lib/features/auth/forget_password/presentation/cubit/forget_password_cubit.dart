@@ -90,4 +90,10 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordStates> {
         break;
     }
   }
+
+  @override
+  Future<void> close() {
+    _uiController.close();
+    return super.close();
+  }
 }

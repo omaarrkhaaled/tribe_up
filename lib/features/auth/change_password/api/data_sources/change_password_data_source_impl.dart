@@ -9,7 +9,7 @@ class ChangePasswordDataSourceImpl implements ChangePasswordDataSource {
 
   ChangePasswordDataSourceImpl(this._apiClient);
   @override
-  Future<void> changePassword(ChangePasswordRequest request) async{
+  Future<void> changePassword(ChangePasswordRequest request) async {
     return await _apiClient.changePassword(request);
   }
 }

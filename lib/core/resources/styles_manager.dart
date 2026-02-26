@@ -41,7 +41,7 @@ TextStyle _getTextStyle(
         decorationColor: decorationColor,
         decorationThickness: decorationThickness,
       );
-      case 'inter':
+    case 'inter':
       return GoogleFonts.inter(
         fontSize: fontSize,
         color: color,
@@ -139,8 +139,6 @@ TextStyle getBoldStyle({
   TextDecoration? decoration,
   Color? decorationColor,
   double? decorationThickness,
-
-
 }) => _getTextStyle(
   fontSize ?? FontSize.s14.sp,
   FontWeightManager.bold,

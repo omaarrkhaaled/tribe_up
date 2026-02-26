@@ -10,4 +10,3 @@ abstract class AppRoutesConstants {
   static const String changePassword = '/changePassword';
   static const String verifyEmail = '/verifyEmail';
 }
-

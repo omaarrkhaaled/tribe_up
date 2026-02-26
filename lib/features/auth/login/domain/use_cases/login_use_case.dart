@@ -10,7 +10,9 @@ class LoginUseCase {
 
   LoginUseCase(this.repository);
 
-  Future<BaseResponse<LoginResponseEntity>> call(LoginRequestEntity requestEntity) {
+  Future<BaseResponse<LoginResponseEntity>> call(
+    LoginRequestEntity requestEntity,
+  ) {
     return repository.login(requestEntity);
   }
 }
