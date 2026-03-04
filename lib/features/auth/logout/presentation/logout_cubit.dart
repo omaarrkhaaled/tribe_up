@@ -11,7 +11,7 @@ import 'package:tribe_up/features/auth/logout/presentation/logout_ui_intents.dar
 class LogoutCubit extends Cubit<LogoutStates> {
   final LogoutUseCase _logoutUseCase;
   final StreamController<LogoutUiIntents> _uiIntentController =
-      StreamController();
+      StreamController.broadcast();
 
   Stream<LogoutUiIntents> get uiIntents => _uiIntentController.stream;
 

@@ -14,7 +14,7 @@ class UserSummaryModel {
   @JsonKey(name: 'profilePicture')
   final String? profilePicture;
 
-  UserSummaryModel({
+  const UserSummaryModel({
     this.id,
     this.userName,
     this.fullName,
