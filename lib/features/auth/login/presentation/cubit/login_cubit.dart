@@ -59,7 +59,13 @@ class LoginCubit extends Cubit<LoginStates> {
 
     switch (response) {
       case SuccessResponse<LoginResponseEntity>():
-        _uiIntentController.add(NavigateToFeedIntent());
+        _uiIntentController.add(
+          NavigateToFeedIntent(response.data.userSummary),
+        );
+
+        _uiIntentController.add(
+          NavigateToFeedIntent(response.data.userSummary),
+        );
         break;
       case ErrorResponse<LoginResponseEntity>():
         _uiIntentController.add(

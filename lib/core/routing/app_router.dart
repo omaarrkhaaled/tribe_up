@@ -11,6 +11,7 @@ import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_
 import 'package:tribe_up/features/auth/login/domain/use_cases/refresh_token_use_case.dart';
 import 'package:tribe_up/features/auth/login/presentation/view/screens/login_screen.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/view/screens/sign_up_screen.dart';
+import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/feed_screen.dart';
 import 'package:tribe_up/welcome_screen.dart';
 
@@ -51,7 +52,8 @@ abstract class AppRouter {
       GoRoute(
         path: AppRoutesConstants.feed,
         name: AppRoutesConstants.feed,
-        builder: (context, state) => const FeedScreen(),
+        builder: (context, state) =>
+            FeedScreen(userSummary: state.extra as UserSummaryEntity?),
       ),
       GoRoute(
         path: AppRoutesConstants.login,
