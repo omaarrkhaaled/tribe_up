@@ -13,10 +13,13 @@ import 'package:tribe_up/features/feed/presentation/view/screens/search_screen.d
 import 'package:tribe_up/features/feed/presentation/view/widgets/app_bar_feed.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/feed_nav_bar.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/feed_posts_list.dart';
+import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/menu_drawer.dart';
 
 class FeedScreen extends StatelessWidget {
-  const FeedScreen({super.key});
+  final UserSummaryEntity? userSummary;
+
+  const FeedScreen({super.key, this.userSummary});
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +28,15 @@ class FeedScreen extends StatelessWidget {
         BlocProvider<FeedCubit>(create: (context) => getIt<FeedCubit>()),
         BlocProvider<LogoutCubit>(create: (context) => getIt<LogoutCubit>()),
       ],
-      child: const FeedScreenContent(),
+      child: FeedScreenContent(userSummary: userSummary),
     );
   }
 }
 
 class FeedScreenContent extends StatefulWidget {
-  const FeedScreenContent({super.key});
+  final UserSummaryEntity? userSummary;
+
+  const FeedScreenContent({super.key, this.userSummary});
 
   @override
   State<FeedScreenContent> createState() => _FeedScreenContentState();
@@ -73,7 +78,7 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
     return BlocBuilder<FeedCubit, FeedStates>(
       builder: (context, state) {
         return Scaffold(
-          drawer: const MenuDrawer(),
+          drawer: MenuDrawer(userSummary: widget.userSummary),
           body: Stack(
             children: [
               _buildCurrentScreen(state.currentTab, state),
@@ -84,7 +89,7 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
                     : -(kToolbarHeight + MediaQuery.of(context).padding.top),
                 left: 0,
                 right: 0,
-                child: const FeedAppBar(),
+                child: FeedAppBar(userSummary: widget.userSummary),
               ),
             ],
           ),

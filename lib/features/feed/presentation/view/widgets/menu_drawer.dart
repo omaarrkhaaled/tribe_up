@@ -12,8 +12,13 @@ import 'package:tribe_up/features/auth/logout/presentation/logout_cubit.dart';
 import 'package:tribe_up/features/auth/logout/presentation/logout_intents.dart';
 import 'package:tribe_up/features/auth/logout/presentation/logout_ui_intents.dart';
 
+import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 class MenuDrawer extends StatefulWidget {
-  const MenuDrawer({super.key});
+  final UserSummaryEntity? userSummary;
+
+  const MenuDrawer({super.key, this.userSummary});
 
   @override
   State<MenuDrawer> createState() => _MenuDrawerState();
@@ -80,21 +85,35 @@ class _MenuDrawerState extends State<MenuDrawer> {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                CircleAvatar(radius: 24, child: const Icon(Icons.person)),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: widget.userSummary?.profilePicture != null
+                        ? CachedNetworkImage(
+                            imageUrl: widget.userSummary!.profilePicture!,
+                            fit: BoxFit.contain,
+                          )
+                        : const Icon(Icons.person),
+                  ),
+                ),
                 const SizedBox(width: 12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Alex Johnson',
-                      style: TextStyle(
+                    Text(
+                      widget.userSummary?.fullName ?? 'Alex Johnson',
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Text(
-                      '@alexj',
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    Text(
+                      widget.userSummary?.userName != null
+                          ? '@${widget.userSummary!.userName}'
+                          : '@alexj',
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                   ],
                 ),
