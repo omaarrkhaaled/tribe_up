@@ -7,6 +7,13 @@ class ApiConstants {
   static const String forgetPasswordEndPoint = 'Authentication/Forgot-Password';
   static const String logoutEndPoint = 'Authentication/Logout';
   static const String feedEndPoint = 'Posts/Feed';
+  static const String commentsEndPoint = 'Comment/{postId}/Comments';
+  static const String addCommentEndPoint = 'Comment/{postId}/AddComment';
+  static const String deleteCommentEndPoint =
+      'Comment/{commentId}/DeleteComment';
+  static const String editCommentEndPoint = 'Comment/{commentId}/EditComment';
+  static const String commentToggleLikeEndPoint =
+      'Comment/{commentId}/CommentToggleLike';
 }
 
 class CacheConstants {
