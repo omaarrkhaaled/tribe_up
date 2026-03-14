@@ -5,8 +5,11 @@ part 'login_response_model.g.dart';
 
 @JsonSerializable()
 class LoginResponseModel {
+  @JsonKey(name: 'accessToken')
   final String? accessToken;
+  @JsonKey(name: 'refreshToken')
   final String? refreshToken;
+  @JsonKey(name: 'userSummary')
   final UserSummaryModel? userSummary;
 
   const LoginResponseModel({

@@ -6,12 +6,14 @@ import 'package:tribe_up/features/feed/presentation/view/widgets/post_card.dart'
 
 class FeedPostsList extends StatefulWidget {
   final FeedStates state;
+  final String? currentUserProfilePicture;
   final ScrollController scrollController;
 
   const FeedPostsList({
     super.key,
     required this.state,
     required this.scrollController,
+    this.currentUserProfilePicture,
   });
 
   @override
@@ -42,7 +44,10 @@ class _FeedPostsListState extends State<FeedPostsList> {
           final post = widget.state.isLoading
               ? PostEntity.getDummyPost()
               : widget.state.posts[index];
-          return PostCard(post: post);
+          return PostCard(
+            post: post,
+            currentUserProfilePicture: widget.currentUserProfilePicture,
+          );
         },
       ),
     );
