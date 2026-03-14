@@ -87,6 +87,14 @@ class UiConstants {
   static const String no = 'No';
   static const String notification = 'Notification';
   static const String setting = 'Setting';
+  static const String comments = 'Comments';
+  static const String edit = 'Edit';
+  static const String delete = 'Delete';
+  static const String areYouSureYouWantToDeleteThisComment =
+      'Are you sure you want to delete this comment?';
+  static const String commentDeletedSuccessfully =
+      'Comment deleted successfully';
+  static const String failedToDeleteComment = 'Failed To Delete Comment';
 }
 
 class GoogleFontsKeys {
