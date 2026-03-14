@@ -109,6 +109,7 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
       FeedNavTab.feed => FeedPostsList(
         state: state,
         scrollController: _scrollController,
+        currentUserProfilePicture: widget.userSummary?.profilePicture,
       ),
       FeedNavTab.search => const SearchScreen(),
       FeedNavTab.groups => const GroupsScreen(),
