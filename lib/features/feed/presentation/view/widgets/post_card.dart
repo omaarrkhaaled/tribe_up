@@ -2,12 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
+import 'package:tribe_up/features/comments/presentation/view/widgets/comments_bottom_sheet.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/video_player_widget.dart';
 
 class PostCard extends StatelessWidget {
   final PostEntity post;
+  final String? currentUserProfilePicture;
 
-  const PostCard({super.key, required this.post});
+  const PostCard({
+    super.key,
+    required this.post,
+    this.currentUserProfilePicture,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +132,19 @@ class PostCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              const Icon(Icons.add_comment_outlined, size: 24),
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => CommentsBottomSheet(
+                      postId: post.postId,
+                      userProfilePicture: currentUserProfilePicture,
+                    ),
+                  );
+                },
+                child: const Icon(Icons.add_comment_outlined, size: 24),
+              ),
               const SizedBox(width: 8),
               Text(
                 '${post.commentCount}',

@@ -95,6 +95,10 @@ class UiConstants {
   static const String commentDeletedSuccessfully =
       'Comment deleted successfully';
   static const String failedToDeleteComment = 'Failed To Delete Comment';
+  static const String noCommentsYet = 'No comments yet';
+  static const String beTheFirstToComment = 'Be the first to comment!';
+  static const String addAComment = 'Add a comment...';
+  static const String editComment = 'Edit comment...';
 }
 
 class GoogleFontsKeys {
