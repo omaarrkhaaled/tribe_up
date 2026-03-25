@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:tribe_up/features/profile/domain/entities/profile_entity.dart';
 part 'profile_info_response.g.dart';
 
 @JsonSerializable()
@@ -38,4 +39,16 @@ class ProfileInfoResponse {
       _$ProfileInfoResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProfileInfoResponseToJson(this);
+
+  ProfileInfoEntity toEntity() {
+    return ProfileInfoEntity(
+      firstName: firstName,
+      lastName: lastName,
+      userName: userName,
+      phoneNumber: phoneNumber,
+      bio: bio,
+      profilePicture: profilePicture,
+      coverPicture: coverPicture,
+    );
+  }
 }
