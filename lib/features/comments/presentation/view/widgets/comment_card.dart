@@ -70,13 +70,22 @@ class _CommentCardState extends State<CommentCard> {
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: ListTile(
               dense: true,
-              leading: CachedNetworkImage(
-                imageUrl: comment.profilePicture ?? '',
-                imageBuilder: (context, imageProvider) =>
-                    CircleAvatar(backgroundImage: imageProvider, radius: 20),
-                placeholder: (_, __) => const CircleAvatar(radius: 20),
-                errorWidget: (_, __, ___) =>
-                    const CircleAvatar(radius: 20, child: Icon(Icons.person)),
+              leading: Column(
+                children: [
+                  const SizedBox(height: 8),
+                  CachedNetworkImage(
+                    imageUrl: comment.profilePicture ?? '',
+                    imageBuilder: (context, imageProvider) => CircleAvatar(
+                      backgroundImage: imageProvider,
+                      radius: 20,
+                    ),
+                    placeholder: (_, __) => const CircleAvatar(radius: 20),
+                    errorWidget: (_, __, ___) => const CircleAvatar(
+                      radius: 20,
+                      child: Icon(Icons.person),
+                    ),
+                  ),
+                ],
               ),
               title: Text(
                 comment.username ?? '',

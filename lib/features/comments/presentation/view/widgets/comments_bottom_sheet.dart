@@ -92,7 +92,7 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    width: 45,
+                    width: 55,
                     height: 4,
                     decoration: BoxDecoration(
                       color: ColorManager.grey.withValues(alpha: .4),
@@ -129,11 +129,28 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                                         const AlwaysScrollableScrollPhysics(),
                                     itemCount: state.isLoading
                                         ? 5
-                                        : state.comments.length,
+                                        : state.comments.length +
+                                              (state.isLoadingMore ? 1 : 0),
                                     itemBuilder: (context, index) {
+                                      // Show spinner as the last extra item
+                                      if (state.isLoadingMore &&
+                                          index == state.comments.length) {
+                                        return Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 16,
+                                          ),
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              color: ColorManager.primary,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      // Trigger load more near the end
                                       if (index >= state.comments.length - 2 &&
                                           state.hasMore &&
-                                          !state.isLoading) {
+                                          !state.isLoading &&
+                                          !state.isLoadingMore) {
                                         _commentsCubit.doIntent(
                                           LoadMoreCommentsIntent(
                                             postId: widget.postId,
@@ -174,10 +191,14 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
 
   void showCommentActions(BuildContext context, CommentItemEntity comment) {
     final cubit = context.read<CommentsCubit>();
-    showModalBottomSheet(
+    showGeneralDialog(
       context: context,
-      backgroundColor: ColorManager.transparent,
-      builder: (_) => CommentActionsSheet(comment: comment, cubit: cubit),
+      barrierDismissible: true,
+      barrierLabel: 'dismiss',
+      barrierColor: Colors.transparent,
+      transitionDuration: Duration.zero,
+      pageBuilder: (_, __, ___) =>
+          CommentActionsSheet(comment: comment, cubit: cubit),
     );
   }
 }
