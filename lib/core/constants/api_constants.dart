@@ -14,6 +14,9 @@ class ApiConstants {
   static const String editCommentEndPoint = 'Comment/{commentId}/EditComment';
   static const String commentToggleLikeEndPoint =
       'Comment/{commentId}/CommentToggleLike';
+
+  static const String notificationsEndPoint = 'Notification';
+  static const String notificationReadEndPoint = 'Notification/{id}/read';
 }
 
 class CacheConstants {
