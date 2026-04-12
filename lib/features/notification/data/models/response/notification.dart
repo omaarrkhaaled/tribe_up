@@ -1,4 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:tribe_up/features/notification/domain/entities/notification_entity.dart';
+
+part 'notification.g.dart';
 
 @JsonSerializable()
 class Notification {
@@ -27,23 +30,20 @@ class Notification {
     this.referenceId,
   });
 
-  factory Notification.fromJson(Map<String, dynamic> json) => Notification(
-    id: json['id'] as int?,
-    title: json['title'] as String?,
-    message: json['message'] as String?,
-    type: json['type'] as String?,
-    isRead: json['isRead'] as bool?,
-    createdAt: json['createdAt'] as String?,
-    referenceId: json['referenceId'] as int?,
-  );
+  factory Notification.fromJson(Map<String, dynamic> json) =>
+      _$NotificationFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'title': title,
-    'message': message,
-    'type': type,
-    'isRead': isRead,
-    'createdAt': createdAt,
-    'referenceId': referenceId,
-  };
+  Map<String, dynamic> toJson() => _$NotificationToJson(this);
+
+  NotificationEntity toEntity() {
+    return NotificationEntity(
+      id: id,
+      title: title,
+      message: message,
+      type: type,
+      isRead: isRead,
+      createdAt: createdAt,
+      referenceId: referenceId,
+    );
+  }
 }

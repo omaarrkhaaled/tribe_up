@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-
+import 'package:tribe_up/features/notification/domain/entities/notification_response_entity.dart';
 import 'notification.dart';
+
+part 'notification_response.g.dart';
 
 @JsonSerializable()
 class NotificationResponse {
@@ -11,17 +13,15 @@ class NotificationResponse {
 
   NotificationResponse({this.notifications, this.unreadCount});
 
-  factory NotificationResponse.fromJson(Map<String, dynamic> json) {
-    return NotificationResponse(
-      notifications: (json['notifications'] as List<dynamic>?)
-          ?.map((e) => Notification.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      unreadCount: json['unreadCount'] as int?,
+  factory NotificationResponse.fromJson(Map<String, dynamic> json) =>
+      _$NotificationResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$NotificationResponseToJson(this);
+
+  NotificationResponseEntity toEntity() {
+    return NotificationResponseEntity(
+      notifications: notifications?.map((e) => e.toEntity()).toList(),
+      unreadCount: unreadCount,
     );
   }
-
-  Map<String, dynamic> toJson() => {
-    'notifications': notifications?.map((e) => e.toJson()).toList(),
-    'unreadCount': unreadCount,
-  };
 }

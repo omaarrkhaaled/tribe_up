@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/core/resources/font_managar.dart';
 import 'package:tribe_up/core/resources/styles_manager.dart';
@@ -12,10 +11,10 @@ class AppTheme {
     scaffoldBackgroundColor: ColorManager.white,
     //------------------- AppBar Theme ------------------//
     appBarTheme: AppBarTheme(
-      titleTextStyle: getMediumStyle(
+      titleTextStyle: TextStyle(
         color: ColorManager.black,
-        fontSize: FontSize.s20,
-        fontFamily: GoogleFontsKeys.inter,
+        fontWeight: FontWeight.bold,
+        fontSize: 22,
       ),
       iconTheme: IconThemeData(color: ColorManager.black),
       backgroundColor: ColorManager.white,
