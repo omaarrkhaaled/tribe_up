@@ -18,6 +18,9 @@ class ApiConstants {
   static const String commentToggleLikeEndPoint =
       'Comment/{commentId}/CommentToggleLike';
 
+  static const String notificationsEndPoint = 'Notification';
+  static const String notificationReadEndPoint = 'Notification/{id}/read';
+
   //----------------------------profile EndPoints------------------------//
   static const String myProfileEndPoint = 'Profile/Me';
   static const String userProfileEndPoint = 'Profile/{userName}';

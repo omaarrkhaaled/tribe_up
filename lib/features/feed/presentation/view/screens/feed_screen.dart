@@ -8,7 +8,7 @@ import 'package:tribe_up/features/feed/presentation/cubit/feed_intents.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_states.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/chat_screen.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/groups_screen.dart';
-import 'package:tribe_up/features/feed/presentation/view/screens/notification_screen.dart';
+import 'package:tribe_up/features/notification/presentation/view/screens/notification_screen.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/search_screen.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/app_bar_feed.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/feed_nav_bar.dart';
@@ -84,7 +84,7 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
               _buildCurrentScreen(state.currentTab, state),
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 400),
-                top: _isAppBarVisible
+                top: (_isAppBarVisible && state.currentTab == FeedNavTab.feed)
                     ? 0
                     : -(kToolbarHeight + MediaQuery.of(context).padding.top),
                 left: 0,

@@ -7,6 +7,7 @@ class CommentsStates extends Equatable {
   final CommentOperations? commentOperation;
   final CommentItemEntity? selectedComment;
   final bool isLoading;
+  final bool isLoadingMore;
   final bool hasMore;
   final int? currentPostId;
   final int currentPage;
@@ -17,6 +18,7 @@ class CommentsStates extends Equatable {
     this.commentOperation,
     this.selectedComment,
     this.isLoading = false,
+    this.isLoadingMore = false,
     this.hasMore = true,
     this.currentPostId,
     this.currentPage = 1,
@@ -30,6 +32,7 @@ class CommentsStates extends Equatable {
     bool clearOperation = false,
     bool clearSelectedComment = false,
     bool? isLoading,
+    bool? isLoadingMore,
     bool? hasMore,
     int? currentPostId,
     int? currentPage,
@@ -45,6 +48,7 @@ class CommentsStates extends Equatable {
           ? null
           : selectedComment ?? this.selectedComment,
       isLoading: isLoading ?? this.isLoading,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       hasMore: hasMore ?? this.hasMore,
       currentPostId: currentPostId ?? this.currentPostId,
       currentPage: currentPage ?? this.currentPage,
@@ -60,6 +64,7 @@ class CommentsStates extends Equatable {
     commentOperation,
     selectedComment,
     isLoading,
+    isLoadingMore,
     hasMore,
     currentPostId,
     currentPage,
