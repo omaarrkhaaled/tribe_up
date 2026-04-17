@@ -108,9 +108,9 @@ class _ActionsCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: ColorManager.white.withValues(alpha: 0.27),
+        color: ColorManager.white.withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: ColorManager.white.withValues(alpha: 0.6)),
+        border: Border.all(color: ColorManager.white.withValues(alpha: 0.12)),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
