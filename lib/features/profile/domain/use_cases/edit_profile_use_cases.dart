@@ -1,5 +1,4 @@
 export 'get_profile_info_use_case.dart';
-export 'get_user_profile_use_case.dart';
 export 'update_name_use_case.dart';
 export 'update_avatar_use_case.dart';
 export 'update_bio_use_case.dart';

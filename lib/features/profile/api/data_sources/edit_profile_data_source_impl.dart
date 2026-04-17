@@ -1,28 +1,19 @@
 import 'dart:io';
-
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/core/network/api_call.dart';
-import 'package:tribe_up/features/profile/api/api_client/profile_api_client.dart';
-import 'package:tribe_up/features/profile/data/data_sorces/profile_data_source.dart';
+import 'package:tribe_up/features/profile/api/api_client/edit_profile_api_client.dart';
+import 'package:tribe_up/features/profile/data/data_sorces/edit_profile_data_source.dart';
 import 'package:tribe_up/features/profile/data/models/request/update_name_request.dart';
 import 'package:tribe_up/features/profile/data/models/response/profile_info_response.dart';
-import 'package:tribe_up/features/profile/data/models/response/user_profile_response.dart';
 
-@LazySingleton(as: ProfileDataSource)
-class ProfileDataSourceImpl implements ProfileDataSource {
-  final ProfileApiClient _apiClient;
-  ProfileDataSourceImpl(this._apiClient);
+@LazySingleton(as: EditProfileDataSource)
+class EditProfileDataSourceImpl implements EditProfileDataSource {
+  final EditProfileApiClient _apiClient;
+  EditProfileDataSourceImpl(this._apiClient);
   @override
   Future<BaseResponse<ProfileInfoResponse>> getProfileInfo() {
     return safeApiCall(() => _apiClient.getProfileInfo());
-  }
-
-  @override
-  Future<BaseResponse<UserProfileResponse>> getUserProfile({
-    required String userName,
-  }) {
-    return safeApiCall(() => _apiClient.getUserProfile(userName: userName));
   }
 
   @override

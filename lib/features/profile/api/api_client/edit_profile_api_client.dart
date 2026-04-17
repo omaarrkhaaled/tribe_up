@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/error_logger.dart';
@@ -7,22 +6,16 @@ import 'package:retrofit/http.dart';
 import 'package:tribe_up/core/constants/api_constants.dart';
 import 'package:tribe_up/features/profile/data/models/request/update_name_request.dart';
 import 'package:tribe_up/features/profile/data/models/response/profile_info_response.dart';
-import 'package:tribe_up/features/profile/data/models/response/user_profile_response.dart';
-part 'profile_api_client.g.dart';
+part 'edit_profile_api_client.g.dart';
 
 @lazySingleton
 @RestApi(baseUrl: ApiConstants.baseUrl)
-abstract class ProfileApiClient {
+abstract class EditProfileApiClient {
   @factoryMethod
-  factory ProfileApiClient(Dio dio) = _ProfileApiClient;
+  factory EditProfileApiClient(Dio dio) = _EditProfileApiClient;
 
   @GET(ApiConstants.profileInfoEndPoint)
   Future<ProfileInfoResponse> getProfileInfo();
-
-  @GET(ApiConstants.userProfileEndPoint)
-  Future<UserProfileResponse> getUserProfile({
-    @Path('userName') required String userName,
-  });
 
   @PUT(ApiConstants.nameEndPoint)
   Future<void> updateName(@Body() UpdateNameRequest request);

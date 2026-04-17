@@ -1,34 +1,19 @@
 import 'dart:io';
-
 import 'package:tribe_up/config/base_response/base_response.dart';
-import 'package:tribe_up/features/profile/data/data_sorces/profile_data_source.dart';
+import 'package:tribe_up/features/profile/data/data_sorces/edit_profile_data_source.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/features/profile/data/models/request/update_name_request.dart';
 import 'package:tribe_up/features/profile/domain/entities/profile_entity.dart';
-import 'package:tribe_up/features/profile/domain/entities/user_profile_entity.dart';
-import 'package:tribe_up/features/profile/domain/repositories/profile_repositoriy.dart';
+import 'package:tribe_up/features/profile/domain/repositories/edit_profile_repository.dart';
 
-@LazySingleton(as: ProfileRepositoriy)
-class ProfileRepositoryImpl implements ProfileRepositoriy {
-  final ProfileDataSource dataSource;
+@LazySingleton(as: EditProfileRepository)
+class EditProfileRepositoryImpl implements EditProfileRepository {
+  final EditProfileDataSource dataSource;
 
-  ProfileRepositoryImpl(this.dataSource);
+  EditProfileRepositoryImpl(this.dataSource);
   @override
   Future<BaseResponse<ProfileInfoEntity>> getProfileInfo() async {
     final response = await dataSource.getProfileInfo();
-    switch (response) {
-      case SuccessResponse(data: final data):
-        return SuccessResponse(data: data.toEntity());
-      case ErrorResponse(error: final error):
-        return ErrorResponse(error: error);
-    }
-  }
-
-  @override
-  Future<BaseResponse<UserProfileEntity>> getUserProfile({
-    required String userName,
-  }) async {
-    final response = await dataSource.getUserProfile(userName: userName);
     switch (response) {
       case SuccessResponse(data: final data):
         return SuccessResponse(data: data.toEntity());

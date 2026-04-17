@@ -2,13 +2,9 @@ import 'dart:io';
 import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/features/profile/data/models/request/update_name_request.dart';
 import 'package:tribe_up/features/profile/data/models/response/profile_info_response.dart';
-import 'package:tribe_up/features/profile/data/models/response/user_profile_response.dart';
 
-abstract class ProfileDataSource {
+abstract class EditProfileDataSource {
   Future<BaseResponse<ProfileInfoResponse>> getProfileInfo();
-  Future<BaseResponse<UserProfileResponse>> getUserProfile({
-    required String userName,
-  });
   Future<BaseResponse<void>> updateName(UpdateNameRequest request);
   Future<BaseResponse<void>> updateAvatar(String? avatar);
   Future<BaseResponse<void>> updateBio(String? bio);
