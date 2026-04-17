@@ -21,6 +21,8 @@ class NotificationCubit extends Cubit<NotificationStates> {
 
   static const int _pageSize = 20;
   bool _isFetching = false;
+  bool _hasReachedEnd = false;
+  int _currentPage = 1;
 
   NotificationCubit(
     this._getNotificationsUseCase,
@@ -49,6 +51,8 @@ class NotificationCubit extends Cubit<NotificationStates> {
   // Get Notifications
 
   Future<void> _getNotifications() async {
+    _hasReachedEnd = false;
+    _currentPage = 1;
     emit(state.copyWith(isLoading: true, clearError: true));
 
     final response = await _getNotificationsUseCase(
@@ -79,7 +83,12 @@ class NotificationCubit extends Cubit<NotificationStates> {
   // Pagination
 
   Future<void> _loadMoreNotifications() async {
-    if (state.isLoadingMore || state.isLoading || _isFetching) return;
+    if (state.isLoadingMore ||
+        state.isLoading ||
+        _isFetching ||
+        _hasReachedEnd) {
+      return;
+    }
 
     final currentList = state.data?.notifications ?? [];
     if (currentList.isEmpty) return;
@@ -87,7 +96,7 @@ class NotificationCubit extends Cubit<NotificationStates> {
     _isFetching = true;
     emit(state.copyWith(isLoadingMore: true));
 
-    final nextPage = (currentList.length ~/ _pageSize) + 1;
+    final nextPage = _currentPage + 1;
 
     final response = await _getNotificationsUseCase(
       pageNumber: nextPage,
@@ -97,6 +106,12 @@ class NotificationCubit extends Cubit<NotificationStates> {
     switch (response) {
       case SuccessResponse():
         final incoming = response.data.notifications ?? [];
+        if (incoming.isEmpty) {
+          _hasReachedEnd = true;
+          emit(state.copyWith(isLoadingMore: false));
+          break;
+        }
+        _currentPage = nextPage;
         emit(
           state.copyWith(
             data: state.data!.copyWith(

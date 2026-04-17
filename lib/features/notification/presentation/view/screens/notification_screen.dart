@@ -164,7 +164,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               child: ListView.builder(
                 controller: _scrollController,
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                itemCount: notifications.length + (state.isLoadingMore ? 2 : 0),
+                itemCount: notifications.length + (state.isLoadingMore ? 1 : 0),
                 itemBuilder: (context, index) {
                   if (index == notifications.length) {
                     return Skeletonizer(
