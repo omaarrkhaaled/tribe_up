@@ -99,6 +99,8 @@ class UiConstants {
   static const String beTheFirstToComment = 'Be the first to comment!';
   static const String addAComment = 'Add a comment...';
   static const String editComment = 'Edit comment...';
+  static const String retry = 'Retry';
+  static const String noNotifications = 'No notifications yet';
 }
 
 class GoogleFontsKeys {
