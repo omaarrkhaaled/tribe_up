@@ -5,6 +5,9 @@ import 'package:tribe_up/core/network/api_call.dart';
 import 'package:tribe_up/features/profile/api/api_client/edit_profile_api_client.dart';
 import 'package:tribe_up/features/profile/data/data_sorces/edit_profile_data_source.dart';
 import 'package:tribe_up/features/profile/data/models/request/update_name_request.dart';
+import 'package:tribe_up/features/profile/data/models/request/update_avatar_request.dart';
+import 'package:tribe_up/features/profile/data/models/request/update_bio_request.dart';
+import 'package:tribe_up/features/profile/data/models/request/update_phone_request.dart';
 import 'package:tribe_up/features/profile/data/models/response/profile_info_response.dart';
 
 @LazySingleton(as: EditProfileDataSource)
@@ -22,18 +25,18 @@ class EditProfileDataSourceImpl implements EditProfileDataSource {
   }
 
   @override
-  Future<BaseResponse<void>> updateAvatar(String? avatar) {
-    return safeApiCall(() => _apiClient.updateAvatar(avatar));
+  Future<BaseResponse<void>> updateAvatar(UpdateAvatarRequest request) {
+    return safeApiCall(() => _apiClient.updateAvatar(request));
   }
 
   @override
-  Future<BaseResponse<void>> updateBio(String? bio) {
-    return safeApiCall(() => _apiClient.updateBio(bio));
+  Future<BaseResponse<void>> updateBio(UpdateBioRequest request) {
+    return safeApiCall(() => _apiClient.updateBio(request));
   }
 
   @override
-  Future<BaseResponse<void>> updatePhone(String? phone) {
-    return safeApiCall(() => _apiClient.updatePhone(phone));
+  Future<BaseResponse<void>> updatePhone(UpdatePhoneRequest request) {
+    return safeApiCall(() => _apiClient.updatePhone(request));
   }
 
   @override

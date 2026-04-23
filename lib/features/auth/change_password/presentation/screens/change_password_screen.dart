@@ -62,6 +62,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             context,
             UiConstants.passwordUpdatedSuccessfully,
             backgroundColor: ColorManager.primary,
+            icon: Icons.check_circle_outline_rounded,
           );
           context.pop();
           break;

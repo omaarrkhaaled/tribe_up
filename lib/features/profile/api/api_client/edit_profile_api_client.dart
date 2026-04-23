@@ -5,7 +5,11 @@ import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 import 'package:tribe_up/core/constants/api_constants.dart';
 import 'package:tribe_up/features/profile/data/models/request/update_name_request.dart';
+import 'package:tribe_up/features/profile/data/models/request/update_avatar_request.dart';
+import 'package:tribe_up/features/profile/data/models/request/update_bio_request.dart';
+import 'package:tribe_up/features/profile/data/models/request/update_phone_request.dart';
 import 'package:tribe_up/features/profile/data/models/response/profile_info_response.dart';
+
 part 'edit_profile_api_client.g.dart';
 
 @lazySingleton
@@ -21,13 +25,13 @@ abstract class EditProfileApiClient {
   Future<void> updateName(@Body() UpdateNameRequest request);
 
   @PUT(ApiConstants.avatarEndPoint)
-  Future<void> updateAvatar(@Body() String? avatar);
+  Future<void> updateAvatar(@Body() UpdateAvatarRequest request);
 
   @PUT(ApiConstants.bioEndPoint)
-  Future<void> updateBio(@Body() String? bio);
+  Future<void> updateBio(@Body() UpdateBioRequest request);
 
   @PUT(ApiConstants.phoneEndPoint)
-  Future<void> updatePhone(@Body() String? phone);
+  Future<void> updatePhone(@Body() UpdatePhoneRequest request);
 
   @PUT(ApiConstants.pictureEndPoint)
   @MultiPart()

@@ -27,14 +27,14 @@ class AppTheme {
 
       floatingLabelStyle: TextStyle(
         fontSize: 18.sp,
-        fontWeight: FontWeightManager.regular,
+        fontWeight: FontWeight.w500,
         color: ColorManager.grey,
       ),
 
       hintStyle: TextStyle(
         fontSize: FontSize.s12.sp,
         fontWeight: FontWeightManager.regular,
-        color: ColorManager.lightGrey,
+        color: ColorManager.lightGrey.withValues(alpha: 0.5),
       ),
 
       contentPadding: EdgeInsets.symmetric(
@@ -106,7 +106,7 @@ class AppTheme {
 
 OutlineInputBorder _outline(Color color, {double width = 1}) {
   return OutlineInputBorder(
-    borderRadius: BorderRadius.circular(8.r),
+    borderRadius: BorderRadius.circular(12.r),
     borderSide: BorderSide(color: color, width: width),
   );
 }

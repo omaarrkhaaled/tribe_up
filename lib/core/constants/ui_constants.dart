@@ -101,6 +101,29 @@ class UiConstants {
   static const String editComment = 'Edit comment...';
   static const String retry = 'Retry';
   static const String noNotifications = 'No notifications yet';
+  static const String editProfile = 'Edit Profile';
+  static const String save = 'Save';
+  static const String updatePhoneNumber = 'Update phone number';
+  static const String remove = 'Remove';
+  static const String update = 'Update';
+  static const String failedToLoadProfile = 'Failed To Load Profile';
+  static const String fullName = 'Full name';
+  static const String loadingFullName = 'Loading full name...';
+  static const String loadingPhoneNumber = 'Loading phone number...';
+  static const String noPhoneNumber = 'No phone number';
+  static const String bio = 'Bio';
+  static const String loadingBio = 'Loading bio...';
+  static const String noBio = 'No bio';
+  static const String passwordPlaceholder = '************';
+  static const String updateYourName = 'Update your name';
+  static const String enterYourNewFirstAndLastNames =
+      'Enter your new first and last names';
+  static const String enterPhoneToLinkWithAccount =
+      'Enter your phone number to link it with your account.';
+  static const String updateYourBio = 'Update your bio';
+  static const String addAshortBioToTellPeopleMoreAboutYourself =
+      'Add a short bio to tell people more about yourself.';
+  static const String describeYourself = 'Describe yourself...';
 }
 
 class GoogleFontsKeys {
