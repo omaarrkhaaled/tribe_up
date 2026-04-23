@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:tribe_up/features/profile/domain/entities/profile_entity.dart';
+import 'package:tribe_up/features/profile/domain/entities/edit_profile_entity.dart';
 part 'profile_info_response.g.dart';
 
 @JsonSerializable()
@@ -14,25 +14,25 @@ class ProfileInfoResponse {
   String userName;
 
   @JsonKey(name: 'phoneNumber')
-  String phoneNumber;
+  String? phoneNumber;
 
   @JsonKey(name: 'bio')
-  String bio;
+  String? bio;
 
   @JsonKey(name: 'profilePicture')
-  String profilePicture;
+  String? profilePicture;
 
   @JsonKey(name: 'coverPicture')
-  String coverPicture;
+  String? coverPicture;
 
   ProfileInfoResponse({
     required this.firstName,
     required this.lastName,
     required this.userName,
-    required this.phoneNumber,
-    required this.bio,
-    required this.profilePicture,
-    required this.coverPicture,
+    this.phoneNumber,
+    this.bio,
+    this.profilePicture,
+    this.coverPicture,
   });
 
   factory ProfileInfoResponse.fromJson(Map<String, dynamic> json) =>

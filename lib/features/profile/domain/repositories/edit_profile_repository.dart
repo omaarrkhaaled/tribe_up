@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/features/profile/data/models/request/update_name_request.dart';
-import 'package:tribe_up/features/profile/domain/entities/profile_entity.dart';
+import 'package:tribe_up/features/profile/domain/entities/edit_profile_entity.dart';
 
 abstract interface class EditProfileRepository {
   Future<BaseResponse<ProfileInfoEntity>> getProfileInfo();

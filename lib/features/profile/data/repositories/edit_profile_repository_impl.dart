@@ -3,7 +3,10 @@ import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/features/profile/data/data_sorces/edit_profile_data_source.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/features/profile/data/models/request/update_name_request.dart';
-import 'package:tribe_up/features/profile/domain/entities/profile_entity.dart';
+import 'package:tribe_up/features/profile/data/models/request/update_avatar_request.dart';
+import 'package:tribe_up/features/profile/data/models/request/update_bio_request.dart';
+import 'package:tribe_up/features/profile/data/models/request/update_phone_request.dart';
+import 'package:tribe_up/features/profile/domain/entities/edit_profile_entity.dart';
 import 'package:tribe_up/features/profile/domain/repositories/edit_profile_repository.dart';
 
 @LazySingleton(as: EditProfileRepository)
@@ -35,7 +38,9 @@ class EditProfileRepositoryImpl implements EditProfileRepository {
 
   @override
   Future<BaseResponse<void>> updateAvatar(String? avatar) async {
-    final response = await dataSource.updateAvatar(avatar);
+    final response = await dataSource.updateAvatar(
+      UpdateAvatarRequest(avatar: avatar ?? ''),
+    );
     switch (response) {
       case SuccessResponse():
         return SuccessResponse(data: null);
@@ -46,7 +51,9 @@ class EditProfileRepositoryImpl implements EditProfileRepository {
 
   @override
   Future<BaseResponse<void>> updateBio(String? bio) async {
-    final response = await dataSource.updateBio(bio);
+    final response = await dataSource.updateBio(
+      UpdateBioRequest(bio: bio ?? ''),
+    );
     switch (response) {
       case SuccessResponse():
         return SuccessResponse(data: null);
@@ -57,7 +64,9 @@ class EditProfileRepositoryImpl implements EditProfileRepository {
 
   @override
   Future<BaseResponse<void>> updatePhone(String? phone) async {
-    final response = await dataSource.updatePhone(phone);
+    final response = await dataSource.updatePhone(
+      UpdatePhoneRequest(phoneNumber: phone ?? ''),
+    );
     switch (response) {
       case SuccessResponse():
         return SuccessResponse(data: null);
