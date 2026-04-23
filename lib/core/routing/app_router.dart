@@ -13,7 +13,7 @@ import 'package:tribe_up/features/auth/login/presentation/view/screens/login_scr
 import 'package:tribe_up/features/auth/sign_up/presentation/view/screens/sign_up_screen.dart';
 import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/feed_screen.dart';
-import 'package:tribe_up/features/profile/presentation/view/screens/edit_profile_screen.dart';
+import 'package:tribe_up/features/edit_profile/presentation/view/screens/edit_profile_screen.dart';
 import 'package:tribe_up/welcome_screen.dart';
 
 abstract class AppRouter {
