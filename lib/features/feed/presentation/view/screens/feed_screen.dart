@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/enums/feed_nav_tab.dart';
+import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
 import 'package:tribe_up/features/auth/logout/presentation/logout_cubit.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_cubit.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_intents.dart';
@@ -46,12 +47,26 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
   final ScrollController _scrollController = ScrollController();
   bool _isAppBarVisible = true;
   double _lastScrollOffset = 0;
+  UserSummaryEntity? _userSummary;
 
   @override
   void initState() {
     super.initState();
+    _userSummary = widget.userSummary;
+    if (_userSummary == null) {
+      _loadUserSummary();
+    }
     context.read<FeedCubit>().doIntent(const LoadFeedIntent());
     _scrollController.addListener(_onScroll);
+  }
+
+  Future<void> _loadUserSummary() async {
+    final model = await getIt<LoginLocalDataSource>().getUserSummary();
+    if (model != null && mounted) {
+      setState(() {
+        _userSummary = model.toEntity();
+      });
+    }
   }
 
   void _onScroll() {
@@ -78,7 +93,10 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
     return BlocBuilder<FeedCubit, FeedStates>(
       builder: (context, state) {
         return Scaffold(
-          drawer: MenuDrawer(userSummary: widget.userSummary),
+          drawer: MenuDrawer(
+            localDataSource: getIt<LoginLocalDataSource>(),
+            userSummary: _userSummary,
+          ),
           body: Stack(
             children: [
               _buildCurrentScreen(state.currentTab, state),
@@ -89,7 +107,7 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
                     : -(kToolbarHeight + MediaQuery.of(context).padding.top),
                 left: 0,
                 right: 0,
-                child: FeedAppBar(userSummary: widget.userSummary),
+                child: FeedAppBar(userSummary: _userSummary),
               ),
             ],
           ),
@@ -109,7 +127,7 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
       FeedNavTab.feed => FeedPostsList(
         state: state,
         scrollController: _scrollController,
-        currentUserProfilePicture: widget.userSummary?.profilePicture,
+        currentUserProfilePicture: _userSummary?.profilePicture,
       ),
       FeedNavTab.search => const SearchScreen(),
       FeedNavTab.groups => const GroupsScreen(),
