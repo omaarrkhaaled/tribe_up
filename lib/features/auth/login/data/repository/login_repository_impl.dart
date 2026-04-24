@@ -29,6 +29,13 @@ class LoginRepositoryImpl implements LoginRepositiry {
           refreshToken: response.data.refreshToken!,
           token: response.data.accessToken!,
         );
+
+        if (response.data.userSummary != null) {
+          await localDataSource.saveUserSummary(
+            userSummary: response.data.userSummary!,
+          );
+        }
+
         switch (localResponse) {
           case SuccessResponse<void>():
             return SuccessResponse<LoginResponseEntity>(
@@ -59,6 +66,13 @@ class LoginRepositoryImpl implements LoginRepositiry {
           refreshToken: response.data.refreshToken!,
           token: response.data.accessToken!,
         );
+
+        if (response.data.userSummary != null) {
+          await localDataSource.saveUserSummary(
+            userSummary: response.data.userSummary!,
+          );
+        }
+
         switch (localResponse) {
           case SuccessResponse<void>():
             return SuccessResponse<LoginResponseEntity>(

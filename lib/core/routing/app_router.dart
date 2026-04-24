@@ -11,16 +11,15 @@ import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_
 import 'package:tribe_up/features/auth/login/domain/use_cases/refresh_token_use_case.dart';
 import 'package:tribe_up/features/auth/login/presentation/view/screens/login_screen.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/view/screens/sign_up_screen.dart';
-import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/feed_screen.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view/screens/edit_profile_screen.dart';
-import 'package:tribe_up/welcome_screen.dart';
+import 'package:tribe_up/features/profile/presentation/view/screens/profile_screen.dart';
 
 abstract class AppRouter {
   static GoRouter router = GoRouter(
-    initialLocation: AppRoutesConstants.welcome,
+    initialLocation: AppRoutesConstants.login,
     redirect: (context, state) async {
-      if (state.matchedLocation != AppRoutesConstants.welcome) return null;
+      if (state.matchedLocation != AppRoutesConstants.login) return null;
       final localDataSource = getIt<LoginLocalDataSource>();
       final String? accessToken = await localDataSource.getAccessToken();
       if (accessToken == null) return null;
@@ -41,11 +40,6 @@ abstract class AppRouter {
     },
     routes: [
       GoRoute(
-        path: AppRoutesConstants.welcome,
-        name: AppRoutesConstants.welcome,
-        builder: (context, state) => const WelcomeScreen(),
-      ),
-      GoRoute(
         path: AppRoutesConstants.signUp,
         name: AppRoutesConstants.signUp,
         builder: (context, state) => const SignUpScreen(),
@@ -53,8 +47,7 @@ abstract class AppRouter {
       GoRoute(
         path: AppRoutesConstants.feed,
         name: AppRoutesConstants.feed,
-        builder: (context, state) =>
-            FeedScreen(userSummary: state.extra as UserSummaryEntity?),
+        builder: (context, state) => FeedScreen(),
       ),
       GoRoute(
         path: AppRoutesConstants.login,
@@ -81,6 +74,12 @@ abstract class AppRouter {
         path: AppRoutesConstants.editProfile,
         name: AppRoutesConstants.editProfile,
         builder: (context, state) => const EditProfileScreen(),
+      ),
+      GoRoute(
+        path: AppRoutesConstants.profile,
+        name: AppRoutesConstants.profile,
+        builder: (context, state) =>
+            ProfileScreen(userName: state.extra as String?),
       ),
     ],
   );

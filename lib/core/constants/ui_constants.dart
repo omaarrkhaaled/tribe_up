@@ -124,6 +124,10 @@ class UiConstants {
   static const String addAshortBioToTellPeopleMoreAboutYourself =
       'Add a short bio to tell people more about yourself.';
   static const String describeYourself = 'Describe yourself...';
+  static const String joinedRecently = 'Joined Recently';
+  static const String noPostsYet = 'No posts yet.';
+  static const String posts = 'Posts';
+  static const String tribes = 'Tribes';
 }
 
 class GoogleFontsKeys {
