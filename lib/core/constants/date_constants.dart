@@ -3,12 +3,12 @@ class DateConstants {
     if (dateStr.isEmpty) return '';
     final date = DateTime.tryParse(dateStr);
     if (date == null) return dateStr;
-    final timeStr = formatTime(date);
-    final monthStr = getMonthName(date.month);
+    final timeStr = _formatTime(date);
+    final monthStr = _getMonthName(date.month);
     return '$timeStr • $monthStr ${date.day}, ${date.year}';
   }
 
-  static String formatTime(DateTime date) {
+  static String _formatTime(DateTime date) {
     int hour = date.hour;
     final String period = hour >= 12 ? 'PM' : 'AM';
     hour = hour % 12;
@@ -17,7 +17,7 @@ class DateConstants {
     return '$hour:$minuteStr $period';
   }
 
-  static String getMonthName(int month) {
+  static String _getMonthName(int month) {
     const months = [
       'January',
       'February',

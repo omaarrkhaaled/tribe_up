@@ -62,11 +62,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           backgroundColor: ColorManager.red,
           icon: Icons.error_outline_rounded,
         );
-      case NavigateToEditProfileIntent():
-        await context.pushNamed(AppRoutesConstants.editProfile);
-        if (_targetUserName != null && mounted) {
-          _cubit.doIntent(GetProfileDetailsIntent(userName: _targetUserName!));
-        }
         break;
     }
   }

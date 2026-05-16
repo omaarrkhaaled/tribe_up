@@ -9,6 +9,19 @@ class ApiConstants {
   static const String logoutEndPoint = 'Authentication/Logout';
   //----------------------------posts EndPoints------------------------//
   static const String feedEndPoint = 'Posts/Feed';
+  static const String personalFeedEndPoint = 'Posts/PersonalFeed/{userId}';
+  static const String createPostEndPoint = 'Posts/CreatePost';
+  static const String editPostEndPoint = 'Posts/{postId}/EditPost';
+  static const String deletePostEndPoint = 'Posts/{postId}/DeletePost';
+  static const String getPostByIdEndPoint = 'Posts/{postId}/GetPostById';
+  static const String postToggleLikeEndPoint = 'Posts/{postId}/PostToggleLike';
+  static const String postLikesEndPoint = 'Posts/{postId}/Likes';
+  static const String groupFeedEndPoint = 'Posts/{groupId}/GroupFeed';
+  static const String deniedPostsByGroupIdEndPoint =
+      'Posts/{groupId}/DeniedPostsByGroupId';
+  static const String changeEntityContentStatusEndPoint =
+      'Posts/ChangeEntityContentStatus';
+
   //----------------------------comments EndPoints------------------------//
   static const String commentsEndPoint = 'Comment/{postId}/Comments';
   static const String addCommentEndPoint = 'Comment/{postId}/AddComment';
@@ -35,6 +48,11 @@ class ApiConstants {
   static const String deletePictureEndPoint = 'Profile/Picture/Delete';
   static const String coverEndPoint = 'Profile/Cover';
   static const String deleteCoverEndPoint = 'Profile/Cover/Delete';
+  // grops
+  static const String groupsBaseUrl = 'http://tribeup.runasp.net/api/Groups';
+  static const String getAllGroupsEndPoint = 'GetAllGroups';
+  static const String myGroupsEndPoint = 'MyGroups';
+  static const String getGroupByIdEndPoint = 'GetGroup/{id}';
 }
 
 class CacheConstants {
