@@ -49,7 +49,7 @@ class ProfileCoverAndPicture extends StatelessWidget {
                           end: Alignment.bottomCenter,
                           colors: [
                             ColorManager.white,
-                            ColorManager.lightGrey.withValues(alpha: 0.3),
+                            ColorManager.lightGrey.withValues(alpha: 0.4),
                           ],
                         ),
                       ),

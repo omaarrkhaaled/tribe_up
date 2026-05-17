@@ -20,4 +20,11 @@ abstract class FeedApiClient {
     @Query(UiConstants.page) int page,
     @Query(UiConstants.pageSize) int pageSize,
   );
+
+  @GET(ApiConstants.personalFeedEndPoint)
+  Future<FeedResponse> getPersonalFeed(
+    @Path('username') String username,
+    @Query(UiConstants.page) int page,
+    @Query(UiConstants.pageSize) int pageSize,
+  );
 }
