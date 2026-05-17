@@ -48,11 +48,16 @@ class ApiConstants {
   static const String deletePictureEndPoint = 'Profile/Picture/Delete';
   static const String coverEndPoint = 'Profile/Cover';
   static const String deleteCoverEndPoint = 'Profile/Cover/Delete';
-  // grops
-  static const String groupsBaseUrl = 'http://tribeup.runasp.net/api/Groups';
-  static const String getAllGroupsEndPoint = 'GetAllGroups';
+  // groups
+  static const String groupsBaseUrl = 'http://tribeup.runasp.net/api/Groups/';
   static const String myGroupsEndPoint = 'MyGroups';
   static const String getGroupByIdEndPoint = 'GetGroup/{id}';
+  static const String createGroupEndPoint = 'CreateGroup';
+  static const String updateGroupEndPoint = 'UpdateGroup/{Id}';
+  static const String deleteGroupEndPoint = 'DeleteGroup/{Id}';
+  static const String updateGroupPictureEndPoint = 'UpdateGroupPicture/{Id}';
+  static const String deleteGroupPictureEndPoint = 'DeleteGroupPicture/{Id}';
+  static const String exploreGroupsEndPoint = 'ExploreGroups';
 }
 
 class CacheConstants {
