@@ -49,15 +49,46 @@ class ApiConstants {
   static const String coverEndPoint = 'Profile/Cover';
   static const String deleteCoverEndPoint = 'Profile/Cover/Delete';
   // groups
-  static const String groupsBaseUrl = 'http://tribeup.runasp.net/api/Groups/';
-  static const String myGroupsEndPoint = 'MyGroups';
-  static const String getGroupByIdEndPoint = 'GetGroup/{id}';
-  static const String createGroupEndPoint = 'CreateGroup';
-  static const String updateGroupEndPoint = 'UpdateGroup/{Id}';
-  static const String deleteGroupEndPoint = 'DeleteGroup/{Id}';
-  static const String updateGroupPictureEndPoint = 'UpdateGroupPicture/{Id}';
-  static const String deleteGroupPictureEndPoint = 'DeleteGroupPicture/{Id}';
+  static const String myGroupsEndPoint = 'Groups/MyGroups';
+  static const String getGroupByIdEndPoint = 'Groups/GetGroup/{id}';
+  static const String createGroupEndPoint = 'Groups/CreateGroup';
+  static const String updateGroupEndPoint = 'Groups/UpdateGroup/{Id}';
+  static const String deleteGroupEndPoint = 'Groups/DeleteGroup/{Id}';
+  static const String updateGroupPictureEndPoint =
+      'Groups/UpdateGroupPicture/{Id}';
+  static const String deleteGroupPictureEndPoint =
+      'Groups/DeleteGroupPicture/{Id}';
   static const String exploreGroupsEndPoint = 'ExploreGroups';
+
+  // Group Followers
+  static const String groupFollowersEndPoint = 'groups/{groupId}/GetFollowers';
+  static const String groupToggleFollowEndPoint =
+      'groups/{groupId}/ToggleFollow';
+  static const String groupDeleteFollowerEndPoint =
+      'groups/{groupId}/DeleteFollower/{followerId}';
+
+  // Group Invitations
+  static const String groupCreateInvitationsEndPoint =
+      'GroupInvitations/CreateInvitations/{groupId}';
+  static const String groupInvitationDetailsEndPoint =
+      'GroupInvitations/Details/{token}';
+  static const String groupAcceptInvitationsEndPoint =
+      'GroupInvitations/AcceptInvitations/{token}';
+  static const String groupGetActiveInvitationEndPoint =
+      'GroupInvitations/GetActiveInvitation/{groupId}';
+  static const String groupRevokeInvitationEndPoint =
+      'GroupInvitations/RevokeInvitation/{invitationId}';
+
+  // Group Members
+  static const String groupMembersEndPoint =
+      'GroupMembers/GroupMembers/{groupId}';
+  static const String groupLeaveEndPoint = 'GroupMembers/LeaveGroup/{groupId}';
+  static const String groupPromoteMemberEndPoint =
+      'GroupMembers/Promote/{groupId}/User/{GroupMemberId}';
+  static const String groupDemoteMemberEndPoint =
+      'GroupMembers/Demote/{groupId}/User/{GroupMemberId}';
+  static const String groupKickMemberEndPoint =
+      'GroupMembers/Kick/{groupId}/User/{GroupMemberId}';
 }
 
 class CacheConstants {
