@@ -11,7 +11,7 @@ import 'package:tribe_up/features/groups/data/models/response/groups_response.da
 part 'groups_api_client.g.dart';
 
 @injectable
-@RestApi(baseUrl: ApiConstants.groupsBaseUrl)
+@RestApi(baseUrl: ApiConstants.baseUrl)
 abstract class GroupsApiClient {
   @factoryMethod
   factory GroupsApiClient(Dio dio) = _GroupsApiClient;
