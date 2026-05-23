@@ -128,6 +128,25 @@ class UiConstants {
   static const String noPostsYet = 'No posts yet.';
   static const String posts = 'Posts';
   static const String tribes = 'Tribes';
+  static const String postCannotBeEmpty = 'Post cannot be empty';
+  static const String postCreatedSuccessfully = 'Post created successfully';
+  static const String failedToCreatePost = 'Failed To Create Post';
+  static const String createPost = 'Create Post';
+  static const String post = 'post';
+  static const String story = 'story';
+  static const String whatIsInYourMind = 'What\'s in your mind?';
+  static const String upload = 'Upload';
+  static const String public = 'public';
+  static const String private = 'private';
+  static const String searchTribes = 'Search Tribes ...';
+  static const String createYOurOwn = 'Create your own';
+  static const String leaveGroup = 'leave Group';
+  static const String joinedIn = 'Joined In';
+  static const String discover = 'Discover';
+  static const String youHaveNotJoinedAnyTribesYet =
+      'You have not joined any tribes yet.';
+  static const String noTribesFound = 'No tribes found.';
+  static const String view = 'View';
 }
 
 class GoogleFontsKeys {
