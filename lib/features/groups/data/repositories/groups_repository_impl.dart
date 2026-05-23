@@ -12,8 +12,11 @@ class GroupsRepositoryImpl implements GroupsRepository {
   final GroupsDataSource _dataSource;
   GroupsRepositoryImpl(this._dataSource);
   @override
-  Future<BaseResponse<GroupsResponse>> myGroups() async {
-    final response = await _dataSource.myGroups();
+  Future<BaseResponse<GroupsResponse>> myGroups(
+    int? page,
+    int? pageSize,
+  ) async {
+    final response = await _dataSource.myGroups(page, pageSize);
     switch (response) {
       case SuccessResponse(data: var data):
         return SuccessResponse(data: data);
@@ -102,8 +105,12 @@ class GroupsRepositoryImpl implements GroupsRepository {
   }
 
   @override
-  Future<BaseResponse<GroupsResponse>> exploreGroups() async {
-    final response = await _dataSource.exploreGroups();
+  Future<BaseResponse<GroupsResponse>> exploreGroups(
+    int? page,
+    int? pageSize,
+    String? search,
+  ) async {
+    final response = await _dataSource.exploreGroups(page, pageSize, search);
     switch (response) {
       case SuccessResponse(data: var data):
         return SuccessResponse(data: data);

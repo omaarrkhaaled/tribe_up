@@ -9,7 +9,11 @@ class ExploreGroupsUseCase {
 
   ExploreGroupsUseCase(this.repository);
 
-  Future<BaseResponse<GroupsResponse>> call() async {
-    return await repository.exploreGroups();
+  Future<BaseResponse<GroupsResponse>> call(
+    int? page,
+    int? pageSize,
+    String? search,
+  ) async {
+    return await repository.exploreGroups(page, pageSize, search);
   }
 }

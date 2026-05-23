@@ -5,7 +5,7 @@ import 'package:tribe_up/features/groups/data/models/request/update_group_reques
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
 
 abstract class GroupsRepository {
-  Future<BaseResponse<GroupsResponse>> myGroups();
+  Future<BaseResponse<GroupsResponse>> myGroups(int? page, int? pageSize);
   Future<BaseResponse<Group>> getGroupById(int id);
   Future<BaseResponse<Group>> createGroup(
     String groupName,
@@ -17,5 +17,9 @@ abstract class GroupsRepository {
   Future<BaseResponse<void>> updateGroupPicture(int id, File file);
   Future<BaseResponse<void>> deleteGroup(int id);
   Future<BaseResponse<void>> deleteGroupPicture(int id);
-  Future<BaseResponse<GroupsResponse>> exploreGroups();
+  Future<BaseResponse<GroupsResponse>> exploreGroups(
+    int? page,
+    int? pageSize,
+    String? search,
+  );
 }
