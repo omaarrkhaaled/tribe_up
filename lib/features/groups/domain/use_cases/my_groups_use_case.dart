@@ -9,7 +9,7 @@ class MyGroupsUseCase {
 
   MyGroupsUseCase(this.repository);
 
-  Future<BaseResponse<GroupsResponse>> call() async {
-    return await repository.myGroups();
+  Future<BaseResponse<GroupsResponse>> call(int? page, int? pageSize) async {
+    return await repository.myGroups(page, pageSize);
   }
 }

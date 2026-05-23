@@ -17,7 +17,10 @@ abstract class GroupsApiClient {
   factory GroupsApiClient(Dio dio) = _GroupsApiClient;
 
   @GET(ApiConstants.myGroupsEndPoint)
-  Future<GroupsResponse> myGroups();
+  Future<GroupsResponse> myGroups(
+    @Query("page") int? page,
+    @Query("pageSize") int? pageSize,
+  );
 
   @GET(ApiConstants.getGroupByIdEndPoint)
   Future<Group> getGroupById(@Path("id") int id);
@@ -27,27 +30,31 @@ abstract class GroupsApiClient {
     @Query("groupName") String groupName,
     @Query("Description") String description,
     @Query("Accessibility") String accessibility,
-    @Part(name: "ProfilePicture") File? profilePicture,
+    @Part(name: "GroupProfilePicture") File? profilePicture,
   );
 
   @PUT(ApiConstants.updateGroupEndPoint)
   Future<Group> updateGroup(
-    @Path("id") int id,
+    @Path("Id") int id,
     @Body() UpdateGroupRequest request,
   );
 
   @PUT(ApiConstants.updateGroupPictureEndPoint)
   Future<Group> updateGroupPicture(
-    @Path("id") int id,
+    @Path("Id") int id,
     @Part(name: "Picture") File file,
   );
 
   @DELETE(ApiConstants.deleteGroupEndPoint)
-  Future<Group> deleteGroup(@Path("id") int id);
+  Future<Group> deleteGroup(@Path("Id") int id);
 
   @DELETE(ApiConstants.deleteGroupPictureEndPoint)
-  Future<Group> deleteGroupPicture(@Path("id") int id);
+  Future<Group> deleteGroupPicture(@Path("Id") int id);
 
   @GET(ApiConstants.exploreGroupsEndPoint)
-  Future<GroupsResponse> exploreGroups();
+  Future<GroupsResponse> exploreGroups(
+    @Query("page") int? page,
+    @Query("pageSize") int? pageSize,
+    @Query("search") String? search,
+  );
 }

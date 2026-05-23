@@ -13,8 +13,8 @@ class GroupsDataSourceImpl implements GroupsDataSource {
   final GroupsApiClient _apiClient;
   GroupsDataSourceImpl(this._apiClient);
   @override
-  Future<BaseResponse<GroupsResponse>> myGroups() {
-    return safeApiCall(() => _apiClient.myGroups());
+  Future<BaseResponse<GroupsResponse>> myGroups(int? page, int? pageSize) {
+    return safeApiCall(() => _apiClient.myGroups(page, pageSize));
   }
 
   @override
@@ -60,7 +60,11 @@ class GroupsDataSourceImpl implements GroupsDataSource {
   }
 
   @override
-  Future<BaseResponse<GroupsResponse>> exploreGroups() {
-    return safeApiCall(() => _apiClient.exploreGroups());
+  Future<BaseResponse<GroupsResponse>> exploreGroups(
+    int? page,
+    int? pageSize,
+    String? search,
+  ) {
+    return safeApiCall(() => _apiClient.exploreGroups(page, pageSize, search));
   }
 }
