@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 import 'package:tribe_up/core/constants/api_constants.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
+import 'package:tribe_up/features/feed/data/models/create_post_response.dart';
 import 'package:tribe_up/features/feed/data/models/feed_response.dart';
 
 part 'feed_api_client.g.dart';
@@ -12,11 +15,17 @@ part 'feed_api_client.g.dart';
 @RestApi(baseUrl: ApiConstants.baseUrl)
 abstract class FeedApiClient {
   @factoryMethod
-  factory FeedApiClient(Dio dio, {ParseErrorLogger? errorLogger}) =
-      _FeedApiClient;
+  factory FeedApiClient(Dio dio) = _FeedApiClient;
 
   @GET(ApiConstants.feedEndPoint)
   Future<FeedResponse> getFeed(
+    @Query(UiConstants.page) int page,
+    @Query(UiConstants.pageSize) int pageSize,
+  );
+
+  @GET(ApiConstants.groupFeedEndPoint)
+  Future<FeedResponse> getGroupFeed(
+    @Path('groupId') int groupId,
     @Query(UiConstants.page) int page,
     @Query(UiConstants.pageSize) int pageSize,
   );
@@ -26,5 +35,15 @@ abstract class FeedApiClient {
     @Path('username') String username,
     @Query(UiConstants.page) int page,
     @Query(UiConstants.pageSize) int pageSize,
+  );
+
+  @POST(ApiConstants.createPostEndPoint)
+  @MultiPart()
+  Future<CreatePostResponse> createPost(
+    @Part(name: 'GroupId') int? groupId,
+    @Part(name: 'Caption') String caption,
+    @Part(name: 'Accessibility') int accessibility,
+    @Part(name: 'TaggedUserIds') List<String>? taggedUserIds,
+    @Part(name: 'mediaFiles') List<File>? mediaFiles,
   );
 }

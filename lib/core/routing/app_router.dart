@@ -13,6 +13,8 @@ import 'package:tribe_up/features/auth/login/presentation/view/screens/login_scr
 import 'package:tribe_up/features/auth/sign_up/presentation/view/screens/sign_up_screen.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/feed_screen.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view/screens/edit_profile_screen.dart';
+import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
+import 'package:tribe_up/features/groups/presentation/view/screens/tribe_profile_screen.dart';
 import 'package:tribe_up/features/profile/presentation/view/screens/profile_screen.dart';
 
 abstract class AppRouter {
@@ -80,6 +82,12 @@ abstract class AppRouter {
         name: AppRoutesConstants.profile,
         builder: (context, state) =>
             ProfileScreen(userName: state.extra as String?),
+      ),
+      GoRoute(
+        path: AppRoutesConstants.tribeProfile,
+        name: AppRoutesConstants.tribeProfile,
+        builder: (context, state) =>
+            TribeProfileScreen(group: state.extra as Group?),
       ),
     ],
   );

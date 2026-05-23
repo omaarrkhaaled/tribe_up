@@ -58,7 +58,7 @@ class ApiConstants {
       'Groups/UpdateGroupPicture/{Id}';
   static const String deleteGroupPictureEndPoint =
       'Groups/DeleteGroupPicture/{Id}';
-  static const String exploreGroupsEndPoint = 'ExploreGroups';
+  static const String exploreGroupsEndPoint = 'Groups/ExploreGroups';
 
   // Group Followers
   static const String groupFollowersEndPoint = 'groups/{groupId}/GetFollowers';
