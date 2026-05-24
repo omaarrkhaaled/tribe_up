@@ -33,8 +33,8 @@ class CreatePostCubit extends Cubit<CreatePostState> {
     );
 
     switch (response) {
-      case SuccessResponse():
-        emit(const CreatePostSuccess());
+      case SuccessResponse(:final data):
+        emit(CreatePostSuccess(data));
       case ErrorResponse(:final error):
         emit(CreatePostError(error.message));
     }
