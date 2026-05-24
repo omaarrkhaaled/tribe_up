@@ -147,6 +147,9 @@ class UiConstants {
       'You have not joined any tribes yet.';
   static const String noTribesFound = 'No tribes found.';
   static const String view = 'View';
+  static String confirmLeaveGroup(String tribeName) =>
+      'Are you sure you want to leave "$tribeName"? You will no longer see updates from this tribe in your feed.';
+  static const String leave = 'Leave';
 }
 
 class GoogleFontsKeys {

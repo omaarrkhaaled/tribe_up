@@ -79,14 +79,21 @@ class _TribesScreenState extends State<TribesScreen> {
     );
   }
 
-  void _handleUiIntent(
+  Future<void> _handleUiIntent(
     BuildContext context,
     TribesUiIntents intent,
     TribesListCubit cubit,
-  ) {
+  ) async {
     switch (intent) {
       case NavigateToTribeProfileUiIntent(:final group):
-        context.pushNamed(AppRoutesConstants.tribeProfile, extra: group);
+        final didChange = await context.pushNamed<bool>(
+          AppRoutesConstants.tribeProfile,
+          extra: group,
+        );
+        if (didChange == true) {
+          cubit.doIntent(const LoadJoinedTribesIntent());
+          cubit.doIntent(const LoadDiscoverTribesIntent());
+        }
       case ShowCreateTribeSheetUiIntent():
         showModalBottomSheet(
           context: context,
