@@ -16,5 +16,6 @@ enum UserRelation {
   }
 
   bool get isMemberOrAbove => this == member || this == admin || this == owner;
-  bool get isAdmin => this == admin || this == owner;
+  bool get isAdmin => this == admin;
+  bool get isOwner => this == owner;
 }
