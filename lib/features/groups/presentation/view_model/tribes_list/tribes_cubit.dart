@@ -84,7 +84,6 @@ class TribesListCubit extends Cubit<TribesState> {
       emit(
         state.copyWith(
           isLoadingDiscover: true,
-          discoverTribes: [],
           discoverPage: 1,
           clearError: true,
         ),
@@ -123,7 +122,9 @@ class TribesListCubit extends Cubit<TribesState> {
   }
 
   Future<void> _search(String query) async {
-    emit(state.copyWith(searchQuery: query));
+    emit(
+      state.copyWith(searchQuery: query, discoverTribes: [], discoverPage: 1),
+    );
     _loadDiscover(refresh: true);
   }
 
