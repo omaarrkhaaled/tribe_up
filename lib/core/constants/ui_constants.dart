@@ -150,6 +150,15 @@ class UiConstants {
   static String confirmLeaveGroup(String tribeName) =>
       'Are you sure you want to leave "$tribeName"? You will no longer see updates from this tribe in your feed.';
   static const String leave = 'Leave';
+  static const String followingTribe = 'Following tribe!';
+  static const String unfollowedTribe = 'Unfollowed tribe';
+  static const String follow = 'follow';
+  static const String following = 'following';
+  static const String joined = 'joined';
+  static const String invite = 'invite';
+  static const String joinTribeToSeePosts = 'Join tribe to see posts';
+  static const String noPostsYetBeTheFirstToPost =
+      'No posts yet, be the first to post!';
 }
 
 class GoogleFontsKeys {

@@ -1,3 +1,5 @@
+import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
+
 sealed class CreatePostState {
   final bool isLoading;
   final String? errorMessage;
@@ -14,7 +16,8 @@ class CreatePostLoading extends CreatePostState {
 }
 
 class CreatePostSuccess extends CreatePostState {
-  const CreatePostSuccess() : super(isLoading: false);
+  final PostEntity post;
+  const CreatePostSuccess(this.post) : super(isLoading: false);
 }
 
 class CreatePostError extends CreatePostState {
