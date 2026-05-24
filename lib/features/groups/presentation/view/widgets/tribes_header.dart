@@ -49,7 +49,7 @@ class _TribesHeaderState extends State<TribesHeader> {
                   const Icon(Icons.add, color: Colors.white, size: 20),
                   const SizedBox(width: 4),
                   Text(
-                    UiConstants.createYOurOwn,
+                    UiConstants.createYourOwn,
                     style: _textTheme.titleLarge!.copyWith(color: Colors.white),
                   ),
                 ],

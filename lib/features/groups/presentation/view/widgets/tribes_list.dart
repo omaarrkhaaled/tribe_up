@@ -79,16 +79,17 @@ class TribesList extends StatelessWidget {
             group: group,
             currentTab: state.currentTab,
             isPending: state.pendingActionIds.contains(group.id),
-            onView: () => cubit.doIntent(ViewTribeIntent(group)),
+            onView: () {
+              cubit.doIntent(ViewTribeIntent(group));
+            },
             onAction: () {
               if (isJoined) {
                 showDialog(
                   context: context,
                   builder: (dialogContext) => ConfirmLeaveDialog(
-                    cubit: cubit,
-                    groupId: group.id!,
-                    dialogContext: dialogContext,
-                    tribeName: group.groupName ?? 'tribe',
+                    tribeName: group.groupName!,
+                    onConfirm: () =>
+                        cubit.doIntent(LeaveTribeIntent(group.id!)),
                   ),
                 );
               } else {

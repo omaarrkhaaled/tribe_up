@@ -98,7 +98,7 @@ class _TribesScreenState extends State<TribesScreen> {
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
-          backgroundColor: Colors.transparent,
+          backgroundColor: ColorManager.transparent,
           builder: (_) => CreateTribeSheet(
             onTribeCreated: (tribe) {
               // Reload joined after creation
