@@ -139,7 +139,8 @@ class UiConstants {
   static const String public = 'public';
   static const String private = 'private';
   static const String searchTribes = 'Search Tribes ...';
-  static const String createYOurOwn = 'Create your own';
+  static const String createYourOwn = 'Create your own';
+  static const String createYOurOwnTribe = 'Create your own tribe';
   static const String leaveGroup = 'leave Group';
   static const String joinedIn = 'Joined In';
   static const String discover = 'Discover';
@@ -159,6 +160,13 @@ class UiConstants {
   static const String joinTribeToSeePosts = 'Join tribe to see posts';
   static const String noPostsYetBeTheFirstToPost =
       'No posts yet, be the first to post!';
+  static const String addCoverPhoto = 'Add cover photo';
+  static const String tribeName = 'Tribe name';
+  static const String enterTribeName = 'Enter tribe name';
+  static const String description = 'Description';
+  static const String enterDescription = 'Enter description';
+  static const String privacy = 'Privacy';
+  static const String createTribe = 'Create Tribe';
 }
 
 class GoogleFontsKeys {
