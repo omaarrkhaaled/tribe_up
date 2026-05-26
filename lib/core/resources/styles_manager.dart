@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/font_managar.dart';
@@ -73,7 +72,7 @@ TextStyle getLightStyle({
   Color? decorationColor,
   double? decorationThickness,
 }) => _getTextStyle(
-  fontSize ?? FontSize.s14.sp,
+  fontSize ?? FontSize.s14,
   FontWeightManager.light,
   color,
   fontFamily: fontFamily,
@@ -90,7 +89,7 @@ TextStyle getRegularStyle({
   Color? decorationColor,
   double? decorationThickness,
 }) => _getTextStyle(
-  fontSize ?? FontSize.s14.sp,
+  fontSize ?? FontSize.s14,
   FontWeightManager.regular,
   color,
   fontFamily: fontFamily,
@@ -107,7 +106,7 @@ TextStyle getMediumStyle({
   Color? decorationColor,
   double? decorationThickness,
 }) => _getTextStyle(
-  fontSize ?? FontSize.s14.sp,
+  fontSize ?? FontSize.s14,
   FontWeightManager.medium,
   color,
   fontFamily: fontFamily,
@@ -124,7 +123,7 @@ TextStyle getSemiBoldStyle({
   Color? decorationColor,
   double? decorationThickness,
 }) => _getTextStyle(
-  fontSize ?? FontSize.s14.sp,
+  fontSize ?? FontSize.s14,
   FontWeightManager.semiBold,
   color,
   fontFamily: fontFamily,
@@ -140,7 +139,7 @@ TextStyle getBoldStyle({
   Color? decorationColor,
   double? decorationThickness,
 }) => _getTextStyle(
-  fontSize ?? FontSize.s14.sp,
+  fontSize ?? FontSize.s14,
   FontWeightManager.bold,
   color,
   fontFamily: fontFamily,

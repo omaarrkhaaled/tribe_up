@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tribe_up/core/resources/assets_managar.dart';
@@ -38,13 +37,13 @@ class UIUtils {
         child: Dialog(
           shape: BeveledRectangleBorder(),
           backgroundColor: Colors.transparent,
-          insetPadding: EdgeInsets.all(40.w),
+          insetPadding: EdgeInsets.all(40),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: SizedBox(
               width: 130,
               child: Container(
-                padding: EdgeInsets.all(20.w),
+                padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -68,11 +67,11 @@ class UIUtils {
                   children: [
                     Lottie.asset(
                       AnimationAssets.loadingAnimation,
-                      width: 100.w,
-                      height: 100.w,
+                      width: 100,
+                      height: 100,
                       fit: BoxFit.contain,
                     ),
-                    SizedBox(height: 15.h),
+                    SizedBox(height: 15),
                     Shimmer.fromColors(
                       baseColor: Colors.white,
                       highlightColor: Colors.yellowAccent,
@@ -80,7 +79,7 @@ class UIUtils {
                         text ?? 'Loading...',
                         style: getBoldStyle(
                           color: Colors.white,
-                          fontSize: Sizes.s18.sp,
+                          fontSize: Sizes.s18,
                         ),
                       ),
                     ),
@@ -112,7 +111,7 @@ class UIUtils {
           children: [
             if (icon != null) ...[
               Icon(icon, color: Colors.white),
-              SizedBox(width: 10.w),
+              SizedBox(width: 10),
             ],
             Expanded(
               child: Shimmer.fromColors(
@@ -120,7 +119,7 @@ class UIUtils {
                 highlightColor: Colors.yellowAccent,
                 child: Text(
                   message,
-                  style: getBoldStyle(color: Colors.white, fontSize: 16.sp),
+                  style: getBoldStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ),
@@ -142,10 +141,10 @@ class UIUtils {
         canPop: false,
         child: Center(
           child: Container(
-            padding: EdgeInsets.all(24.w),
+            padding: EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(16.r),
+              borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black26,
@@ -159,17 +158,17 @@ class UIUtils {
               children: [
                 Lottie.asset(
                   AnimationAssets.trailLoading,
-                  width: 150.w,
-                  height: 150.w,
+                  width: 150,
+                  height: 150,
                   fit: BoxFit.contain,
                   frameRate: FrameRate.max,
                   repeat: true,
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: 16),
                 Text(
                   status,
                   style: TextStyle(
-                    fontSize: 16.sp,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                     color: Colors.grey[700],
                   ),
@@ -202,7 +201,7 @@ class UIUtils {
           },
           child: Text(
             negActionName,
-            style: getMediumStyle(color: Colors.black, fontSize: 18.sp),
+            style: getMediumStyle(color: Colors.black, fontSize: 18),
           ),
         ),
       );
@@ -217,7 +216,7 @@ class UIUtils {
           },
           child: Text(
             posActionName,
-            style: getMediumStyle(color: Colors.black, fontSize: 18.sp),
+            style: getMediumStyle(color: Colors.black, fontSize: 18),
           ),
         ),
       );
@@ -236,8 +235,8 @@ class UIUtils {
             child: Material(
               color: Colors.transparent,
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 20.w),
-                padding: EdgeInsets.all(20.w),
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [Colors.white, Colors.grey.shade100],
@@ -261,18 +260,18 @@ class UIUtils {
                         title,
                         style: getBoldStyle(
                           color: ColorManager.primary,
-                          fontSize: 22.sp,
+                          fontSize: 22,
                         ),
                       ),
-                    SizedBox(height: 10.h),
+                    SizedBox(height: 10),
                     Text(
                       message,
                       style: getRegularStyle(
                         color: Colors.black87,
-                        fontSize: 16.sp,
+                        fontSize: 16,
                       ),
                     ),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: actions,

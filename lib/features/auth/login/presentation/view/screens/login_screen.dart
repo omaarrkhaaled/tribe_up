@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
@@ -74,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 15.h),
+                  SizedBox(height: 15),
                   Text(
                     UiConstants.createAccountMessage,
                     style: getBoldStyle(
@@ -82,18 +81,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontSize: FontSize.s24,
                     ),
                   ),
-                  SizedBox(height: 30.h),
+                  SizedBox(height: 30),
                   Form(
                     key: formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 7.h),
+                        SizedBox(height: 7),
                         EmailFieldWidget(
                           controller: _email,
                           cubit: _loginCubit,
                         ),
-                        SizedBox(height: 15.h),
+                        SizedBox(height: 15),
                         PasswordFieldWidget(
                           password: _password,
                           cubit: _loginCubit,
@@ -111,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                           ),
                         ),
-                        SizedBox(height: 10.h),
+                        SizedBox(height: 10),
                         BlocBuilder<LoginCubit, LoginStates>(
                           builder: (_, state) {
                             return LoginButtonWidget(
@@ -121,10 +120,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           },
                         ),
-                        SizedBox(height: 12.h),
+                        SizedBox(height: 12),
                         SizedBox(
                           width: double.infinity,
-                          height: 50.h,
+                          height: 50,
                           child: ElevatedButton(
                             onPressed: () {
                               context.pushReplacementNamed(
@@ -139,20 +138,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               UiConstants.createAccount,
                               style: getMediumStyle(
-                                fontSize: 18.sp,
+                                fontSize: 18,
                                 color: ColorManager.black,
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(height: 250.h),
+                        SizedBox(height: 250),
                         Align(
                           alignment: Alignment.center,
                           child: Text(
                             UiConstants.tribeUp,
                             style: getBoldStyle(
                               color: ColorManager.primary,
-                              fontSize: 18.sp,
+                              fontSize: 18,
                             ),
                           ),
                         ),
