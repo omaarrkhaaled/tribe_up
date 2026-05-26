@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/core/resources/styles_manager.dart';
@@ -35,7 +34,7 @@ class SignUpButtonWidget extends StatelessWidget {
             : null,
         child: Text(
           UiConstants.createAccount,
-          style: getMediumStyle(color: ColorManager.white, fontSize: 18.sp),
+          style: getMediumStyle(color: ColorManager.white, fontSize: 18),
         ),
       ),
     );

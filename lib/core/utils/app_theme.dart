@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/core/resources/font_managar.dart';
 import 'package:tribe_up/core/resources/styles_manager.dart';
@@ -26,20 +25,20 @@ class AppTheme {
       labelStyle: getRegularStyle(color: ColorManager.grey),
 
       floatingLabelStyle: TextStyle(
-        fontSize: 18.sp,
+        fontSize: 18,
         fontWeight: FontWeight.w500,
         color: ColorManager.grey,
       ),
 
       hintStyle: TextStyle(
-        fontSize: FontSize.s12.sp,
+        fontSize: FontSize.s12,
         fontWeight: FontWeightManager.regular,
         color: ColorManager.lightGrey.withValues(alpha: 0.5),
       ),
 
       contentPadding: EdgeInsets.symmetric(
-        horizontal: Insets.s16.sp,
-        vertical: Insets.s16.sp,
+        horizontal: Insets.s16,
+        vertical: Insets.s16,
       ),
 
       border: _outline(ColorManager.grey),
@@ -55,11 +54,9 @@ class AppTheme {
         foregroundColor: ColorManager.white,
         elevation: 0,
         shadowColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.r),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         textStyle: TextStyle(
-          fontSize: 16.sp,
+          fontSize: 16,
           fontWeight: FontWeight.w500,
           color: ColorManager.white,
         ),
@@ -106,7 +103,7 @@ class AppTheme {
 
 OutlineInputBorder _outline(Color color, {double width = 1}) {
   return OutlineInputBorder(
-    borderRadius: BorderRadius.circular(12.r),
+    borderRadius: BorderRadius.circular(12),
     borderSide: BorderSide(color: color, width: width),
   );
 }
