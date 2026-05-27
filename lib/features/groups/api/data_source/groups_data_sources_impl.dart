@@ -45,17 +45,17 @@ class GroupsDataSourceImpl implements GroupsDataSource {
   }
 
   @override
-  Future<BaseResponse<Group>> updateGroupPicture(int id, File file) {
+  Future<BaseResponse<dynamic>> updateGroupPicture(int id, File file) {
     return safeApiCall(() => _apiClient.updateGroupPicture(id, file));
   }
 
   @override
-  Future<BaseResponse<Group>> deleteGroup(int id) {
+  Future<BaseResponse<dynamic>> deleteGroup(int id) {
     return safeApiCall(() => _apiClient.deleteGroup(id));
   }
 
   @override
-  Future<BaseResponse<Group>> deleteGroupPicture(int id) {
+  Future<BaseResponse<dynamic>> deleteGroupPicture(int id) {
     return safeApiCall(() => _apiClient.deleteGroupPicture(id));
   }
 
