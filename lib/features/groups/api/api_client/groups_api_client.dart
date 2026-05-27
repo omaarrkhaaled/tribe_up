@@ -40,16 +40,16 @@ abstract class GroupsApiClient {
   );
 
   @PUT(ApiConstants.updateGroupPictureEndPoint)
-  Future<Group> updateGroupPicture(
+  Future<dynamic> updateGroupPicture(
     @Path("Id") int id,
     @Part(name: "Picture") File file,
   );
 
   @DELETE(ApiConstants.deleteGroupEndPoint)
-  Future<Group> deleteGroup(@Path("Id") int id);
+  Future<dynamic> deleteGroup(@Path("Id") int id);
 
   @DELETE(ApiConstants.deleteGroupPictureEndPoint)
-  Future<Group> deleteGroupPicture(@Path("Id") int id);
+  Future<dynamic> deleteGroupPicture(@Path("Id") int id);
 
   @GET(ApiConstants.exploreGroupsEndPoint)
   Future<GroupsResponse> exploreGroups(
