@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
@@ -86,7 +87,7 @@ class ConfirmDeleteTribeDialog extends StatelessWidget {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorManager.red,
-                      foregroundColor: Colors.white,
+                      foregroundColor: ColorManager.white,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -95,6 +96,7 @@ class ConfirmDeleteTribeDialog extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.pop(context);
+                      EasyLoading.show();
                       cubit.doIntent(DeleteTribeIntent(tribe.id!));
                     },
                     child: Text(

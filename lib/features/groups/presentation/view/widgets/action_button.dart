@@ -3,7 +3,7 @@ import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/enums/user_relation.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
-import 'package:tribe_up/features/groups/presentation/view/widgets/confirm_leave_dialog.dart';
+import 'package:tribe_up/features/groups/presentation/view/widgets/dialogs/confirm_leave_dialog.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_profile/tribe_profile_cubit.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_profile/tribe_profile_intents.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_profile/tribe_profile_states.dart';

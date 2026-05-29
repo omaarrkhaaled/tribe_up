@@ -57,7 +57,7 @@ class _CreateTribeSheetState extends State<CreateTribeSheet> {
     super.dispose();
   }
 
-  late final TextTheme textTheme;
+  late TextTheme textTheme;
   @override
   void didChangeDependencies() {
     textTheme = Theme.of(context).textTheme;

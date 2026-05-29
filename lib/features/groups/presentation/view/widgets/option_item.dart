@@ -44,7 +44,7 @@ class OptionItem extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 label,
-                style: TextStyle(
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: isSelected ? ColorManager.primary : ColorManager.grey,
                   fontWeight: FontWeight.w600,
                 ),

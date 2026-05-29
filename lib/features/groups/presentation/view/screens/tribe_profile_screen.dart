@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tribe_up/config/di/di.dart';
+import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/utils/ui_utils.dart';
 import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
 import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
@@ -75,8 +77,10 @@ class _TribeProfileScreenState extends State<TribeProfileScreen> {
               appBar: AppBar(),
               body: Center(
                 child: Text(
-                  'Tribe not found',
-                  style: TextStyle(color: ColorManager.grey),
+                  UiConstants.tribeNotFound,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: ColorManager.grey),
                 ),
               ),
             );
@@ -101,40 +105,37 @@ class _TribeProfileScreenState extends State<TribeProfileScreen> {
       case NavigateBackUiIntent(:final didChangeTribe):
         Navigator.pop(context, didChangeTribe);
       case OpenSettingsSheetUiIntent(:final tribe):
+        final currentState = cubit.state;
+        final isOwner = currentState.userRelation.isOwner;
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
-          backgroundColor: Colors.transparent,
           builder: (_) => TribeSettingsSheet(
             tribe: tribe,
+            isOwner: isOwner,
             onSettingsSaved: () {
               cubit.doIntent(RefreshTribeIntent(tribe.id!));
             },
             onTribeDeleted: () {
-              Navigator.pop(context); // close settings
-              Navigator.pop(context, true); // go back to tribes list
+              Navigator.pop(context, true);
             },
           ),
         );
       case OpenInviteSheetUiIntent():
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Invite coming soon!')));
-      case ShowErrorUiIntent(:final message):
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(message),
-            backgroundColor: ColorManager.red,
-            behavior: SnackBarBehavior.floating,
-          ),
+          const SnackBar(content: Text(UiConstants.inviteComingSoon)),
+        );
+      case ShowErrorUiIntent(:final message):
+        UIUtils.showPremiumMessage(
+          context,
+          message,
+          backgroundColor: ColorManager.red,
         );
       case ShowSuccessUiIntent(:final message):
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(message),
-            backgroundColor: Colors.green,
-            behavior: SnackBarBehavior.floating,
-          ),
+        UIUtils.showPremiumMessage(
+          context,
+          message,
+          backgroundColor: ColorManager.primary,
         );
     }
   }
