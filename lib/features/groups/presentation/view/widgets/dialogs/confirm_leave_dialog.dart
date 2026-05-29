@@ -83,7 +83,7 @@ class ConfirmLeaveDialog extends StatelessWidget {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorManager.red,
-                      foregroundColor: Colors.white,
+                      foregroundColor: ColorManager.white,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
