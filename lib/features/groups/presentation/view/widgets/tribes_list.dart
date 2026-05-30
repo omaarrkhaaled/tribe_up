@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/enums/tribes_tab.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
-import 'package:tribe_up/features/groups/presentation/view/widgets/confirm_leave_dialog.dart';
+import 'package:tribe_up/features/groups/presentation/view/widgets/dialogs/confirm_leave_dialog.dart';
 import 'package:tribe_up/features/groups/presentation/view/widgets/tribe_card.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribes_list/tribes_cubit.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribes_list/tribes_intents.dart';
@@ -42,7 +42,10 @@ class TribesList extends StatelessWidget {
               isJoined
                   ? UiConstants.youHaveNotJoinedAnyTribesYet
                   : UiConstants.noTribesFound,
-              style: TextStyle(color: ColorManager.grey, fontSize: 15),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: ColorManager.grey,
+                fontSize: 15,
+              ),
             ),
           ],
         ),

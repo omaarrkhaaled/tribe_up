@@ -167,6 +167,42 @@ class UiConstants {
   static const String enterDescription = 'Enter description';
   static const String privacy = 'Privacy';
   static const String createTribe = 'Create Tribe';
+  static const String deleteTribe = 'Delete Tribe';
+  static const String confirmDeleteTribe =
+      'Are you sure you want to permanently delete this tribe? This cannot be undone.';
+  static const String removeCover = 'Remove Cover';
+  static const String confirmRemoveCover =
+      'Are you sure you want to remove the tribe cover photo?';
+  static const String noFollowersYet = 'No followers yet';
+  static const String noMembersFound = 'No members found';
+  static const String publicCapital = 'Public';
+  static const String privateCapital = 'Private';
+  static const String publicSubtitle =
+      'Any one can see who\'s in the tribe and what they post.';
+  static const String privateSubtitle =
+      'Only members can see posts and who\'s in the tribe.';
+  static const String saveChanges = 'Save changes';
+  static const String general = 'General';
+  static const String members = 'Members';
+  static const String followers = 'Followers';
+  static const String followCapital = 'Follow';
+  static const String followingCapital = 'Following';
+  static String membersCount(int count) {
+    if (count >= 1000) {
+      return '${(count / 1000).toStringAsFixed(1)}K members';
+    }
+    return '$count members';
+  }
+
+  static const String removeFollower = 'Remove follower';
+  static const String member = 'Member';
+  static const String promoteToAdmin = 'Promote to Admin';
+  static const String demoteToMember = 'Demote to Member';
+  static const String tribeNotFound = 'Tribe not found';
+  static const String inviteComingSoon = 'Invite coming soon!';
+  static const String memberRemoved = 'Member removed';
+  static const String followerRemoved = 'Follower removed';
+  static const String tribeDeleted = 'Tribe deleted';
 }
 
 class GoogleFontsKeys {
