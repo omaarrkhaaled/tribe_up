@@ -8,6 +8,7 @@ import 'package:tribe_up/core/utils/ui_utils.dart';
 import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
 import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
+import 'package:tribe_up/features/groups/presentation/view/widgets/invite_members_sheet.dart';
 import 'package:tribe_up/features/groups/presentation/view/widgets/tribe_profile_view.dart';
 import 'package:tribe_up/features/groups/presentation/view/widgets/tribe_settings_sheet.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_profile/tribe_profile_cubit.dart';
@@ -29,6 +30,7 @@ class _TribeProfileScreenState extends State<TribeProfileScreen> {
   late final TribeProfileCubit _cubit;
   late final StreamSubscription<TribeProfileUiIntents> _uiSubscription;
   UserSummaryEntity? _currentUser;
+  bool _didChangeTribe = false;
 
   @override
   void initState() {
@@ -90,6 +92,7 @@ class _TribeProfileScreenState extends State<TribeProfileScreen> {
             state: state,
             cubit: _cubit,
             userProfilePicture: _currentUser?.profilePicture,
+            didChangeTribe: _didChangeTribe,
           );
         },
       ),
@@ -103,7 +106,7 @@ class _TribeProfileScreenState extends State<TribeProfileScreen> {
   ) {
     switch (intent) {
       case NavigateBackUiIntent(:final didChangeTribe):
-        Navigator.pop(context, didChangeTribe);
+        Navigator.pop(context, _didChangeTribe || didChangeTribe);
       case OpenSettingsSheetUiIntent(:final tribe):
         final currentState = cubit.state;
         final isOwner = currentState.userRelation.isOwner;
@@ -114,6 +117,9 @@ class _TribeProfileScreenState extends State<TribeProfileScreen> {
             tribe: tribe,
             isOwner: isOwner,
             onSettingsSaved: () {
+              setState(() {
+                _didChangeTribe = true;
+              });
               cubit.doIntent(RefreshTribeIntent(tribe.id!));
             },
             onTribeDeleted: () {
@@ -121,9 +127,17 @@ class _TribeProfileScreenState extends State<TribeProfileScreen> {
             },
           ),
         );
-      case OpenInviteSheetUiIntent():
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text(UiConstants.inviteComingSoon)),
+      case OpenInviteSheetUiIntent(:final groupId):
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: ColorManager.transparent,
+          builder: (_) => Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: InviteMembersSheet(groupId: groupId),
+          ),
         );
       case ShowErrorUiIntent(:final message):
         UIUtils.showPremiumMessage(

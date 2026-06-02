@@ -202,6 +202,22 @@ class UiConstants {
   static const String inviteComingSoon = 'Invite coming soon!';
   static const String memberRemoved = 'Member removed';
   static const String followerRemoved = 'Follower removed';
+  static const String inviteMembers = 'Invite members';
+  static const String expireAt = 'Expire at';
+  static const String maxUses = 'Max uses';
+  static const String maxUsesHint = 'max use';
+  static const String createInvite = 'Create';
+  static const String activeInvitation = 'Active Invitation';
+  static const String revokeInvitation = 'Revoke';
+  static const String copyLink = 'Copy link';
+  static const String inviteLinkCopied = 'Invite link copied!';
+  static const String invitationCreated = 'Invitation created!';
+  static const String invitationRevoked = 'Invitation revoked!';
+  static const String noActiveInvitation = 'No active invitation';
+  static const String invitationAccepted = 'You have joined the tribe! 🎉';
+  static const String invalidInvitation =
+      'This invite link is invalid or expired.';
+  static const String acceptingInvitation = 'Joining tribe...';
   static const String tribeDeleted = 'Tribe deleted';
 }
 
