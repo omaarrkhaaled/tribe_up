@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/enums/tribes_tab.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
@@ -57,11 +57,10 @@ class TabBarWidget extends StatelessWidget {
                           ? UiConstants.joinedIn
                           : UiConstants.discover,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontWeight: state.currentTab == tab
                             ? FontWeight.w700
                             : FontWeight.w500,
-                        fontSize: 14,
                         color: state.currentTab == tab
                             ? ColorManager.black
                             : ColorManager.grey,

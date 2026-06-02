@@ -21,12 +21,9 @@ class GeneralTab extends StatelessWidget {
   final VoidCallback onDeletePicture;
   final VoidCallback onDeleteTribe;
 
-  /// The effective cover URL to display (from the cubit state — null means deleted).
-  /// When null but coverPictureUrlIsSet=false we fall back to tribe.groupProfilePicture.
   final String? coverPictureUrl;
   final bool coverPictureUrlIsSet;
 
-  /// A locally-picked file being uploaded — shown immediately as a preview.
   final File? localPickedFile;
 
   const GeneralTab({
@@ -165,7 +162,7 @@ class GeneralTab extends StatelessWidget {
 
         TextField(
           controller: descController,
-          maxLines: 3,
+          maxLines: 2,
           decoration: const InputDecoration(labelText: UiConstants.description),
         ),
         const SizedBox(height: 20),
@@ -196,6 +193,7 @@ class GeneralTab extends StatelessWidget {
 
         // Save button
         SizedBox(
+          height: 50,
           width: double.infinity,
           child: ElevatedButton(
             onPressed: isSaving ? null : onSave,
@@ -208,14 +206,20 @@ class GeneralTab extends StatelessWidget {
                       color: Colors.white,
                     ),
                   )
-                : const Text(UiConstants.saveChanges),
+                : Text(
+                    UiConstants.saveChanges,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: ColorManager.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
           ),
         ),
         const SizedBox(height: 16),
 
-        // Delete tribe — only visible to the owner
         if (isOwner)
           SizedBox(
+            height: 50,
             width: double.infinity,
             child: OutlinedButton(
               onPressed: onDeleteTribe,
