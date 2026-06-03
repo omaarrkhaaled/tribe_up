@@ -219,6 +219,10 @@ class UiConstants {
       'This invite link is invalid or expired.';
   static const String acceptingInvitation = 'Joining tribe...';
   static const String tribeDeleted = 'Tribe deleted';
+  static const String created = 'created';
+  static const String adminDemoted = 'Admin demoted to member';
+  static const String memberPromoted = 'Member promoted to admin';
+  static const String pictureRemoved = 'Picture removed!';
 }
 
 class GoogleFontsKeys {
