@@ -46,7 +46,7 @@ class TribeProfileCubit extends Cubit<TribeProfileState> {
       case OpenTribeSettingsIntent(:final tribe):
         _uiController.add(OpenSettingsSheetUiIntent(tribe));
       case OpenInviteIntent():
-        _uiController.add(const OpenInviteSheetUiIntent());
+        _uiController.add(OpenInviteSheetUiIntent(state.tribe?.id ?? 0));
       case LoadTribePostsIntent(:final groupId, :final refresh):
         _loadTribePosts(groupId, refresh: refresh);
       case AddCreatedPostIntent(:final post):

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
+import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/enums/settings_tab.dart';
 import 'package:tribe_up/features/groups/data/models/request/update_group_request.dart';
 import 'package:tribe_up/features/groups/data/models/response/group_members_response.dart';
@@ -372,7 +373,7 @@ class TribeSettingsCubit extends Cubit<TribeSettingsState> {
             pendingMemberIds: updated,
           ),
         );
-        _uiController.add(const ShowSuccessUiIntent('Member removed'));
+        _uiController.add(ShowSuccessUiIntent(UiConstants.memberRemoved));
       case ErrorResponse(:final error):
         emit(
           state.copyWith(
@@ -395,7 +396,7 @@ class TribeSettingsCubit extends Cubit<TribeSettingsState> {
                 .toList(),
           ),
         );
-        _uiController.add(const ShowSuccessUiIntent('Follower removed'));
+        _uiController.add(ShowSuccessUiIntent(UiConstants.followerRemoved));
       case ErrorResponse(:final error):
         emit(state.copyWith(errorMessage: error.message));
         _uiController.add(ShowErrorUiIntent(error.message));
@@ -407,18 +408,16 @@ class TribeSettingsCubit extends Cubit<TribeSettingsState> {
   // ---------------------------------------------------------------------------
 
   Future<void> _deleteTribe(int groupId) async {
-    // Optimistically navigate back before the network call
-    _uiController.add(const TribeDeletedUiIntent());
-    // Still show a loading indicator while request is in progress
     if (!isClosed) emit(state.copyWith(isSavingGeneral: true));
     final response = await _deleteGroupUseCase(groupId);
 
-    if (isClosed)
+    if (isClosed) {
       return; // Prevent "Cannot emit new states after calling close"
+    }
 
-    // On success we just stop loading; UI already navigated away
     if (response is SuccessResponse) {
       emit(state.copyWith(isSavingGeneral: false));
+      _uiController.add(const TribeDeletedUiIntent());
     } else if (response is ErrorResponse) {
       // If delete fails, inform user and optionally refresh list
       emit(
