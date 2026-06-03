@@ -22,9 +22,9 @@ class CreatePostTrigger extends StatefulWidget {
   State<CreatePostTrigger> createState() => _CreatePostTriggerState();
 }
 
-late final TextTheme textTheme;
-
 class _CreatePostTriggerState extends State<CreatePostTrigger> {
+  late TextTheme textTheme;
+
   @override
   void didChangeDependencies() {
     textTheme = Theme.of(context).textTheme;

@@ -25,5 +25,6 @@ final class OpenSettingsSheetUiIntent extends TribeProfileUiIntents {
 }
 
 final class OpenInviteSheetUiIntent extends TribeProfileUiIntents {
-  const OpenInviteSheetUiIntent();
+  final int groupId;
+  const OpenInviteSheetUiIntent(this.groupId);
 }
