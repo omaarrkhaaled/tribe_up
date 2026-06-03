@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/enums/tribes_tab.dart';
 import 'package:tribe_up/core/enums/user_relation.dart';
@@ -51,7 +50,9 @@ class TribeCard extends StatelessWidget {
           // Cover image
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: group.groupProfilePicture != null
+            child:
+                group.groupProfilePicture != null &&
+                    group.groupProfilePicture!.isNotEmpty
                 ? CachedNetworkImage(
                     imageUrl: group.groupProfilePicture!,
                     height: 150,
@@ -178,15 +179,20 @@ class TribeCard extends StatelessWidget {
           ),
           padding: const EdgeInsets.symmetric(vertical: 10),
         ),
-        child: const Text(
-          'Leave',
-          style: TextStyle(fontWeight: FontWeight.w600),
+        child: Text(
+          UiConstants.leave,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: ColorManager.red,
+          ),
         ),
       );
     }
 
     // Discover tab — Follow / Following toggle
-    final label = isFollowing ? 'Following' : 'Follow';
+    final label = isFollowing
+        ? UiConstants.followingCapital
+        : UiConstants.followCapital;
     return ElevatedButton(
       onPressed: onAction,
       style: ElevatedButton.styleFrom(
@@ -198,13 +204,19 @@ class TribeCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         padding: const EdgeInsets.symmetric(vertical: 10),
       ),
-      child: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          fontWeight: FontWeight.w600,
+          color: isFollowing ? ColorManager.black : ColorManager.white,
+        ),
+      ),
     );
   }
 
   Widget _imagePlaceholder() {
     return Container(
-      height: 140.h,
+      height: 140,
       width: double.infinity,
       color: ColorManager.primary.withValues(alpha: 0.15),
       child: Icon(
@@ -216,10 +228,6 @@ class TribeCard extends StatelessWidget {
   }
 
   String _formatCount(int? count) {
-    if (count == null) return '0 members';
-    if (count >= 1000) {
-      return '${(count / 1000).toStringAsFixed(1)}K members';
-    }
-    return '$count members';
+    return UiConstants.membersCount(count ?? 0);
   }
 }
