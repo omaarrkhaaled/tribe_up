@@ -248,7 +248,6 @@ class TribeSettingsCubit extends Cubit<TribeSettingsState> {
       case SuccessResponse():
         emit(state.copyWith(isUpdatingPicture: false));
         _uiController.add(const ShowSuccessUiIntent('Picture updated!'));
-        _uiController.add(const SettingsSavedUiIntent());
       case ErrorResponse(:final error):
         emit(
           state.copyWith(
@@ -270,8 +269,7 @@ class TribeSettingsCubit extends Cubit<TribeSettingsState> {
         coverPictureUrlIsSet: true,
       ),
     );
-    _uiController.add(const ShowSuccessUiIntent('Picture removed!'));
-    _uiController.add(const SettingsSavedUiIntent());
+    _uiController.add(const ShowSuccessUiIntent(UiConstants.pictureRemoved));
 
     final response = await _deletePictureUseCase(groupId);
     switch (response) {
@@ -310,7 +308,7 @@ class TribeSettingsCubit extends Cubit<TribeSettingsState> {
           state.copyWith(members: updatedMembers, pendingMemberIds: updated),
         );
         _uiController.add(
-          const ShowSuccessUiIntent('Member promoted to Admin'),
+          const ShowSuccessUiIntent(UiConstants.memberPromoted),
         );
       case ErrorResponse(:final error):
         emit(
@@ -347,7 +345,7 @@ class TribeSettingsCubit extends Cubit<TribeSettingsState> {
         emit(
           state.copyWith(members: updatedMembers, pendingMemberIds: updated),
         );
-        _uiController.add(const ShowSuccessUiIntent('Admin demoted to Member'));
+        _uiController.add(const ShowSuccessUiIntent(UiConstants.adminDemoted));
       case ErrorResponse(:final error):
         emit(
           state.copyWith(
