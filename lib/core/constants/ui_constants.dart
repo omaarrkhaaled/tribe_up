@@ -223,6 +223,13 @@ class UiConstants {
   static const String adminDemoted = 'Admin demoted to member';
   static const String memberPromoted = 'Member promoted to admin';
   static const String pictureRemoved = 'Picture removed!';
+  static const String deletePost = 'Delete Post';
+  static const String confirmDeletePost =
+      'Are you sure you want to permanently delete this post? This cannot be undone.';
+  static const String postDeletedSuccessfully = 'Post deleted successfully';
+  static const String failedToDeletePost = 'Failed to delete post';
+  static const String selectAGroup = 'Select a group';
+  static const String whatsOnYourMind = 'What\'s on your mind?';
 }
 
 class GoogleFontsKeys {
