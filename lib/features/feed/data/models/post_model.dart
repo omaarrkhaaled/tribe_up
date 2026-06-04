@@ -63,6 +63,7 @@ class PostModel {
   Map<String, dynamic> toJson() => _$PostModelToJson(this);
 
   PostEntity toEntity() {
+    final canDelete = (postPermissions['canDelete'] as bool?) ?? isAuthor;
     return PostEntity(
       postId: postId,
       caption: caption,
@@ -78,6 +79,8 @@ class PostModel {
       createdAt: createdAt,
       media: media,
       isDenied: isDenied,
+      isAuthor: isAuthor,
+      canDelete: canDelete,
     );
   }
 }
