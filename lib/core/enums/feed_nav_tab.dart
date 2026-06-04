@@ -1,1 +1,1 @@
-enum FeedNavTab { feed, search, groups, notifications, chat }
+enum FeedNavTab { feed, groups, notifications, chat }
