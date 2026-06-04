@@ -23,4 +23,20 @@ abstract class FeedRepository {
     List<String>? taggedUserIds,
     List<File>? mediaFiles,
   });
+
+  Future<BaseResponse<bool>> deletePost({required int postId});
+
+  Future<BaseResponse<({bool isLiked, int likesCount})>> toggleLikePost({
+    required int postId,
+  });
+
+  Future<BaseResponse<void>> editPost({
+    required int postId,
+    required String caption,
+    int? groupId,
+    int? accessibility,
+    List<String>? taggedUserIds,
+    List<File>? newMediaFiles,
+    List<int>? deleteMediaIds,
+  });
 }

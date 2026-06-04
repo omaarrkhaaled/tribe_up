@@ -63,4 +63,48 @@ class FeedRepositoryImpl implements FeedRepository {
       return response.post.toEntity();
     });
   }
+
+  @override
+  Future<BaseResponse<bool>> deletePost({required int postId}) {
+    return safeApiCall<bool>(() async {
+      await _remoteDataSource.deletePost(postId: postId);
+      return true;
+    });
+  }
+
+  @override
+  Future<BaseResponse<({bool isLiked, int likesCount})>> toggleLikePost({
+    required int postId,
+  }) {
+    return safeApiCall<({bool isLiked, int likesCount})>(() async {
+      final response = await _remoteDataSource.toggleLikePost(postId: postId);
+      return (
+        isLiked: response.isLiked ?? false,
+        likesCount: response.likesCount ?? 0,
+      );
+    });
+  }
+
+  @override
+  Future<BaseResponse<void>> editPost({
+    required int postId,
+    required String caption,
+    int? groupId,
+    int? accessibility,
+    List<String>? taggedUserIds,
+    List<File>? newMediaFiles,
+    List<int>? deleteMediaIds,
+  }) {
+    return safeApiCall<void>(() async {
+      await _remoteDataSource.editPost(
+        postId: postId,
+        caption: caption,
+        groupId: groupId,
+        accessibility: accessibility,
+        taggedUserIds: taggedUserIds,
+        newMediaFiles: newMediaFiles,
+        deleteMediaIds: deleteMediaIds,
+      );
+    });
+  }
 }

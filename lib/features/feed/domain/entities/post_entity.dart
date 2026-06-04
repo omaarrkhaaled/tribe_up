@@ -15,6 +15,8 @@ class PostEntity {
   final String createdAt;
   final List<MediaModel> media;
   final bool isDenied;
+  final bool isAuthor;
+  final bool canDelete;
 
   const PostEntity({
     required this.postId,
@@ -31,6 +33,8 @@ class PostEntity {
     required this.createdAt,
     required this.media,
     required this.isDenied,
+    this.isAuthor = false,
+    this.canDelete = false,
   });
 
   static PostEntity getDummyPost() {
@@ -56,6 +60,7 @@ class PostEntity {
         ),
       ],
       isDenied: false,
+      isAuthor: false,
     );
   }
 }
