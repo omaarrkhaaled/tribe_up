@@ -86,7 +86,7 @@ class FeedRepositoryImpl implements FeedRepository {
   }
 
   @override
-  Future<BaseResponse<void>> editPost({
+  Future<BaseResponse<PostEntity>> editPost({
     required int postId,
     required String caption,
     int? groupId,
@@ -95,8 +95,8 @@ class FeedRepositoryImpl implements FeedRepository {
     List<File>? newMediaFiles,
     List<int>? deleteMediaIds,
   }) {
-    return safeApiCall<void>(() async {
-      await _remoteDataSource.editPost(
+    return safeApiCall<PostEntity>(() async {
+      final response = await _remoteDataSource.editPost(
         postId: postId,
         caption: caption,
         groupId: groupId,
@@ -105,6 +105,7 @@ class FeedRepositoryImpl implements FeedRepository {
         newMediaFiles: newMediaFiles,
         deleteMediaIds: deleteMediaIds,
       );
+      return response.post.toEntity();
     });
   }
 }

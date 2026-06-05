@@ -55,14 +55,9 @@ abstract class FeedApiClient {
   Future<ToggleLikeResponse> toggleLikePost(@Path('postId') int postId);
 
   @PUT(ApiConstants.editPostEndPoint)
-  @MultiPart()
-  Future<dynamic> editPost(
+  Future<CreatePostResponse> editPost(
     @Path('postId') int postId,
-    @Part(name: 'GroupId') int? groupId,
-    @Part(name: 'Caption') String caption,
-    @Part(name: 'Accessibility') int accessibility,
-    @Part(name: 'TaggedUserIds') List<String>? taggedUserIds,
-    @Part(name: 'newMediaFiles') List<File>? newMediaFiles,
+    @Body() FormData body,
   );
 
   @GET(ApiConstants.postLikesEndPoint)

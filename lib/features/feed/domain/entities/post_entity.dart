@@ -54,6 +54,7 @@ class PostEntity {
       createdAt: DateTime.now().toIso8601String(),
       media: [
         MediaModel(
+          id: 0,
           mediaURL: 'https://picsum.photos/400/250',
           mediaType: 'Image',
           order: 0,

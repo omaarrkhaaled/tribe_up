@@ -5,6 +5,8 @@ part 'media_model.g.dart';
 
 @JsonSerializable()
 class MediaModel {
+  @JsonKey(name: 'id')
+  final int id;
   @JsonKey(name: 'mediaURL')
   final String mediaURL;
   @JsonKey(name: 'type')
@@ -13,6 +15,7 @@ class MediaModel {
   final int order;
 
   MediaModel({
+    required this.id,
     required this.mediaURL,
     required this.mediaType,
     required this.order,
@@ -24,6 +27,11 @@ class MediaModel {
   Map<String, dynamic> toJson() => _$MediaModelToJson(this);
 
   MediaEntity toEntity() {
-    return MediaEntity(mediaURL: mediaURL, mediaType: mediaType, order: order);
+    return MediaEntity(
+      id: id,
+      mediaURL: mediaURL,
+      mediaType: mediaType,
+      order: order,
+    );
   }
 }
