@@ -230,6 +230,13 @@ class UiConstants {
   static const String failedToDeletePost = 'Failed to delete post';
   static const String selectAGroup = 'Select a group';
   static const String whatsOnYourMind = 'What\'s on your mind?';
+  static const String postUpdated = 'Post updated successfully';
+  static const String postDeleted = 'Post deleted successfully';
+  static const String newMediaToAdd = 'New media to add';
+  static const String existingMedia = 'Existing media';
+  static const String editPost = 'Edit Post';
+  static const String addImage = 'Add Image';
+  static const String addVideo = 'Add Video';
 }
 
 class GoogleFontsKeys {

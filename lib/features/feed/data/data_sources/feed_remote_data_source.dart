@@ -25,7 +25,7 @@ abstract class FeedRemoteDataSource {
 
   Future<ToggleLikeResponse> toggleLikePost({required int postId});
 
-  Future<void> editPost({
+  Future<CreatePostResponse> editPost({
     required int postId,
     required String caption,
     int? groupId,
