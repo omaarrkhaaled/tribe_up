@@ -98,12 +98,16 @@ class TribeProfileViewState extends State<TribeProfileView> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        color: ColorManager.primary.withValues(alpha: 0.15),
+                        color: ColorManager.primary.withValues(alpha: 0.05),
                       ),
                       clipBehavior: Clip.hardEdge,
                       child:
                           tribe.groupProfilePicture != null &&
-                              tribe.groupProfilePicture!.isNotEmpty
+                              tribe.groupProfilePicture!.isNotEmpty &&
+                              tribe.groupProfilePicture!.trim().isNotEmpty &&
+                              tribe.groupProfilePicture != 'null' &&
+                              tribe.groupProfilePicture != 'undefined' &&
+                              tribe.groupProfilePicture!.startsWith('http')
                           ? CachedNetworkImage(
                               imageUrl: tribe.groupProfilePicture!,
                               fit: BoxFit.cover,
@@ -266,7 +270,35 @@ class TribeProfileViewState extends State<TribeProfileView> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: state.posts.length,
                       itemBuilder: (context, index) {
-                        return PostCard(post: state.posts[index]);
+                        final post = state.posts[index];
+                        return PostCard(
+                          post: post,
+                          currentUserProfilePicture: widget.userProfilePicture,
+                          isTogglingLike: state.togglingLikePostIds.contains(
+                            post.postId,
+                          ),
+                          isDeleting: state.deletingPostIds.contains(
+                            post.postId,
+                          ),
+                          isEditing: state.editingPostIds.contains(post.postId),
+                          onToggleLike: () {
+                            cubit.doIntent(ToggleLikePostIntent(post.postId));
+                          },
+                          onDelete: () {
+                            cubit.doIntent(DeletePostIntent(post.postId));
+                          },
+                          onEditSubmit:
+                              (caption, newMediaFiles, deleteMediaIds) {
+                                cubit.doIntent(
+                                  EditPostIntent(
+                                    postId: post.postId,
+                                    caption: caption,
+                                    newMediaFiles: newMediaFiles,
+                                    deleteMediaIds: deleteMediaIds,
+                                  ),
+                                );
+                              },
+                        );
                       },
                     ),
                     if (state.isLoadingPosts)

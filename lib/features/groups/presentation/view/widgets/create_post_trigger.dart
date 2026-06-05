@@ -38,8 +38,7 @@ class _CreatePostTriggerState extends State<CreatePostTrigger> {
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
-          backgroundColor: ColorManager.transparent,
-          builder: (_) => CreatePostSheet(groupId: widget.tribe.id!),
+          builder: (_) => CreatePostSheet(groups: [widget.tribe]),
         ).then((result) {
           if (result != null) {
             widget.cubit.doIntent(AddCreatedPostIntent(result));

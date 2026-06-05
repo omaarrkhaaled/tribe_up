@@ -10,11 +10,12 @@ import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/create_post/create_post_cubit.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/create_post/create_post_states.dart';
+import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
 
 class CreatePostSheet extends StatefulWidget {
-  final int groupId;
+  final List<Group> groups;
 
-  const CreatePostSheet({super.key, required this.groupId});
+  const CreatePostSheet({super.key, required this.groups});
 
   @override
   State<CreatePostSheet> createState() => _CreatePostSheetState();
@@ -25,15 +26,15 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
   Widget build(BuildContext context) {
     return BlocProvider<CreatePostCubit>(
       create: (_) => getIt<CreatePostCubit>(),
-      child: _CreatePostContent(groupId: widget.groupId),
+      child: _CreatePostContent(groups: widget.groups),
     );
   }
 }
 
 class _CreatePostContent extends StatefulWidget {
-  final int groupId;
+  final List<Group> groups;
 
-  const _CreatePostContent({required this.groupId});
+  const _CreatePostContent({required this.groups});
 
   @override
   State<_CreatePostContent> createState() => _CreatePostContentState();
@@ -43,10 +44,14 @@ class _CreatePostContentState extends State<_CreatePostContent> {
   final TextEditingController _captionController = TextEditingController();
   final List<File> _selectedFiles = [];
   bool _isPost = true;
+  Group? _selectedGroup;
 
   @override
   void initState() {
     super.initState();
+    if (widget.groups.isNotEmpty) {
+      _selectedGroup = widget.groups.first;
+    }
     _captionController.addListener(_onInputChanged);
   }
 
@@ -224,6 +229,64 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                 ),
                 const SizedBox(height: 16),
 
+                if (widget.groups.isEmpty)
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Select a tribe',
+                      style: _textTheme.bodyMedium?.copyWith(
+                        color: ColorManager.grey,
+                      ),
+                    ),
+                  )
+                else
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: ColorManager.primary.withValues(alpha: 0.5),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: DropdownButton<Group>(
+                      value: _selectedGroup,
+                      isExpanded: true,
+                      underline: const SizedBox.shrink(),
+                      hint: Text(
+                        UiConstants.selectAGroup,
+                        style: _textTheme.bodyMedium?.copyWith(
+                          color: ColorManager.grey,
+                        ),
+                      ),
+                      icon: Icon(
+                        Icons.keyboard_arrow_down,
+                        color: ColorManager.primary,
+                      ),
+                      onChanged: (group) {
+                        setState(() {
+                          _selectedGroup = group;
+                        });
+                      },
+                      items: widget.groups
+                          .where((g) => g.id != null)
+                          .map(
+                            (g) => DropdownMenuItem<Group>(
+                              value: g,
+                              child: Text(
+                                g.groupName ?? '',
+                                style: _textTheme.bodyMedium?.copyWith(
+                                  color: ColorManager.black,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                const SizedBox(height: 16),
+
                 Container(
                   decoration: BoxDecoration(
                     color: ColorManager.lightGrey.withValues(alpha: 0.1),
@@ -320,8 +383,10 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                   builder: (context, state) {
                     final isLoading = state is CreatePostLoading;
                     final bool isValid =
-                        _captionController.text.trim().isNotEmpty ||
-                        _selectedFiles.isNotEmpty;
+                        _selectedGroup != null &&
+                        _selectedGroup!.id != null &&
+                        (_captionController.text.trim().isNotEmpty ||
+                            _selectedFiles.isNotEmpty);
                     return SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -329,7 +394,7 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                             ? null
                             : () {
                                 context.read<CreatePostCubit>().createPost(
-                                  groupId: widget.groupId,
+                                  groupId: _selectedGroup!.id!,
                                   caption: _captionController.text,
                                   mediaFiles: _selectedFiles,
                                 );
