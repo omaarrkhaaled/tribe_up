@@ -34,11 +34,6 @@ class FeedNavBar extends StatelessWidget {
           label: UiConstants.feed,
         ),
         _buildNavItem(
-          icon: FontAwesomeIcons.magnifyingGlass,
-          activeIcon: FontAwesomeIcons.magnifyingGlass,
-          label: UiConstants.search,
-        ),
-        _buildNavItem(
           icon: FontAwesomeIcons.users,
           activeIcon: FontAwesomeIcons.users,
           label: UiConstants.groups,

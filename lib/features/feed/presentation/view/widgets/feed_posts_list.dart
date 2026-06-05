@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
+import 'package:tribe_up/features/feed/presentation/cubit/feed_cubit.dart';
+import 'package:tribe_up/features/feed/presentation/cubit/feed_intents.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_states.dart';
+import 'package:tribe_up/features/feed/presentation/view/widgets/feed_create_post_trigger.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/post_card.dart';
 
-class FeedPostsList extends StatefulWidget {
+class FeedPostsList extends StatelessWidget {
   final FeedStates state;
   final String? currentUserProfilePicture;
   final ScrollController scrollController;
@@ -17,36 +21,62 @@ class FeedPostsList extends StatefulWidget {
   });
 
   @override
-  State<FeedPostsList> createState() => _FeedPostsListState();
-}
-
-class _FeedPostsListState extends State<FeedPostsList> {
-  @override
   Widget build(BuildContext context) {
-    if (!widget.state.isLoading && widget.state.errorMessage != null) {
-      return Center(child: Text('Error: ${widget.state.errorMessage}'));
-    }
+    final textTheme = Theme.of(context).textTheme;
 
-    if (!widget.state.isLoading && widget.state.posts.isEmpty) {
-      return const Center(child: Text('No posts yet'));
+    if (!state.isLoading && state.errorMessage != null) {
+      return Center(
+        child: Text(
+          'Error: ${state.errorMessage}',
+          style: textTheme.bodyMedium,
+        ),
+      );
     }
 
     return Skeletonizer(
-      enabled: widget.state.isLoading,
+      enabled: state.isLoading,
       effect: const PulseEffect(),
       child: ListView.builder(
-        controller: widget.scrollController,
+        controller: scrollController,
         padding: EdgeInsets.only(
           top: kToolbarHeight + MediaQuery.of(context).padding.top,
         ),
-        itemCount: widget.state.isLoading ? 5 : widget.state.posts.length,
+        // +1 for the create-post trigger at top
+        itemCount: (state.isLoading ? 5 : state.posts.length) + 1,
         itemBuilder: (context, index) {
-          final post = widget.state.isLoading
+          // First item is always the create-post trigger
+          if (index == 0) {
+            return FeedCreatePostTrigger(
+              state: state,
+              userProfilePicture: currentUserProfilePicture,
+            );
+          }
+          final postIndex = index - 1;
+          final post = state.isLoading
               ? PostEntity.getDummyPost()
-              : widget.state.posts[index];
+              : state.posts[postIndex];
           return PostCard(
             post: post,
-            currentUserProfilePicture: widget.currentUserProfilePicture,
+            currentUserProfilePicture: currentUserProfilePicture,
+            isTogglingLike: state.togglingLikePostIds.contains(post.postId),
+            isDeleting: state.deletingPostIds.contains(post.postId),
+            isEditing: state.editingPostIds.contains(post.postId),
+            onToggleLike: () {
+              context.read<FeedCubit>().doIntent(ToggleLikeIntent(post.postId));
+            },
+            onDelete: () {
+              context.read<FeedCubit>().doIntent(DeletePostIntent(post.postId));
+            },
+            onEditSubmit: (caption, newMediaFiles, deleteMediaIds) {
+              context.read<FeedCubit>().doIntent(
+                EditPostIntent(
+                  postId: post.postId,
+                  caption: caption,
+                  newMediaFiles: newMediaFiles,
+                  deleteMediaIds: deleteMediaIds,
+                ),
+              );
+            },
           );
         },
       ),

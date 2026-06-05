@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
+import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
 import 'package:tribe_up/features/feed/domain/repository/feed_repository.dart';
 
 @lazySingleton
@@ -10,7 +11,7 @@ class EditPostUseCase {
 
   const EditPostUseCase(this._repository);
 
-  Future<BaseResponse<void>> call({
+  Future<BaseResponse<PostEntity>> call({
     required int postId,
     required String caption,
     int? groupId,
