@@ -30,7 +30,7 @@ abstract class FeedRepository {
     required int postId,
   });
 
-  Future<BaseResponse<void>> editPost({
+  Future<BaseResponse<PostEntity>> editPost({
     required int postId,
     required String caption,
     int? groupId,

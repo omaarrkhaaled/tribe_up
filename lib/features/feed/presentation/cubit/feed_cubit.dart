@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/core/enums/feed_nav_tab.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
+import 'package:tribe_up/features/feed/domain/mixins/post_actions_mixin.dart';
 import 'package:tribe_up/features/feed/domain/use_case/delete_post_use_case.dart';
 import 'package:tribe_up/features/feed/domain/use_case/edit_post_use_case.dart';
 import 'package:tribe_up/features/feed/domain/use_case/feed_use_case.dart';
@@ -16,12 +16,16 @@ import 'package:tribe_up/features/feed/presentation/cubit/feed_ui_intents.dart';
 import 'package:tribe_up/features/groups/domain/use_cases/my_groups_use_case.dart';
 
 @injectable
-class FeedCubit extends Cubit<FeedStates> {
+class FeedCubit extends Cubit<FeedStates> with PostActionsMixin {
   final FeedUseCase _feedUseCase;
-  final DeletePostUseCase _deletePostUseCase;
-  final EditPostUseCase _editPostUseCase;
-  final ToggleLikePostUseCase _toggleLikePostUseCase;
   final MyGroupsUseCase _myGroupsUseCase;
+
+  @override
+  final DeletePostUseCase deletePostUseCase;
+  @override
+  final EditPostUseCase editPostUseCase;
+  @override
+  final ToggleLikePostUseCase toggleLikePostUseCase;
 
   final StreamController<FeedUiIntents> _uiIntentController =
       StreamController.broadcast();
@@ -30,11 +34,52 @@ class FeedCubit extends Cubit<FeedStates> {
 
   FeedCubit(
     this._feedUseCase,
-    this._deletePostUseCase,
-    this._editPostUseCase,
-    this._toggleLikePostUseCase,
+    this.deletePostUseCase,
+    this.editPostUseCase,
+    this.toggleLikePostUseCase,
     this._myGroupsUseCase,
   ) : super(const FeedStates());
+
+  // ── Mixin state accessors ────────────────────────────────────────────────────
+
+  @override
+  List<PostEntity> get posts => state.posts;
+
+  @override
+  Set<int> get togglingLikePostIds => state.togglingLikePostIds;
+
+  @override
+  Set<int> get deletingPostIds => state.deletingPostIds;
+
+  @override
+  Set<int> get editingPostIds => state.editingPostIds;
+
+  @override
+  void applyPostsUpdate({
+    List<PostEntity>? posts,
+    Set<int>? togglingLikePostIds,
+    Set<int>? deletingPostIds,
+    Set<int>? editingPostIds,
+  }) {
+    emit(
+      state.copyWith(
+        posts: posts,
+        togglingLikePostIds: togglingLikePostIds,
+        deletingPostIds: deletingPostIds,
+        editingPostIds: editingPostIds,
+      ),
+    );
+  }
+
+  @override
+  void emitSuccess(String message) =>
+      _uiIntentController.add(ShowSuccessUiIntent(message));
+
+  @override
+  void emitError(String message) =>
+      _uiIntentController.add(ShowErrorUiIntent(message));
+
+  // ── Intent handler ───────────────────────────────────────────────────────────
 
   void doIntent(FeedIntents intent) {
     switch (intent) {
@@ -48,9 +93,9 @@ class FeedCubit extends Cubit<FeedStates> {
       case LoadJoinedGroupsIntent():
         _loadJoinedGroups();
       case DeletePostIntent(:final postId):
-        _deletePost(postId);
+        performDeletePost(postId);
       case ToggleLikeIntent(:final postId):
-        _toggleLike(postId);
+        performToggleLike(postId);
       case PostCreatedIntent(:final post):
         _onPostCreated(post);
       case EditPostIntent(
@@ -59,7 +104,7 @@ class FeedCubit extends Cubit<FeedStates> {
         :final newMediaFiles,
         :final deleteMediaIds,
       ):
-        _editPost(
+        performEditPost(
           postId: postId,
           caption: caption,
           newMediaFiles: newMediaFiles,
@@ -67,6 +112,8 @@ class FeedCubit extends Cubit<FeedStates> {
         );
     }
   }
+
+  // ── Private helpers ──────────────────────────────────────────────────────────
 
   void _selectTab(FeedNavTab tab) {
     emit(state.copyWith(currentTab: tab));
@@ -101,142 +148,8 @@ class FeedCubit extends Cubit<FeedStates> {
     }
   }
 
-  Future<void> _deletePost(int postId) async {
-    final pendingIds = {...state.deletingPostIds, postId};
-    emit(state.copyWith(deletingPostIds: pendingIds));
-
-    final response = await _deletePostUseCase(postId: postId);
-
-    final updatedIds = {...state.deletingPostIds}..remove(postId);
-
-    switch (response) {
-      case SuccessResponse():
-        final updatedPosts = state.posts
-            .where((p) => p.postId != postId)
-            .toList();
-        emit(state.copyWith(posts: updatedPosts, deletingPostIds: updatedIds));
-        _uiIntentController.add(const ShowSuccessUiIntent('Post deleted'));
-      case ErrorResponse(:final error):
-        emit(state.copyWith(deletingPostIds: updatedIds));
-        _uiIntentController.add(ShowErrorUiIntent(error.message));
-    }
-  }
-
-  Future<void> _toggleLike(int postId) async {
-    // Optimistic update
-    final updatedPosts = state.posts.map((p) {
-      if (p.postId != postId) return p;
-      final newLiked = !p.isLikedByCurrentUser;
-      return PostEntity(
-        postId: p.postId,
-        caption: p.caption,
-        userId: p.userId,
-        username: p.username,
-        groupId: p.groupId,
-        groupName: p.groupName,
-        groupProfilePicture: p.groupProfilePicture,
-        likesCount: newLiked ? p.likesCount + 1 : p.likesCount - 1,
-        commentCount: p.commentCount,
-        isLikedByCurrentUser: newLiked,
-        feedScore: p.feedScore,
-        createdAt: p.createdAt,
-        media: p.media,
-        isDenied: p.isDenied,
-        isAuthor: p.isAuthor,
-        canDelete: p.canDelete,
-      );
-    }).toList();
-
-    final togglingIds = {...state.togglingLikePostIds, postId};
-    emit(state.copyWith(posts: updatedPosts, togglingLikePostIds: togglingIds));
-
-    final response = await _toggleLikePostUseCase(postId: postId);
-    final doneIds = {...state.togglingLikePostIds}..remove(postId);
-
-    switch (response) {
-      case SuccessResponse(:final data):
-        // Sync with server truth
-        final synced = state.posts.map((p) {
-          if (p.postId != postId) return p;
-          return PostEntity(
-            postId: p.postId,
-            caption: p.caption,
-            userId: p.userId,
-            username: p.username,
-            groupId: p.groupId,
-            groupName: p.groupName,
-            groupProfilePicture: p.groupProfilePicture,
-            likesCount: data.likesCount,
-            commentCount: p.commentCount,
-            isLikedByCurrentUser: data.isLiked,
-            feedScore: p.feedScore,
-            createdAt: p.createdAt,
-            media: p.media,
-            isDenied: p.isDenied,
-            isAuthor: p.isAuthor,
-            canDelete: p.canDelete,
-          );
-        }).toList();
-        emit(state.copyWith(posts: synced, togglingLikePostIds: doneIds));
-      case ErrorResponse():
-        // Rollback optimistic update
-        emit(state.copyWith(posts: state.posts, togglingLikePostIds: doneIds));
-    }
-  }
-
   void _onPostCreated(PostEntity post) {
-    final updatedPosts = [post, ...state.posts];
-    emit(state.copyWith(posts: updatedPosts));
-  }
-
-  Future<void> _editPost({
-    required int postId,
-    required String caption,
-    List<File>? newMediaFiles,
-    List<int>? deleteMediaIds,
-  }) async {
-    final editingIds = {...state.editingPostIds, postId};
-    emit(state.copyWith(editingPostIds: editingIds));
-
-    final response = await _editPostUseCase(
-      postId: postId,
-      caption: caption,
-      newMediaFiles: newMediaFiles,
-      deleteMediaIds: deleteMediaIds,
-    );
-
-    final doneIds = {...state.editingPostIds}..remove(postId);
-
-    switch (response) {
-      case SuccessResponse():
-        // Update caption in local state immediately
-        final updatedPosts = state.posts.map((p) {
-          if (p.postId != postId) return p;
-          return PostEntity(
-            postId: p.postId,
-            caption: caption,
-            userId: p.userId,
-            username: p.username,
-            groupId: p.groupId,
-            groupName: p.groupName,
-            groupProfilePicture: p.groupProfilePicture,
-            likesCount: p.likesCount,
-            commentCount: p.commentCount,
-            isLikedByCurrentUser: p.isLikedByCurrentUser,
-            feedScore: p.feedScore,
-            createdAt: p.createdAt,
-            media: p.media,
-            isDenied: p.isDenied,
-            isAuthor: p.isAuthor,
-            canDelete: p.canDelete,
-          );
-        }).toList();
-        emit(state.copyWith(posts: updatedPosts, editingPostIds: doneIds));
-        _uiIntentController.add(const ShowSuccessUiIntent('Post updated'));
-      case ErrorResponse(:final error):
-        emit(state.copyWith(editingPostIds: doneIds));
-        _uiIntentController.add(ShowErrorUiIntent(error.message));
-    }
+    emit(state.copyWith(posts: [post, ...state.posts]));
   }
 
   @override
