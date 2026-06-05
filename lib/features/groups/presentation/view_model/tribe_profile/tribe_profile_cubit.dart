@@ -1,26 +1,38 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/enums/user_relation.dart';
+import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
+import 'package:tribe_up/features/feed/domain/mixins/post_actions_mixin.dart';
+import 'package:tribe_up/features/feed/domain/use_case/delete_post_use_case.dart';
+import 'package:tribe_up/features/feed/domain/use_case/edit_post_use_case.dart';
+import 'package:tribe_up/features/feed/domain/use_case/get_group_feed_use_case.dart';
+import 'package:tribe_up/features/feed/domain/use_case/toggle_like_post_use_case.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
 import 'package:tribe_up/features/groups/domain/use_cases/get_group_by_id_use_case.dart';
 import 'package:tribe_up/features/groups/domain/use_cases/leave_group_use_case.dart';
 import 'package:tribe_up/features/groups/domain/use_cases/toggle_follow_use_case.dart';
-import 'package:tribe_up/features/feed/domain/use_case/get_group_feed_use_case.dart';
-import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_profile/tribe_profile_intents.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_profile/tribe_profile_states.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_profile/tribe_profile_ui_intents.dart';
 
 @injectable
-class TribeProfileCubit extends Cubit<TribeProfileState> {
+class TribeProfileCubit extends Cubit<TribeProfileState> with PostActionsMixin {
   final GetGroupByIdUseCase _getGroupByIdUseCase;
   final LeaveGroupUseCase _leaveGroupUseCase;
   final ToggleFollowUseCase _toggleFollowUseCase;
   final GetGroupFeedUseCase _getGroupFeedUseCase;
+
+  @override
+  final ToggleLikePostUseCase toggleLikePostUseCase;
+  @override
+  final DeletePostUseCase deletePostUseCase;
+  @override
+  final EditPostUseCase editPostUseCase;
 
   final StreamController<TribeProfileUiIntents> _uiController =
       StreamController.broadcast();
@@ -31,7 +43,51 @@ class TribeProfileCubit extends Cubit<TribeProfileState> {
     this._leaveGroupUseCase,
     this._toggleFollowUseCase,
     this._getGroupFeedUseCase,
+    this.toggleLikePostUseCase,
+    this.deletePostUseCase,
+    this.editPostUseCase,
   ) : super(const TribeProfileState());
+
+  // ── Mixin state accessors ────────────────────────────────────────────────────
+
+  @override
+  List<PostEntity> get posts => state.posts;
+
+  @override
+  Set<int> get togglingLikePostIds => state.togglingLikePostIds;
+
+  @override
+  Set<int> get deletingPostIds => state.deletingPostIds;
+
+  @override
+  Set<int> get editingPostIds => state.editingPostIds;
+
+  @override
+  void applyPostsUpdate({
+    List<PostEntity>? posts,
+    Set<int>? togglingLikePostIds,
+    Set<int>? deletingPostIds,
+    Set<int>? editingPostIds,
+  }) {
+    emit(
+      state.copyWith(
+        posts: posts,
+        togglingLikePostIds: togglingLikePostIds,
+        deletingPostIds: deletingPostIds,
+        editingPostIds: editingPostIds,
+      ),
+    );
+  }
+
+  @override
+  void emitSuccess(String message) =>
+      _uiController.add(ShowSuccessUiIntent(message));
+
+  @override
+  void emitError(String message) =>
+      _uiController.add(ShowErrorUiIntent(message));
+
+  // ── Intent handler ───────────────────────────────────────────────────────────
 
   void doIntent(TribeProfileIntents intent) {
     switch (intent) {
@@ -53,8 +109,26 @@ class TribeProfileCubit extends Cubit<TribeProfileState> {
         emit(state.copyWith(posts: [post, ...state.posts]));
       case LoadMoreTribePostsIntent(:final groupId):
         _loadMoreTribePosts(groupId);
+      case ToggleLikePostIntent(:final postId):
+        performToggleLike(postId);
+      case DeletePostIntent(:final postId):
+        performDeletePost(postId);
+      case EditPostIntent(
+        :final postId,
+        :final caption,
+        :final newMediaFiles,
+        :final deleteMediaIds,
+      ):
+        performEditPost(
+          postId: postId,
+          caption: caption,
+          newMediaFiles: newMediaFiles?.cast<File>(),
+          deleteMediaIds: deleteMediaIds,
+        );
     }
   }
+
+  // ── Private helpers ──────────────────────────────────────────────────────────
 
   Future<void> _loadTribe(int groupId, {Group? initialGroup}) async {
     emit(
@@ -138,7 +212,6 @@ class TribeProfileCubit extends Cubit<TribeProfileState> {
             ? UiConstants.followingTribe
             : UiConstants.unfollowedTribe;
         _uiController.add(ShowSuccessUiIntent(msg));
-        // Refresh posts since the relation has changed
         doIntent(LoadTribePostsIntent(current.id!));
       case ErrorResponse(:final error):
         emit(

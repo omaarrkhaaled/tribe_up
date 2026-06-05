@@ -16,6 +16,10 @@ class TribeProfileState extends Equatable {
   final bool hasMorePosts;
   final int postsPage;
 
+  final Set<int> togglingLikePostIds;
+  final Set<int> deletingPostIds;
+  final Set<int> editingPostIds;
+
   const TribeProfileState({
     this.tribe,
     this.isLoading = false,
@@ -26,6 +30,9 @@ class TribeProfileState extends Equatable {
     this.postsErrorMessage,
     this.hasMorePosts = true,
     this.postsPage = 1,
+    this.togglingLikePostIds = const {},
+    this.deletingPostIds = const {},
+    this.editingPostIds = const {},
   });
 
   UserRelation get userRelation => UserRelation.fromInt(tribe?.userRelation);
@@ -42,6 +49,9 @@ class TribeProfileState extends Equatable {
     bool clearPostsError = false,
     bool? hasMorePosts,
     int? postsPage,
+    Set<int>? togglingLikePostIds,
+    Set<int>? deletingPostIds,
+    Set<int>? editingPostIds,
   }) {
     return TribeProfileState(
       tribe: tribe ?? this.tribe,
@@ -55,6 +65,9 @@ class TribeProfileState extends Equatable {
           : (postsErrorMessage ?? this.postsErrorMessage),
       hasMorePosts: hasMorePosts ?? this.hasMorePosts,
       postsPage: postsPage ?? this.postsPage,
+      togglingLikePostIds: togglingLikePostIds ?? this.togglingLikePostIds,
+      deletingPostIds: deletingPostIds ?? this.deletingPostIds,
+      editingPostIds: editingPostIds ?? this.editingPostIds,
     );
   }
 
@@ -69,5 +82,8 @@ class TribeProfileState extends Equatable {
     postsErrorMessage,
     hasMorePosts,
     postsPage,
+    togglingLikePostIds,
+    deletingPostIds,
+    editingPostIds,
   ];
 }

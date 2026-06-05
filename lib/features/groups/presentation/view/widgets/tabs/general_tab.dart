@@ -51,7 +51,12 @@ class GeneralTab extends StatelessWidget {
     final String? rawUrl = coverPictureUrlIsSet
         ? coverPictureUrl
         : tribe.groupProfilePicture;
-    final String? effectiveCoverUrl = (rawUrl != null && rawUrl.isNotEmpty)
+    final String? effectiveCoverUrl =
+        (rawUrl != null &&
+            rawUrl.trim().isNotEmpty &&
+            rawUrl != 'null' &&
+            rawUrl != 'undefined' &&
+            rawUrl.startsWith('http'))
         ? rawUrl
         : null;
     final bool hasCover = localPickedFile != null || effectiveCoverUrl != null;

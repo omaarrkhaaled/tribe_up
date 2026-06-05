@@ -49,3 +49,27 @@ final class LoadMoreTribePostsIntent extends TribeProfileIntents {
   final int groupId;
   const LoadMoreTribePostsIntent(this.groupId);
 }
+
+final class ToggleLikePostIntent extends TribeProfileIntents {
+  final int postId;
+  const ToggleLikePostIntent(this.postId);
+}
+
+final class DeletePostIntent extends TribeProfileIntents {
+  final int postId;
+  const DeletePostIntent(this.postId);
+}
+
+final class EditPostIntent extends TribeProfileIntents {
+  final int postId;
+  final String caption;
+  final List<dynamic>? newMediaFiles;
+  final List<int>? deleteMediaIds;
+
+  const EditPostIntent({
+    required this.postId,
+    required this.caption,
+    this.newMediaFiles,
+    this.deleteMediaIds,
+  });
+}
