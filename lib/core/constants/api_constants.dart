@@ -89,6 +89,16 @@ class ApiConstants {
       'GroupMembers/Demote/{groupId}/User/{GroupMemberId}';
   static const String groupKickMemberEndPoint =
       'GroupMembers/Kick/{groupId}/User/{GroupMemberId}';
+
+  // Group Chat
+  static const String groupChatGetMessagesEndPoint = 'GroupChat/GetMessages';
+  static const String groupChatSendMessageEndPoint =
+      'GroupChat/SendMessage/{groupId}';
+  static const String groupChatInboxEndPoint = 'GroupChat/ChatInbox';
+  static const String groupChatEditMessageEndPoint =
+      'GroupChat/{messageId}/EditMessage';
+  static const String groupChatDeleteMessageEndPoint =
+      'GroupChat/{messageId}/DeleteMessage';
 }
 
 class CacheConstants {
