@@ -60,14 +60,14 @@ class GroupChatStates extends Equatable {
 
   @override
   List<Object?> get props => [
-        messages,
-        chatMessageOperation,
-        selectedMessage,
-        isLoading,
-        isLoadingMore,
-        hasMore,
-        currentGroupId,
-        currentPage,
-        editingMessageId,
-      ];
+    messages,
+    chatMessageOperation,
+    selectedMessage,
+    isLoading,
+    isLoadingMore,
+    hasMore,
+    currentGroupId,
+    currentPage,
+    editingMessageId,
+  ];
 }

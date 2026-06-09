@@ -39,26 +39,14 @@ class GroupChatCubit extends Cubit<GroupChatStates> {
       case GetGroupMessagesIntent(:final groupId):
         _getMessages(groupId: groupId);
 
-      case SendGroupMessageIntent(
-          :final groupId,
-          :final text,
-        ):
-        _sendMessage(
-          groupId: groupId,
-          text: text,
-        );
+      case SendGroupMessageIntent(:final groupId, :final text):
+        _sendMessage(groupId: groupId, text: text);
 
       case DeleteGroupMessageIntent(:final messageId):
         _deleteMessage(messageId: messageId);
 
-      case EditGroupMessageIntent(
-          :final messageId,
-          :final text,
-        ):
-        _editMessage(
-          messageId: messageId,
-          text: text,
-        );
+      case EditGroupMessageIntent(:final messageId, :final text):
+        _editMessage(messageId: messageId, text: text);
       case ShowMessageOptionsIntent(:final message):
         _groupChatStreamController.add(
           ShowMessageOptionsUiIntent(message: message),
@@ -75,11 +63,7 @@ class GroupChatCubit extends Cubit<GroupChatStates> {
   Future<void> _getMessages({required int groupId}) async {
     emit(state.copyWith(isLoading: true));
 
-    final response = await getGroupMessagesUseCase(
-      groupId,
-      1,
-      _pageSize,
-    );
+    final response = await getGroupMessagesUseCase(groupId, 1, _pageSize);
 
     switch (response) {
       case SuccessResponse(:final data):
@@ -143,10 +127,7 @@ class GroupChatCubit extends Cubit<GroupChatStates> {
 
     emit(state.copyWith(chatMessageOperation: ChatMessageOperations.add));
 
-    final response = await sendGroupMessageUseCase(
-      groupId,
-      text.trim(),
-    );
+    final response = await sendGroupMessageUseCase(groupId, text.trim());
 
     switch (response) {
       case SuccessResponse(:final data):
@@ -165,7 +146,6 @@ class GroupChatCubit extends Cubit<GroupChatStates> {
         );
     }
   }
-
 
   Future<void> _deleteMessage({required int messageId}) async {
     emit(state.copyWith(chatMessageOperation: ChatMessageOperations.delete));
@@ -193,7 +173,6 @@ class GroupChatCubit extends Cubit<GroupChatStates> {
     }
   }
 
- 
   Future<void> _editMessage({
     required int messageId,
     required String text,
@@ -202,10 +181,7 @@ class GroupChatCubit extends Cubit<GroupChatStates> {
 
     emit(state.copyWith(chatMessageOperation: ChatMessageOperations.edit));
 
-    final response = await editGroupMessageUseCase(
-      messageId,
-      text.trim(),
-    );
+    final response = await editGroupMessageUseCase(messageId, text.trim());
 
     switch (response) {
       case SuccessResponse(:final data):
