@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/core/enums/feed_nav_tab.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
-import 'package:tribe_up/features/feed/domain/mixins/post_actions_mixin.dart';
+import 'package:tribe_up/features/feed/presentation/cubit/mixins/post_actions_mixin.dart';
 import 'package:tribe_up/features/feed/domain/use_case/delete_post_use_case.dart';
 import 'package:tribe_up/features/feed/domain/use_case/edit_post_use_case.dart';
 import 'package:tribe_up/features/feed/domain/use_case/feed_use_case.dart';
