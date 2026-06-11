@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
-import 'package:tribe_up/core/resources/styles_manager.dart';
 import 'package:tribe_up/features/auth/login/presentation/cubit/login_cubit.dart';
 import 'package:tribe_up/features/auth/login/presentation/cubit/login_intents.dart';
 import 'package:tribe_up/features/auth/login/presentation/cubit/login_states.dart';
@@ -33,7 +32,9 @@ class LoginButtonWidget extends StatelessWidget {
             : null,
         child: Text(
           UiConstants.login,
-          style: getMediumStyle(color: ColorManager.white, fontSize: 18),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: ColorManager.white,
+              ),
         ),
       ),
     );
