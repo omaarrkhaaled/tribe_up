@@ -32,9 +32,9 @@ class LoginButtonWidget extends StatelessWidget {
             : null,
         child: Text(
           UiConstants.login,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: ColorManager.white,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(color: ColorManager.white),
         ),
       ),
     );

@@ -140,7 +140,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     },
                     child: Text(
                       UiConstants.updatePassword,
-                      style: TextStyle(fontSize: 16),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: ColorManager.white,
+                      ),
                     ),
                   ),
                 ),
