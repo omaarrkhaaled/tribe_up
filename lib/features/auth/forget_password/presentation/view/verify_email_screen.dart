@@ -117,9 +117,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                     ),
                     child: Text(
                       UiConstants.backToLogin,
-                      style: TextStyle(
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: ColorManager.black,
-                        fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

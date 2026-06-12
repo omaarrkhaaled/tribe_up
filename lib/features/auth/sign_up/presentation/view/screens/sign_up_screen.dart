@@ -5,8 +5,6 @@ import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
-import 'package:tribe_up/core/resources/font_managar.dart';
-import 'package:tribe_up/core/resources/styles_manager.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/cubit/sign_up_states.dart';
@@ -79,9 +77,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 15),
                   Text(
                     UiConstants.createAccountMessage,
-                    style: getBoldStyle(
-                      color: ColorManager.black,
-                      fontSize: FontSize.s24,
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 30),
@@ -137,10 +134,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             child: Text(
                               UiConstants.alreadyHaveAccount,
-                              style: getMediumStyle(
-                                fontSize: 18,
-                                color: ColorManager.black,
-                              ),
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                           ),
                         ),
@@ -149,10 +143,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           alignment: Alignment.center,
                           child: Text(
                             UiConstants.tribeUp,
-                            style: getBoldStyle(
-                              color: ColorManager.primary,
-                              fontSize: 18,
-                            ),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ),
                       ],
