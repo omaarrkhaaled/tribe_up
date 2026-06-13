@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/core/resources/font_managar.dart';
-import 'package:tribe_up/core/resources/styles_manager.dart';
-import 'package:tribe_up/core/resources/values_managar.dart';
 
 class AppTheme {
   static final ThemeData lightTheme = ThemeData(
@@ -22,7 +20,11 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       floatingLabelBehavior: FloatingLabelBehavior.auto,
 
-      labelStyle: getRegularStyle(color: ColorManager.grey),
+      labelStyle: TextStyle(
+        fontSize: FontSize.s14,
+        fontWeight: FontWeightManager.regular,
+        color: ColorManager.grey,
+      ),
 
       floatingLabelStyle: TextStyle(
         fontSize: 18,
@@ -36,10 +38,7 @@ class AppTheme {
         color: ColorManager.lightGrey.withValues(alpha: 0.5),
       ),
 
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: Insets.s16,
-        vertical: Insets.s16,
-      ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
 
       border: _outline(ColorManager.grey),
       enabledBorder: _outline(ColorManager.grey),

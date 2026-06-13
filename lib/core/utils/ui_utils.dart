@@ -5,8 +5,6 @@ import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tribe_up/core/resources/assets_managar.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
-import 'package:tribe_up/core/resources/styles_manager.dart';
-import 'package:tribe_up/core/resources/values_managar.dart';
 
 class UIUtils {
   static void showEasyLoading({String? status}) {
@@ -77,9 +75,10 @@ class UIUtils {
                       highlightColor: Colors.yellowAccent,
                       child: Text(
                         text ?? 'Loading...',
-                        style: getBoldStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: Sizes.s18,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -119,7 +118,11 @@ class UIUtils {
                 highlightColor: Colors.yellowAccent,
                 child: Text(
                   message,
-                  style: getBoldStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -201,7 +204,11 @@ class UIUtils {
           },
           child: Text(
             negActionName,
-            style: getMediumStyle(color: Colors.black, fontSize: 18),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey[700],
+            ),
           ),
         ),
       );
@@ -216,7 +223,11 @@ class UIUtils {
           },
           child: Text(
             posActionName,
-            style: getMediumStyle(color: Colors.black, fontSize: 18),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       );
@@ -258,17 +269,19 @@ class UIUtils {
                     if (title != null && title.isNotEmpty)
                       Text(
                         title,
-                        style: getBoldStyle(
+                        style: TextStyle(
                           color: ColorManager.primary,
                           fontSize: 22,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     SizedBox(height: 10),
                     Text(
                       message,
-                      style: getRegularStyle(
+                      style: TextStyle(
                         color: Colors.black87,
                         fontSize: 16,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     SizedBox(height: 20),
