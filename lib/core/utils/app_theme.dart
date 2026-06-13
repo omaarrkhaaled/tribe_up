@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/core/resources/font_managar.dart';
-import 'package:tribe_up/core/resources/styles_manager.dart';
 import 'package:tribe_up/core/resources/values_managar.dart';
 
 class AppTheme {
@@ -22,7 +21,11 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       floatingLabelBehavior: FloatingLabelBehavior.auto,
 
-      labelStyle: getRegularStyle(color: ColorManager.grey),
+      labelStyle: TextStyle(
+        fontSize: FontSize.s14,
+        fontWeight: FontWeightManager.regular,
+        color: ColorManager.grey,
+      ),
 
       floatingLabelStyle: TextStyle(
         fontSize: 18,
