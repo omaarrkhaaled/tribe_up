@@ -5,7 +5,6 @@ import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tribe_up/core/resources/assets_managar.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
-import 'package:tribe_up/core/resources/values_managar.dart';
 
 class UIUtils {
   static void showEasyLoading({String? status}) {
@@ -78,7 +77,7 @@ class UIUtils {
                         text ?? 'Loading...',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: Sizes.s18,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
