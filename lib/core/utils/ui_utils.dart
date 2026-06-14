@@ -15,7 +15,7 @@ class UIUtils {
       ..radius = 20.0
       ..backgroundColor = ColorManager.primary.withValues(alpha: 0.85)
       ..indicatorColor = Colors.white
-      ..textColor = Colors.white
+      ..textColor = ColorManager.white
       ..maskType = EasyLoadingMaskType.black
       ..contentPadding = EdgeInsets.all(20);
     EasyLoading.show(status: status ?? 'Loading...');
@@ -34,7 +34,7 @@ class UIUtils {
       builder: (context) => Center(
         child: Dialog(
           shape: BeveledRectangleBorder(),
-          backgroundColor: Colors.transparent,
+          backgroundColor: ColorManager.transparent,
           insetPadding: EdgeInsets.all(40),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
@@ -54,7 +54,7 @@ class UIUtils {
                   borderRadius: BorderRadius.circular(25),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black26,
+                      color: ColorManager.black,
                       blurRadius: 20,
                       offset: Offset(0, 8),
                     ),
@@ -71,12 +71,12 @@ class UIUtils {
                     ),
                     SizedBox(height: 15),
                     Shimmer.fromColors(
-                      baseColor: Colors.white,
+                      baseColor: ColorManager.white,
                       highlightColor: Colors.yellowAccent,
                       child: Text(
                         text ?? 'Loading...',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: ColorManager.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -109,17 +109,17 @@ class UIUtils {
         content: Row(
           children: [
             if (icon != null) ...[
-              Icon(icon, color: Colors.white),
+              Icon(icon, color: ColorManager.white),
               SizedBox(width: 10),
             ],
             Expanded(
               child: Shimmer.fromColors(
-                baseColor: Colors.white,
+                baseColor: ColorManager.white,
                 highlightColor: Colors.yellowAccent,
                 child: Text(
                   message,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: ColorManager.white,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),

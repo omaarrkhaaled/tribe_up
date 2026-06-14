@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
-import 'package:tribe_up/core/resources/font_managar.dart';
 
 class AppTheme {
   static final ThemeData lightTheme = ThemeData(
@@ -21,8 +20,8 @@ class AppTheme {
       floatingLabelBehavior: FloatingLabelBehavior.auto,
 
       labelStyle: TextStyle(
-        fontSize: FontSize.s14,
-        fontWeight: FontWeightManager.regular,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
         color: ColorManager.grey,
       ),
 
@@ -33,8 +32,8 @@ class AppTheme {
       ),
 
       hintStyle: TextStyle(
-        fontSize: FontSize.s12,
-        fontWeight: FontWeightManager.regular,
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
         color: ColorManager.lightGrey.withValues(alpha: 0.5),
       ),
 
