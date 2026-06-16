@@ -7,11 +7,11 @@ class PostEntity {
   final String username;
   final int groupId;
   final String groupName;
-  final String groupProfilePicture;
-  final int likesCount;
-  final int commentCount;
+  final String? groupProfilePicture;
+  final int? likesCount;
+  final int? commentCount;
   final bool isLikedByCurrentUser;
-  final double feedScore;
+  final double? feedScore;
   final String createdAt;
   final List<MediaModel> media;
   final bool isDenied;
@@ -25,11 +25,11 @@ class PostEntity {
     required this.username,
     required this.groupId,
     required this.groupName,
-    required this.groupProfilePicture,
-    required this.likesCount,
-    required this.commentCount,
+    this.groupProfilePicture,
+    this.likesCount,
+    this.commentCount,
     required this.isLikedByCurrentUser,
-    required this.feedScore,
+    this.feedScore,
     required this.createdAt,
     required this.media,
     required this.isDenied,

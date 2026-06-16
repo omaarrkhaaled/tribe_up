@@ -35,7 +35,7 @@ mixin PostActionsMixin {
       return _copyPost(
         p,
         isLiked: liked,
-        likesCount: liked ? p.likesCount + 1 : p.likesCount - 1,
+        likesCount: liked ? (p.likesCount ?? 0) + 1 : (p.likesCount ?? 0) - 1,
       );
     }).toList();
 
