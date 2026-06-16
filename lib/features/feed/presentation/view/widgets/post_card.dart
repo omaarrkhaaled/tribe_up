@@ -192,21 +192,22 @@ class PostCard extends StatelessWidget {
 }
 
 class _GroupAvatar extends StatelessWidget {
-  final String groupProfilePicture;
-  const _GroupAvatar({required this.groupProfilePicture});
+  final String? groupProfilePicture;
+  const _GroupAvatar({this.groupProfilePicture});
 
   @override
   Widget build(BuildContext context) {
     final hasValidUrl =
-        groupProfilePicture.isNotEmpty &&
+        groupProfilePicture != null &&
+        groupProfilePicture!.isNotEmpty &&
         groupProfilePicture != 'null' &&
-        groupProfilePicture.startsWith('http');
+        groupProfilePicture!.startsWith('http');
 
     return CircleAvatar(
       radius: 20,
       backgroundColor: ColorManager.lightGrey.withValues(alpha: 0.4),
       backgroundImage: hasValidUrl
-          ? CachedNetworkImageProvider(groupProfilePicture)
+          ? CachedNetworkImageProvider(groupProfilePicture!)
           : null,
       child: hasValidUrl
           ? null

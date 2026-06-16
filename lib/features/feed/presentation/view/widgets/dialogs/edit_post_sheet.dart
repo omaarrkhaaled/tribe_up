@@ -159,6 +159,7 @@ class _EditPostSheetState extends State<EditPostSheet> {
                                 ? null
                                 : _deletedMediaIndices
                                       .map((i) => widget.post.media[i].id)
+                                      .whereType<int>()
                                       .toList(),
                           );
                           Navigator.pop(context);

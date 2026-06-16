@@ -33,52 +33,63 @@ class FeedPostsList extends StatelessWidget {
       );
     }
 
-    return Skeletonizer(
-      enabled: state.isLoading,
-      effect: const PulseEffect(),
-      child: ListView.builder(
-        controller: scrollController,
-        padding: EdgeInsets.only(
-          top: kToolbarHeight + MediaQuery.of(context).padding.top,
-        ),
-        // +1 for the create-post trigger at top
-        itemCount: (state.isLoading ? 5 : state.posts.length) + 1,
-        itemBuilder: (context, index) {
-          // First item is always the create-post trigger
-          if (index == 0) {
-            return FeedCreatePostTrigger(
-              state: state,
-              userProfilePicture: currentUserProfilePicture,
-            );
-          }
-          final postIndex = index - 1;
-          final post = state.isLoading
-              ? PostEntity.getDummyPost()
-              : state.posts[postIndex];
-          return PostCard(
-            post: post,
-            currentUserProfilePicture: currentUserProfilePicture,
-            isTogglingLike: state.togglingLikePostIds.contains(post.postId),
-            isDeleting: state.deletingPostIds.contains(post.postId),
-            isEditing: state.editingPostIds.contains(post.postId),
-            onToggleLike: () {
-              context.read<FeedCubit>().doIntent(ToggleLikeIntent(post.postId));
-            },
-            onDelete: () {
-              context.read<FeedCubit>().doIntent(DeletePostIntent(post.postId));
-            },
-            onEditSubmit: (caption, newMediaFiles, deleteMediaIds) {
-              context.read<FeedCubit>().doIntent(
-                EditPostIntent(
-                  postId: post.postId,
-                  caption: caption,
-                  newMediaFiles: newMediaFiles,
-                  deleteMediaIds: deleteMediaIds,
-                ),
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<FeedCubit>().doIntent(const RefreshFeedIntent());
+        // Wait briefly for the UI to update to loading state
+        await Future.delayed(const Duration(milliseconds: 500));
+      },
+      child: Skeletonizer(
+        enabled: state.isLoading,
+        effect: const PulseEffect(),
+        child: ListView.builder(
+          controller: scrollController,
+          padding: EdgeInsets.only(
+            top: kToolbarHeight + MediaQuery.of(context).padding.top,
+          ),
+          // +1 for the create-post trigger at top
+          itemCount: (state.isLoading ? 5 : state.posts.length) + 1,
+          itemBuilder: (context, index) {
+            // First item is always the create-post trigger
+            if (index == 0) {
+              return FeedCreatePostTrigger(
+                state: state,
+                userProfilePicture: currentUserProfilePicture,
               );
-            },
-          );
-        },
+            }
+            final postIndex = index - 1;
+            final post = state.isLoading
+                ? PostEntity.getDummyPost()
+                : state.posts[postIndex];
+            return PostCard(
+              post: post,
+              currentUserProfilePicture: currentUserProfilePicture,
+              isTogglingLike: state.togglingLikePostIds.contains(post.postId),
+              isDeleting: state.deletingPostIds.contains(post.postId),
+              isEditing: state.editingPostIds.contains(post.postId),
+              onToggleLike: () {
+                context.read<FeedCubit>().doIntent(
+                  ToggleLikeIntent(post.postId),
+                );
+              },
+              onDelete: () {
+                context.read<FeedCubit>().doIntent(
+                  DeletePostIntent(post.postId),
+                );
+              },
+              onEditSubmit: (caption, newMediaFiles, deleteMediaIds) {
+                context.read<FeedCubit>().doIntent(
+                  EditPostIntent(
+                    postId: post.postId,
+                    caption: caption,
+                    newMediaFiles: newMediaFiles,
+                    deleteMediaIds: deleteMediaIds,
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
