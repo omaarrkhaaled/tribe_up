@@ -237,6 +237,17 @@ class UiConstants {
   static const String editPost = 'Edit Post';
   static const String addImage = 'Add Image';
   static const String addVideo = 'Add Video';
+  static const int chatSkeletonItemCount = 8;
+  static const int inboxSkeletonItemCount = 6;
+
+  static const String noMessagesYet = 'No messages yet';
+  static const String sayHiToStart = 'Say hi to start the conversation! 👋';
+  static const String noConversationsYet = 'No conversations yet';
+  static const String joinTribeToChat = 'Join a tribe to start chatting';
+  static const String editingMessage = 'Editing message';
+  static const String tapToSaveEdit = 'Tap ✓ to save your changes';
+  static const String editMessage = 'Edit Message';
+  static const String deleteMessage = 'Delete Message';
 }
 
 class GoogleFontsKeys {
