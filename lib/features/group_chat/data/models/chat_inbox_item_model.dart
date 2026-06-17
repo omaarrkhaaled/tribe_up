@@ -1,28 +1,31 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:tribe_up/features/group_chat/data/models/chat_message_model.dart';
+import 'package:tribe_up/core/utils/date_parser.dart';
 import 'package:tribe_up/features/group_chat/domain/entities/chat_inbox_item_entity.dart';
 
 part 'chat_inbox_item_model.g.dart';
 
 @JsonSerializable()
 class ChatInboxItemModel {
-  @JsonKey(name: 'groupId')
+  @JsonKey(name: 'groupId', defaultValue: 0)
   final int groupId;
   @JsonKey(name: 'groupName')
   final String groupName;
-  @JsonKey(name: 'groupPicture')
-  final String? groupPicture;
-  @JsonKey(name: 'lastMessage')
-  final ChatMessageModel? lastMessage;
-  @JsonKey(name: 'unreadCount')
-  final int unreadCount;
+  @JsonKey(name: 'groupProfilePicture')
+  final String? groupProfilePicture;
+  @JsonKey(name: 'lastMessageContent')
+  final String? lastMessageContent;
+  @JsonKey(name: 'lastMessageSenderName')
+  final String? lastMessageSenderName;
+  @JsonKey(name: 'lastMessageSentAt')
+  final String? lastMessageSentAt;
 
   const ChatInboxItemModel({
     required this.groupId,
     required this.groupName,
-    this.groupPicture,
-    this.lastMessage,
-    this.unreadCount = 0,
+    this.groupProfilePicture,
+    this.lastMessageContent,
+    this.lastMessageSenderName,
+    this.lastMessageSentAt,
   });
 
   factory ChatInboxItemModel.fromJson(Map<String, dynamic> json) =>
@@ -34,9 +37,12 @@ class ChatInboxItemModel {
     return ChatInboxItemEntity(
       groupId: groupId,
       groupName: groupName,
-      groupPicture: groupPicture,
-      lastMessage: lastMessage?.toEntity(),
-      unreadCount: unreadCount,
+      groupProfilePicture: groupProfilePicture,
+      lastMessageContent: lastMessageContent,
+      lastMessageSenderName: lastMessageSenderName,
+      lastMessageSentAt: lastMessageSentAt != null
+          ? DateParser.parseLocal(lastMessageSentAt!)
+          : null,
     );
   }
 }
