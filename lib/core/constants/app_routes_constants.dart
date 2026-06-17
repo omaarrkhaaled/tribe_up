@@ -10,4 +10,5 @@ abstract class AppRoutesConstants {
   static const String changePassword = '/changePassword';
   static const String verifyEmail = '/verifyEmail';
   static const String tribeProfile = '/tribeProfile';
+  static const String groupChat = '/groupChat';
 }

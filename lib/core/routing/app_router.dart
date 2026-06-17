@@ -16,6 +16,7 @@ import 'package:tribe_up/features/edit_profile/presentation/view/screens/edit_pr
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
 import 'package:tribe_up/features/groups/presentation/view/screens/tribe_profile_screen.dart';
 import 'package:tribe_up/features/profile/presentation/view/screens/profile_screen.dart';
+import 'package:tribe_up/features/group_chat/presentation/view/screens/group_chat_screen.dart';
 
 abstract class AppRouter {
   static GoRouter router = GoRouter(
@@ -88,6 +89,19 @@ abstract class AppRouter {
         name: AppRoutesConstants.tribeProfile,
         builder: (context, state) =>
             TribeProfileScreen(group: state.extra as Group?),
+      ),
+      GoRoute(
+        path: AppRoutesConstants.groupChat,
+        name: AppRoutesConstants.groupChat,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return GroupChatScreen(
+            groupId: extra['groupId'] as int,
+            groupName: extra['groupName'] as String,
+            groupPicture: extra['groupPicture'] as String?,
+            currentUserId: extra['currentUserId'] as String?,
+          );
+        },
       ),
     ],
   );
