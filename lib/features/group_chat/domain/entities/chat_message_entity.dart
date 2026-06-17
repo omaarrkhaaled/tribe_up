@@ -5,9 +5,9 @@ class ChatMessageEntity extends Equatable {
   final int groupId;
   final String senderId;
   final String senderName;
-  final String? senderAvatar;
-  final String text;
-  final DateTime createdAt;
+  final String? senderProfilePicture;
+  final String content;
+  final DateTime sentAt;
   final bool isEdited;
 
   const ChatMessageEntity({
@@ -15,9 +15,9 @@ class ChatMessageEntity extends Equatable {
     required this.groupId,
     required this.senderId,
     required this.senderName,
-    this.senderAvatar,
-    required this.text,
-    required this.createdAt,
+    this.senderProfilePicture,
+    required this.content,
+    required this.sentAt,
     this.isEdited = false,
   });
 
@@ -27,9 +27,9 @@ class ChatMessageEntity extends Equatable {
     groupId,
     senderId,
     senderName,
-    senderAvatar,
-    text,
-    createdAt,
+    senderProfilePicture,
+    content,
+    sentAt,
     isEdited,
   ];
 }

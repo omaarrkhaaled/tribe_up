@@ -16,4 +16,5 @@ class ColorManager {
   static Color notificationReadBackground = const Color(0xFFF2F2F2);
   static Color amber = const Color(0xFFFFC107);
   static Color amberDark = const Color(0xFFFF8F00);
+  static Color green = const Color(0xFF22C55E);
 }

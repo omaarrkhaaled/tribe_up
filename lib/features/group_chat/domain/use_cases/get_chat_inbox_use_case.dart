@@ -9,7 +9,7 @@ class GetChatInboxUseCase {
 
   GetChatInboxUseCase(this._repository);
 
-  Future<BaseResponse<ChatInboxResponseEntity>> call(int page, int pageSize) {
-    return _repository.getChatInbox(page, pageSize);
+  Future<BaseResponse<ChatInboxResponseEntity>> call() {
+    return _repository.getChatInbox();
   }
 }

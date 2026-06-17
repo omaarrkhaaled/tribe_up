@@ -9,14 +9,14 @@ abstract class GroupChatRepository {
     int page,
     int pageSize,
   );
-  Future<BaseResponse<ChatMessageEntity>> sendMessage(int groupId, String text);
-  Future<BaseResponse<ChatInboxResponseEntity>> getChatInbox(
-    int page,
-    int pageSize,
+  Future<BaseResponse<ChatMessageEntity>> sendMessage(
+    int groupId,
+    String content,
   );
+  Future<BaseResponse<ChatInboxResponseEntity>> getChatInbox();
   Future<BaseResponse<ChatMessageEntity>> editMessage(
     int messageId,
-    String text,
+    String content,
   );
   Future<BaseResponse<void>> deleteMessage(int messageId);
 }
