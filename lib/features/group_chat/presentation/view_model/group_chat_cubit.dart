@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/core/enums/chat_message_operations.dart';
+import 'package:tribe_up/features/group_chat/domain/entities/chat_message_entity.dart';
 import 'package:tribe_up/features/group_chat/domain/use_cases/delete_group_message_use_case.dart';
 import 'package:tribe_up/features/group_chat/domain/use_cases/edit_group_message_use_case.dart';
 import 'package:tribe_up/features/group_chat/domain/use_cases/get_group_messages_use_case.dart';
@@ -67,7 +68,8 @@ class GroupChatCubit extends Cubit<GroupChatStates> {
 
     switch (response) {
       case SuccessResponse(:final data):
-        final messages = data.messages;
+        final messages = data.messages.toList()
+          ..sort((a, b) => b.sentAt.compareTo(a.sentAt));
         emit(
           state.copyWith(
             isLoading: false,
@@ -102,10 +104,12 @@ class GroupChatCubit extends Cubit<GroupChatStates> {
     switch (response) {
       case SuccessResponse(:final data):
         final newItems = data.messages;
+        final allMessages = [...state.messages, ...newItems]
+          ..sort((a, b) => b.sentAt.compareTo(a.sentAt));
         emit(
           state.copyWith(
             isLoadingMore: false,
-            messages: [...state.messages, ...newItems],
+            messages: allMessages,
             currentPage: nextPage,
             hasMore: newItems.length >= _pageSize,
           ),
@@ -188,7 +192,24 @@ class GroupChatCubit extends Cubit<GroupChatStates> {
         final editedMessage = data;
         final updatedList = state.messages.map((message) {
           if (message.id == messageId) {
-            return editedMessage;
+            return ChatMessageEntity(
+              id: message.id,
+              groupId: message.groupId,
+              senderId: editedMessage.senderId.isNotEmpty
+                  ? editedMessage.senderId
+                  : message.senderId,
+              senderName: editedMessage.senderName.isNotEmpty
+                  ? editedMessage.senderName
+                  : message.senderName,
+              senderProfilePicture:
+                  editedMessage.senderProfilePicture ??
+                  message.senderProfilePicture,
+              content: editedMessage.content,
+              sentAt: editedMessage.sentAt.year > 2000
+                  ? editedMessage.sentAt
+                  : message.sentAt,
+              isEdited: editedMessage.isEdited,
+            );
           }
           return message;
         }).toList();
