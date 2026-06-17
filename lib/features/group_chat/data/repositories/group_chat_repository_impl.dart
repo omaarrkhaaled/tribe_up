@@ -28,21 +28,18 @@ class GroupChatRepositoryImpl implements GroupChatRepository {
   @override
   Future<BaseResponse<ChatMessageEntity>> sendMessage(
     int groupId,
-    String text,
+    String content,
   ) async {
     return safeApiCall<ChatMessageEntity>(() async {
-      final response = await _dataSource.sendMessage(groupId, text);
+      final response = await _dataSource.sendMessage(groupId, content);
       return response.toEntity();
     });
   }
 
   @override
-  Future<BaseResponse<ChatInboxResponseEntity>> getChatInbox(
-    int page,
-    int pageSize,
-  ) async {
+  Future<BaseResponse<ChatInboxResponseEntity>> getChatInbox() async {
     return safeApiCall<ChatInboxResponseEntity>(() async {
-      final response = await _dataSource.getChatInbox(page, pageSize);
+      final response = await _dataSource.getChatInbox();
       return response.toEntity();
     });
   }
@@ -50,10 +47,10 @@ class GroupChatRepositoryImpl implements GroupChatRepository {
   @override
   Future<BaseResponse<ChatMessageEntity>> editMessage(
     int messageId,
-    String text,
+    String content,
   ) async {
     return safeApiCall<ChatMessageEntity>(() async {
-      final response = await _dataSource.editMessage(messageId, text);
+      final response = await _dataSource.editMessage(messageId, content);
       return response.toEntity();
     });
   }

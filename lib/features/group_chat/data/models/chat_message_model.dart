@@ -11,26 +11,26 @@ class ChatMessageModel {
   @JsonKey(name: 'groupId', defaultValue: 0)
   final int groupId;
   @JsonKey(name: 'senderUserId')
-  final String senderUserId;
+  final String? senderUserId;
   @JsonKey(name: 'senderName')
-  final String senderName;
+  final String? senderName;
   @JsonKey(name: 'senderProfilePicture')
   final String? senderProfilePicture;
   @JsonKey(name: 'content')
-  final String content;
+  final String? content;
   @JsonKey(name: 'sentAt')
-  final String sentAt;
+  final String? sentAt;
   @JsonKey(name: 'isEdited')
   final bool isEdited;
 
   const ChatMessageModel({
     required this.id,
     required this.groupId,
-    required this.senderUserId,
-    required this.senderName,
+    this.senderUserId,
+    this.senderName,
     this.senderProfilePicture,
-    required this.content,
-    required this.sentAt,
+    this.content,
+    this.sentAt,
     this.isEdited = false,
   });
 
@@ -43,11 +43,13 @@ class ChatMessageModel {
     return ChatMessageEntity(
       id: id,
       groupId: groupId,
-      senderId: senderUserId,
-      senderName: senderName,
+      senderId: senderUserId ?? '',
+      senderName: senderName ?? '',
       senderProfilePicture: senderProfilePicture,
-      content: content,
-      sentAt: DateParser.parseLocal(sentAt),
+      content: content ?? '',
+      sentAt: sentAt != null
+          ? DateParser.parseLocal(sentAt!)
+          : DateTime.fromMillisecondsSinceEpoch(0),
       isEdited: isEdited,
     );
   }
