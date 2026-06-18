@@ -250,6 +250,8 @@ class UiConstants {
   static const String editMessage = 'Edit Message';
   static const String deleteMessage = 'Delete Message';
   static const String activeNow = 'Active now';
+  static const String postUpdatedSuccessfully = 'Post updated successfully';
+  static const String postNotFound = 'Post Not Found';
 }
 
 class GoogleFontsKeys {
