@@ -21,4 +21,7 @@ abstract class NotificationApiClient {
 
   @PUT(ApiConstants.notificationReadEndPoint)
   Future<void> readNotification(@Path('id') int id);
+
+  @PUT(ApiConstants.notificationReadAllEndPoint)
+  Future<void> readAllNotifications();
 }

@@ -39,4 +39,15 @@ class NotificationRepositoryImpl implements NotificationRepository {
         return ErrorResponse<void>(error: response.error);
     }
   }
+
+  @override
+  Future<BaseResponse<void>> readAllNotifications() async {
+    final response = await _notificationDataSource.readAllNotifications();
+    switch (response) {
+      case SuccessResponse():
+        return SuccessResponse<void>(data: null);
+      case ErrorResponse():
+        return ErrorResponse<void>(error: response.error);
+    }
+  }
 }

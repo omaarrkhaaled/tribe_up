@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/features/notification/domain/entities/notification_response_entity.dart';
 import 'package:tribe_up/features/notification/domain/use_cases/get_notifications_use_case.dart';
+import 'package:tribe_up/features/notification/domain/use_cases/read_all_notifications_use_case.dart';
 import 'package:tribe_up/features/notification/domain/use_cases/read_notification_use_case.dart';
 import 'package:tribe_up/features/notification/presentation/view_model/notification_intents.dart';
 import 'package:tribe_up/features/notification/presentation/view_model/notification_states.dart';
@@ -18,6 +19,7 @@ class NotificationCubit extends Cubit<NotificationStates> {
 
   final GetNotificationsUseCase _getNotificationsUseCase;
   final ReadNotificationUseCase _readNotificationUseCase;
+  final ReadAllNotificationsUseCase _readAllNotificationsUseCase;
 
   static const int _pageSize = 20;
   bool _isFetching = false;
@@ -27,6 +29,7 @@ class NotificationCubit extends Cubit<NotificationStates> {
   NotificationCubit(
     this._getNotificationsUseCase,
     this._readNotificationUseCase,
+    this._readAllNotificationsUseCase,
   ) : super(
         const NotificationStates(
           data: NotificationResponseEntity(notifications: []),
@@ -41,8 +44,8 @@ class NotificationCubit extends Cubit<NotificationStates> {
         _getNotifications();
       case LoadMoreNotificationsIntent():
         _loadMoreNotifications();
-      case ReadNotificationIntent(:final id):
-        _readNotification(id);
+      case ReadNotificationIntent(:final id, :final referenceId, :final type):
+        _readNotification(id, referenceId: referenceId, type: type);
       case ReadAllNotificationsIntent():
         _readAllNotifications();
     }
@@ -132,10 +135,24 @@ class NotificationCubit extends Cubit<NotificationStates> {
     _isFetching = false;
   }
 
-  // Read Single Notification
+  // Read Single Notification — also triggers navigation to the referenced post
 
-  Future<void> _readNotification(int id) async {
+  Future<void> _readNotification(
+    int id, {
+    required int? referenceId,
+    required String? type,
+  }) async {
     _updateReadStatus(id, isRead: true);
+
+    // Navigate immediately to the referenced post/comments
+    if (referenceId != null) {
+      final isCommentType = type?.toLowerCase().contains('comment') ?? false;
+      if (isCommentType) {
+        _uiStreamController.add(NavigateToCommentsIntent(postId: referenceId));
+      } else {
+        _uiStreamController.add(NavigateToPostIntent(postId: referenceId));
+      }
+    }
 
     final response = await _readNotificationUseCase(id: id);
 
@@ -158,9 +175,10 @@ class NotificationCubit extends Cubit<NotificationStates> {
     }
   }
 
-  // Read All Notifications
+  // Read All Notifications — calls the API
 
-  void _readAllNotifications() {
+  Future<void> _readAllNotifications() async {
+    // Optimistically mark all as read in the UI
     final updated = (state.data?.notifications ?? [])
         .map((n) => n.copyWith(isRead: true))
         .toList();
@@ -170,6 +188,20 @@ class NotificationCubit extends Cubit<NotificationStates> {
         data: state.data!.copyWith(notifications: updated, unreadCount: 0),
       ),
     );
+
+    final response = await _readAllNotificationsUseCase();
+
+    switch (response) {
+      case SuccessResponse():
+        break; // Already updated UI optimistically
+      case ErrorResponse():
+        // Roll back on failure
+        _uiStreamController.add(
+          NotificationShowErrorIntent(error: response.error.message),
+        );
+        // Re-fetch to restore correct state
+        _getNotifications();
+    }
   }
 
   // Helpers

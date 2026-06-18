@@ -25,4 +25,9 @@ class NotificationDataSourceImpl implements NotificationDataSource {
   Future<BaseResponse<void>> readNotification({required int id}) {
     return safeApiCall(() => _notificationApiClient.readNotification(id));
   }
+
+  @override
+  Future<BaseResponse<void>> readAllNotifications() {
+    return safeApiCall(() => _notificationApiClient.readAllNotifications());
+  }
 }
