@@ -8,6 +8,12 @@ import 'package:tribe_up/features/feed/data/models/post_model.dart';
 abstract class FeedRemoteDataSource {
   Future<FeedResponse> getFeedPosts({int page, int pageSize});
 
+  Future<FeedResponse> getPersonalFeed({
+    required String username,
+    int page,
+    int pageSize,
+  });
+
   Future<FeedResponse> getGroupFeedPosts({
     required int groupId,
     int page,
