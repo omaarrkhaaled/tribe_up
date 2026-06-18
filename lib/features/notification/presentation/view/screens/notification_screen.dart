@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tribe_up/config/di/di.dart';
+import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
@@ -57,8 +59,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           backgroundColor: ColorManager.red,
           icon: Icons.error_outline_rounded,
         );
-      case NavigateToPostIntent():
-        break;
+
+      case NavigateToPostIntent(:final postId):
+        GoRouter.of(context).push(
+          AppRoutesConstants.postDetail,
+          extra: {'postId': postId, 'showComments': false},
+        );
+
+      case NavigateToCommentsIntent(:final postId):
+        GoRouter.of(context).push(
+          AppRoutesConstants.postDetail,
+          extra: {'postId': postId, 'showComments': true},
+        );
     }
   }
 
@@ -78,13 +90,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         appBar: AppBar(
           title: Text(UiConstants.notifications),
           actions: [
-            IconButton(
-              onPressed: () =>
-                  _cubit.doIntent(const ReadAllNotificationsIntent()),
-              icon: Icon(
-                Icons.done_all_rounded,
-                color: ColorManager.primary,
-                size: 28,
+            Tooltip(
+              message: 'Mark all as read',
+              child: IconButton(
+                onPressed: () =>
+                    _cubit.doIntent(const ReadAllNotificationsIntent()),
+                icon: Icon(
+                  Icons.done_all_rounded,
+                  color: ColorManager.primary,
+                  size: 28,
+                ),
               ),
             ),
           ],
@@ -187,7 +202,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     notification: notification,
                     onTap: notification.id != null
                         ? () => _cubit.doIntent(
-                            ReadNotificationIntent(id: notification.id!),
+                            ReadNotificationIntent(
+                              id: notification.id!,
+                              referenceId: notification.referenceId,
+                              type: notification.type,
+                            ),
                           )
                         : null,
                   );
