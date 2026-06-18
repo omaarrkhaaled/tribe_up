@@ -19,6 +19,15 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
   }
 
   @override
+  Future<FeedResponse> getPersonalFeed({
+    required String username,
+    int page = 1,
+    int pageSize = 20,
+  }) async {
+    return await _apiClient.getPersonalFeed(username, page, pageSize);
+  }
+
+  @override
   Future<FeedResponse> getGroupFeedPosts({
     required int groupId,
     int page = 1,

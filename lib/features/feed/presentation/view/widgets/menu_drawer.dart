@@ -100,54 +100,63 @@ class _MenuDrawerState extends State<MenuDrawer> {
             future: _userSummaryFuture,
             builder: (context, snapshot) {
               final user = snapshot.data;
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
-                      child: SizedBox(
-                        width: 48,
-                        height: 48,
-                        child: user?.profilePicture != null
-                            ? CachedNetworkImage(
-                                imageUrl: user!.profilePicture!,
-                                fit: BoxFit.cover,
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.person),
-                              )
-                            : const Icon(Icons.person),
+              return InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                  context.pushNamed(
+                    AppRoutesConstants.profile,
+                    extra: user?.userName,
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: SizedBox(
+                          width: 48,
+                          height: 48,
+                          child: user?.profilePicture != null
+                              ? CachedNetworkImage(
+                                  imageUrl: user!.profilePicture!,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.person),
+                                )
+                              : const Icon(Icons.person),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            user?.fullName ?? 'Alex Johnson',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user?.fullName ?? 'Alex Johnson',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            user?.userName != null
-                                ? '@${user!.userName}'
-                                : 'loading...',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
+                            Text(
+                              user?.userName != null
+                                  ? '@${user!.userName}'
+                                  : 'loading...',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },

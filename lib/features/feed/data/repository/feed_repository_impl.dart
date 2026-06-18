@@ -29,6 +29,22 @@ class FeedRepositoryImpl implements FeedRepository {
   }
 
   @override
+  Future<BaseResponse<FeedResponseEntity>> getPersonalFeedPosts({
+    required String username,
+    int page = 1,
+    int pageSize = 20,
+  }) {
+    return safeApiCall<FeedResponseEntity>(() async {
+      final response = await _remoteDataSource.getPersonalFeed(
+        username: username,
+        page: page,
+        pageSize: pageSize,
+      );
+      return response.toEntity();
+    });
+  }
+
+  @override
   Future<BaseResponse<FeedResponseEntity>> getGroupFeedPosts({
     required int groupId,
     int page = 1,

@@ -7,6 +7,8 @@ import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/dialogs/confirm_delete_post_dialog.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/dialogs/edit_post_sheet.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/video_player_widget.dart';
 import 'package:tribe_up/features/comments/presentation/view/widgets/comments_bottom_sheet.dart';
@@ -65,11 +67,19 @@ class PostCard extends StatelessWidget {
                           fontSize: 16,
                         ),
                       ),
-                      Text(
-                        'from @${post.username}',
-                        style: textTheme.bodySmall?.copyWith(
-                          color: ColorManager.grey,
-                          fontWeight: FontWeight.w400,
+                      GestureDetector(
+                        onTap: () {
+                          context.pushNamed(
+                            AppRoutesConstants.profile,
+                            extra: post.username,
+                          );
+                        },
+                        child: Text(
+                          'from @${post.username}',
+                          style: textTheme.bodySmall?.copyWith(
+                            color: ColorManager.grey,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
                     ],
