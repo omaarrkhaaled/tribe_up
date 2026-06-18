@@ -12,7 +12,9 @@ class LoadMoreNotificationsIntent extends NotificationIntents {
 
 class ReadNotificationIntent extends NotificationIntents {
   final int id;
-  const ReadNotificationIntent({required this.id});
+  final int? referenceId;
+  final String? type;
+  const ReadNotificationIntent({required this.id, this.referenceId, this.type});
 }
 
 class ReadAllNotificationsIntent extends NotificationIntents {
