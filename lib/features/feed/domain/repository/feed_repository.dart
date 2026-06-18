@@ -39,4 +39,6 @@ abstract class FeedRepository {
     List<File>? newMediaFiles,
     List<int>? deleteMediaIds,
   });
+
+  Future<BaseResponse<PostEntity>> getPostById({required int postId});
 }

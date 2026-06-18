@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:tribe_up/features/feed/data/models/create_post_response.dart';
 import 'package:tribe_up/features/feed/data/models/feed_response.dart';
 import 'package:tribe_up/features/feed/data/models/toggle_like_response.dart';
+import 'package:tribe_up/features/feed/data/models/post_model.dart';
 
 abstract class FeedRemoteDataSource {
   Future<FeedResponse> getFeedPosts({int page, int pageSize});
@@ -24,6 +25,8 @@ abstract class FeedRemoteDataSource {
   Future<void> deletePost({required int postId});
 
   Future<ToggleLikeResponse> toggleLikePost({required int postId});
+
+  Future<PostModel> getPostById({required int postId});
 
   Future<CreatePostResponse> editPost({
     required int postId,

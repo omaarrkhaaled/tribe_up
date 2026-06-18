@@ -5,6 +5,7 @@ import 'package:tribe_up/features/feed/api/api_client/feed_api_client.dart';
 import 'package:tribe_up/features/feed/data/models/create_post_response.dart';
 import 'package:tribe_up/features/feed/data/models/feed_response.dart';
 import 'package:tribe_up/features/feed/data/models/toggle_like_response.dart';
+import 'package:tribe_up/features/feed/data/models/post_model.dart';
 import 'package:tribe_up/features/feed/data/data_sources/feed_remote_data_source.dart';
 
 @Injectable(as: FeedRemoteDataSource)
@@ -51,6 +52,11 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
   @override
   Future<ToggleLikeResponse> toggleLikePost({required int postId}) async {
     return await _apiClient.toggleLikePost(postId);
+  }
+
+  @override
+  Future<PostModel> getPostById({required int postId}) async {
+    return await _apiClient.getPostById(postId);
   }
 
   @override

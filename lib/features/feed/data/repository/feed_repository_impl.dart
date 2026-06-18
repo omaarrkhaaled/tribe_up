@@ -108,4 +108,12 @@ class FeedRepositoryImpl implements FeedRepository {
       return response.post.toEntity();
     });
   }
+
+  @override
+  Future<BaseResponse<PostEntity>> getPostById({required int postId}) {
+    return safeApiCall<PostEntity>(() async {
+      final response = await _remoteDataSource.getPostById(postId: postId);
+      return response.toEntity();
+    });
+  }
 }

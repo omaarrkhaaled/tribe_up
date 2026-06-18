@@ -11,4 +11,5 @@ abstract class AppRoutesConstants {
   static const String verifyEmail = '/verifyEmail';
   static const String tribeProfile = '/tribeProfile';
   static const String groupChat = '/groupChat';
+  static const String postDetail = '/postDetail';
 }
