@@ -8,17 +8,23 @@ import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
+import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
+import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
 import 'package:tribe_up/features/auth/logout/presentation/logout_cubit.dart';
 import 'package:tribe_up/features/auth/logout/presentation/logout_intents.dart';
 import 'package:tribe_up/features/auth/logout/presentation/logout_ui_intents.dart';
 
-import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class MenuDrawer extends StatefulWidget {
+  final LoginLocalDataSource localDataSource;
   final UserSummaryEntity? userSummary;
 
-  const MenuDrawer({super.key, this.userSummary});
+  const MenuDrawer({
+    super.key,
+    required this.localDataSource,
+    this.userSummary,
+  });
 
   @override
   State<MenuDrawer> createState() => _MenuDrawerState();
@@ -26,9 +32,18 @@ class MenuDrawer extends StatefulWidget {
 
 class _MenuDrawerState extends State<MenuDrawer> {
   late StreamSubscription _logoutSubscription;
+  late Future<UserSummaryEntity?> _userSummaryFuture;
+
   @override
   void initState() {
     super.initState();
+    if (widget.userSummary != null) {
+      _userSummaryFuture = Future.value(widget.userSummary);
+    } else {
+      _userSummaryFuture = widget.localDataSource.getUserSummary().then(
+        (model) => model?.toEntity(),
+      );
+    }
     _logoutSubscription = context.read<LogoutCubit>().uiIntents.listen((
       intent,
     ) {
@@ -81,51 +96,79 @@ class _MenuDrawerState extends State<MenuDrawer> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: widget.userSummary?.profilePicture != null
-                        ? CachedNetworkImage(
-                            imageUrl: widget.userSummary!.profilePicture!,
-                            fit: BoxFit.contain,
-                          )
-                        : const Icon(Icons.person),
+          FutureBuilder<UserSummaryEntity?>(
+            future: _userSummaryFuture,
+            builder: (context, snapshot) {
+              final user = snapshot.data;
+              return InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                  context.pushNamed(
+                    AppRoutesConstants.profile,
+                    extra: user?.userName,
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: SizedBox(
+                          width: 48,
+                          height: 48,
+                          child: user?.profilePicture != null
+                              ? CachedNetworkImage(
+                                  imageUrl: user!.profilePicture!,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.person),
+                                )
+                              : const Icon(Icons.person),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user?.fullName ?? 'Alex Johnson',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              user?.userName != null
+                                  ? '@${user!.userName}'
+                                  : 'loading...',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.userSummary?.fullName ?? 'Alex Johnson',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      widget.userSummary?.userName != null
-                          ? '@${widget.userSummary!.userName}'
-                          : '@alexj',
-                      style: const TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              );
+            },
           ),
           const Divider(),
           _buildMenuItem(
             context,
             icon: FontAwesomeIcons.user,
             title: UiConstants.profile,
-            onTap: () {},
+            onTap: () {
+              context.pushNamed(AppRoutesConstants.profile);
+            },
           ),
           _buildMenuItem(
             context,

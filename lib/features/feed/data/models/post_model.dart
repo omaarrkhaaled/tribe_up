@@ -18,17 +18,17 @@ class PostModel {
   @JsonKey(name: 'groupName')
   final String groupName;
   @JsonKey(name: 'groupProfilePicture')
-  final String groupProfilePicture;
+  final String? groupProfilePicture;
   @JsonKey(name: 'likesCount')
-  final int likesCount;
+  final int? likesCount;
   @JsonKey(name: 'commentCount')
-  final int commentCount;
+  final int? commentCount;
   @JsonKey(name: 'isAuthor')
   final bool isAuthor;
   @JsonKey(name: 'isLikedByCurrentUser')
   final bool isLikedByCurrentUser;
   @JsonKey(name: 'feedScore')
-  final double feedScore;
+  final double? feedScore;
   @JsonKey(name: 'createdAt')
   final String createdAt;
   @JsonKey(name: 'media')
@@ -45,12 +45,12 @@ class PostModel {
     required this.username,
     required this.groupId,
     required this.groupName,
-    required this.groupProfilePicture,
-    required this.likesCount,
-    required this.commentCount,
+    this.groupProfilePicture,
+    this.likesCount,
+    this.commentCount,
     required this.isAuthor,
     required this.isLikedByCurrentUser,
-    required this.feedScore,
+    this.feedScore,
     required this.createdAt,
     required this.media,
     required this.postPermissions,
@@ -63,6 +63,7 @@ class PostModel {
   Map<String, dynamic> toJson() => _$PostModelToJson(this);
 
   PostEntity toEntity() {
+    final canDelete = (postPermissions['canDelete'] as bool?) ?? isAuthor;
     return PostEntity(
       postId: postId,
       caption: caption,
@@ -78,6 +79,8 @@ class PostModel {
       createdAt: createdAt,
       media: media,
       isDenied: isDenied,
+      isAuthor: isAuthor,
+      canDelete: canDelete,
     );
   }
 }

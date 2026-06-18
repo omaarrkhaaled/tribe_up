@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
-import 'package:tribe_up/core/resources/font_managar.dart';
-import 'package:tribe_up/core/resources/styles_manager.dart';
-import 'package:tribe_up/core/resources/values_managar.dart';
 
 class AppTheme {
   static final ThemeData lightTheme = ThemeData(
@@ -12,10 +7,10 @@ class AppTheme {
     scaffoldBackgroundColor: ColorManager.white,
     //------------------- AppBar Theme ------------------//
     appBarTheme: AppBarTheme(
-      titleTextStyle: getMediumStyle(
+      titleTextStyle: TextStyle(
         color: ColorManager.black,
-        fontSize: FontSize.s20,
-        fontFamily: GoogleFontsKeys.inter,
+        fontWeight: FontWeight.bold,
+        fontSize: 22,
       ),
       iconTheme: IconThemeData(color: ColorManager.black),
       backgroundColor: ColorManager.white,
@@ -24,24 +19,25 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       floatingLabelBehavior: FloatingLabelBehavior.auto,
 
-      labelStyle: getRegularStyle(color: ColorManager.grey),
+      labelStyle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: ColorManager.grey,
+      ),
 
       floatingLabelStyle: TextStyle(
-        fontSize: 18.sp,
-        fontWeight: FontWeightManager.regular,
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
         color: ColorManager.grey,
       ),
 
       hintStyle: TextStyle(
-        fontSize: FontSize.s12.sp,
-        fontWeight: FontWeightManager.regular,
-        color: ColorManager.lightGrey,
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: ColorManager.lightGrey.withValues(alpha: 0.5),
       ),
 
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: Insets.s16.sp,
-        vertical: Insets.s16.sp,
-      ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
 
       border: _outline(ColorManager.grey),
       enabledBorder: _outline(ColorManager.grey),
@@ -56,11 +52,9 @@ class AppTheme {
         foregroundColor: ColorManager.white,
         elevation: 0,
         shadowColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.r),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         textStyle: TextStyle(
-          fontSize: 16.sp,
+          fontSize: 16,
           fontWeight: FontWeight.w500,
           color: ColorManager.white,
         ),
@@ -107,7 +101,7 @@ class AppTheme {
 
 OutlineInputBorder _outline(Color color, {double width = 1}) {
   return OutlineInputBorder(
-    borderRadius: BorderRadius.circular(8.r),
+    borderRadius: BorderRadius.circular(12),
     borderSide: BorderSide(color: color, width: width),
   );
 }

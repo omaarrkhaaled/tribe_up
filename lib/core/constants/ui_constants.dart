@@ -99,6 +99,159 @@ class UiConstants {
   static const String beTheFirstToComment = 'Be the first to comment!';
   static const String addAComment = 'Add a comment...';
   static const String editComment = 'Edit comment...';
+  static const String retry = 'Retry';
+  static const String noNotifications = 'No notifications yet';
+  static const String editProfile = 'Edit Profile';
+  static const String save = 'Save';
+  static const String updatePhoneNumber = 'Update phone number';
+  static const String remove = 'Remove';
+  static const String update = 'Update';
+  static const String failedToLoadProfile = 'Failed To Load Profile';
+  static const String fullName = 'Full name';
+  static const String loadingFullName = 'Loading full name...';
+  static const String loadingPhoneNumber = 'Loading phone number...';
+  static const String noPhoneNumber = 'No phone number';
+  static const String bio = 'Bio';
+  static const String loadingBio = 'Loading bio...';
+  static const String noBio = 'No bio';
+  static const String passwordPlaceholder = '************';
+  static const String updateYourName = 'Update your name';
+  static const String enterYourNewFirstAndLastNames =
+      'Enter your new first and last names';
+  static const String enterPhoneToLinkWithAccount =
+      'Enter your phone number to link it with your account.';
+  static const String updateYourBio = 'Update your bio';
+  static const String addAshortBioToTellPeopleMoreAboutYourself =
+      'Add a short bio to tell people more about yourself.';
+  static const String describeYourself = 'Describe yourself...';
+  static const String joinedRecently = 'Joined Recently';
+  static const String noPostsYet = 'No posts yet.';
+  static const String posts = 'Posts';
+  static const String tribes = 'Tribes';
+  static const String postCannotBeEmpty = 'Post cannot be empty';
+  static const String postCreatedSuccessfully = 'Post created successfully';
+  static const String failedToCreatePost = 'Failed To Create Post';
+  static const String createPost = 'Create Post';
+  static const String post = 'post';
+  static const String story = 'story';
+  static const String whatIsInYourMind = 'What\'s in your mind?';
+  static const String upload = 'Upload';
+  static const String public = 'public';
+  static const String private = 'private';
+  static const String searchTribes = 'Search Tribes ...';
+  static const String createYourOwn = 'Create your own';
+  static const String createYOurOwnTribe = 'Create your own tribe';
+  static const String leaveGroup = 'leave Group';
+  static const String joinedIn = 'Joined In';
+  static const String discover = 'Discover';
+  static const String youHaveNotJoinedAnyTribesYet =
+      'You have not joined any tribes yet.';
+  static const String noTribesFound = 'No tribes found.';
+  static const String view = 'View';
+  static String confirmLeaveGroup(String tribeName) =>
+      'Are you sure you want to leave "$tribeName"? You will no longer see updates from this tribe in your feed.';
+  static const String leave = 'Leave';
+  static const String followingTribe = 'Following tribe!';
+  static const String unfollowedTribe = 'Unfollowed tribe';
+  static const String follow = 'follow';
+  static const String following = 'following';
+  static const String joined = 'joined';
+  static const String invite = 'invite';
+  static const String joinTribeToSeePosts = 'Join tribe to see posts';
+  static const String noPostsYetBeTheFirstToPost =
+      'No posts yet, be the first to post!';
+  static const String addCoverPhoto = 'Add cover photo';
+  static const String tribeName = 'Tribe name';
+  static const String enterTribeName = 'Enter tribe name';
+  static const String description = 'Description';
+  static const String enterDescription = 'Enter description';
+  static const String privacy = 'Privacy';
+  static const String createTribe = 'Create Tribe';
+  static const String deleteTribe = 'Delete Tribe';
+  static const String confirmDeleteTribe =
+      'Are you sure you want to permanently delete this tribe? This cannot be undone.';
+  static const String removeCover = 'Remove Cover';
+  static const String confirmRemoveCover =
+      'Are you sure you want to remove the tribe cover photo?';
+  static const String noFollowersYet = 'No followers yet';
+  static const String noMembersFound = 'No members found';
+  static const String publicCapital = 'Public';
+  static const String privateCapital = 'Private';
+  static const String publicSubtitle =
+      'Any one can see who\'s in the tribe and what they post.';
+  static const String privateSubtitle =
+      'Only members can see posts and who\'s in the tribe.';
+  static const String saveChanges = 'Save changes';
+  static const String general = 'General';
+  static const String members = 'Members';
+  static const String followers = 'Followers';
+  static const String followCapital = 'Follow';
+  static const String followingCapital = 'Following';
+  static String membersCount(int count) {
+    if (count >= 1000) {
+      return '${(count / 1000).toStringAsFixed(1)}K members';
+    }
+    return '$count members';
+  }
+
+  static const String removeFollower = 'Remove follower';
+  static const String member = 'Member';
+  static const String promoteToAdmin = 'Promote to Admin';
+  static const String demoteToMember = 'Demote to Member';
+  static const String tribeNotFound = 'Tribe not found';
+  static const String inviteComingSoon = 'Invite coming soon!';
+  static const String memberRemoved = 'Member removed';
+  static const String followerRemoved = 'Follower removed';
+  static const String inviteMembers = 'Invite members';
+  static const String expireAt = 'Expire at';
+  static const String maxUses = 'Max uses';
+  static const String maxUsesHint = 'max use';
+  static const String createInvite = 'Create';
+  static const String activeInvitation = 'Active Invitation';
+  static const String revokeInvitation = 'Revoke';
+  static const String copyLink = 'Copy link';
+  static const String inviteLinkCopied = 'Invite link copied!';
+  static const String invitationCreated = 'Invitation created!';
+  static const String invitationRevoked = 'Invitation revoked!';
+  static const String noActiveInvitation = 'No active invitation';
+  static const String invitationAccepted = 'You have joined the tribe! 🎉';
+  static const String invalidInvitation =
+      'This invite link is invalid or expired.';
+  static const String acceptingInvitation = 'Joining tribe...';
+  static const String tribeDeleted = 'Tribe deleted';
+  static const String created = 'created';
+  static const String adminDemoted = 'Admin demoted to member';
+  static const String memberPromoted = 'Member promoted to admin';
+  static const String pictureRemoved = 'Picture removed!';
+  static const String deletePost = 'Delete Post';
+  static const String confirmDeletePost =
+      'Are you sure you want to permanently delete this post? This cannot be undone.';
+  static const String postDeletedSuccessfully = 'Post deleted successfully';
+  static const String failedToDeletePost = 'Failed to delete post';
+  static const String selectAGroup = 'Select a group';
+  static const String whatsOnYourMind = 'What\'s on your mind?';
+  static const String postUpdated = 'Post updated successfully';
+  static const String postDeleted = 'Post deleted successfully';
+  static const String newMediaToAdd = 'New media to add';
+  static const String existingMedia = 'Existing media';
+  static const String editPost = 'Edit Post';
+  static const String addImage = 'Add Image';
+  static const String addVideo = 'Add Video';
+  static const int chatSkeletonItemCount = 8;
+  static const int inboxSkeletonItemCount = 3;
+
+  static const String noMessagesYet = 'No messages yet';
+  static const String sayHiToStart = 'Say hi to start the conversation! 👋';
+  static const String noConversationsYet = 'No conversations yet';
+  static const String joinTribeToChat = 'Join a tribe to start chatting';
+  static const String chats = 'Chats';
+  static const String editingMessage = 'Editing message';
+  static const String tapToSaveEdit = 'Tap ✓ to save your changes';
+  static const String editMessage = 'Edit Message';
+  static const String deleteMessage = 'Delete Message';
+  static const String activeNow = 'Active now';
+  static const String postUpdatedSuccessfully = 'Post updated successfully';
+  static const String postNotFound = 'Post Not Found';
 }
 
 class GoogleFontsKeys {

@@ -1,0 +1,25 @@
+import 'dart:io';
+
+import 'package:tribe_up/config/base_response/base_response.dart';
+import 'package:tribe_up/features/groups/data/models/request/update_group_request.dart';
+import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
+
+abstract class GroupsDataSource {
+  Future<BaseResponse<GroupsResponse>> myGroups(int? page, int? pageSize);
+  Future<BaseResponse<Group>> getGroupById(int id);
+  Future<BaseResponse<Group>> createGroup(
+    String groupName,
+    String description,
+    String accessibility,
+    File? profilePicture,
+  );
+  Future<BaseResponse<Group>> updateGroup(int id, UpdateGroupRequest request);
+  Future<BaseResponse<dynamic>> updateGroupPicture(int id, File file);
+  Future<BaseResponse<dynamic>> deleteGroup(int id);
+  Future<BaseResponse<dynamic>> deleteGroupPicture(int id);
+  Future<BaseResponse<GroupsResponse>> exploreGroups(
+    int? page,
+    int? pageSize,
+    String? search,
+  );
+}

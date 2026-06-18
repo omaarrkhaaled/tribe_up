@@ -2,6 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tribe_up/core/constants/app_routes_constants.dart';
+import 'package:tribe_up/core/constants/date_constants.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/enums/comment_operations.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
@@ -70,13 +73,30 @@ class _CommentCardState extends State<CommentCard> {
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: ListTile(
               dense: true,
-              leading: CachedNetworkImage(
-                imageUrl: comment.profilePicture ?? '',
-                imageBuilder: (context, imageProvider) =>
-                    CircleAvatar(backgroundImage: imageProvider, radius: 20),
-                placeholder: (_, __) => const CircleAvatar(radius: 20),
-                errorWidget: (_, __, ___) =>
-                    const CircleAvatar(radius: 20, child: Icon(Icons.person)),
+              leading: Column(
+                children: [
+                  const SizedBox(height: 8),
+                  InkWell(
+                    onTap: () {
+                      context.pushNamed(
+                        AppRoutesConstants.profile,
+                        extra: comment.username,
+                      );
+                    },
+                    child: CachedNetworkImage(
+                      imageUrl: comment.profilePicture ?? '',
+                      imageBuilder: (context, imageProvider) => CircleAvatar(
+                        backgroundImage: imageProvider,
+                        radius: 20,
+                      ),
+                      placeholder: (_, __) => const CircleAvatar(radius: 20),
+                      errorWidget: (_, __, ___) => const CircleAvatar(
+                        radius: 20,
+                        child: Icon(Icons.person),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               title: Text(
                 comment.username ?? '',
@@ -208,7 +228,7 @@ class _CommentCardState extends State<CommentCard> {
         ),
         const SizedBox(height: 2),
         Text(
-          _formatDate(comment.createdAt ?? ''),
+          DateConstants.formatDate(comment.createdAt ?? ''),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: ColorManager.grey,
             fontSize: 12,
@@ -216,41 +236,5 @@ class _CommentCardState extends State<CommentCard> {
         ),
       ],
     );
-  }
-
-  String _formatDate(String dateStr) {
-    if (dateStr.isEmpty) return '';
-    final date = DateTime.tryParse(dateStr);
-    if (date == null) return dateStr;
-    final timeStr = _formatTime(date);
-    final monthStr = _getMonthName(date.month);
-    return '$timeStr • $monthStr ${date.day}, ${date.year}';
-  }
-
-  String _formatTime(DateTime date) {
-    int hour = date.hour;
-    final String period = hour >= 12 ? 'PM' : 'AM';
-    hour = hour % 12;
-    if (hour == 0) hour = 12;
-    final minuteStr = date.minute.toString().padLeft(2, '0');
-    return '$hour:$minuteStr $period';
-  }
-
-  String _getMonthName(int month) {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    return months[month - 1];
   }
 }

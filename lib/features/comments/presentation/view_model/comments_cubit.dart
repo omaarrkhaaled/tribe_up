@@ -122,7 +122,7 @@ class CommentsCubit extends Cubit<CommentsStates> {
     if (!state.hasMore || _isFetching) return;
     _isFetching = true;
 
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLoadingMore: true));
 
     final nextPage = state.currentPage + 1;
 
@@ -135,16 +135,20 @@ class CommentsCubit extends Cubit<CommentsStates> {
     switch (response) {
       case SuccessResponse(:final data):
         final newItems = data.items ?? [];
+        final sortedNewItems = [
+          ...newItems.where((c) => c.isAuthor == true),
+          ...newItems.where((c) => c.isAuthor != true),
+        ];
         emit(
           state.copyWith(
-            isLoading: false,
-            comments: [...state.comments, ...newItems],
+            isLoadingMore: false,
+            comments: [...state.comments, ...sortedNewItems],
             currentPage: nextPage,
             hasMore: newItems.length >= _pageSize,
           ),
         );
       case ErrorResponse(:final error):
-        emit(state.copyWith(isLoading: false));
+        emit(state.copyWith(isLoadingMore: false));
         _commentsStreamController.add(
           ShowCommentErrorIntent(errorMessage: error.message),
         );
@@ -304,6 +308,7 @@ class CommentsCubit extends Cubit<CommentsStates> {
 
     switch (response) {
       case SuccessResponse():
+        // No need to do anything as we already updated the list optimistically
         break;
       case ErrorResponse(:final error):
         emit(state.copyWith(comments: originalList));

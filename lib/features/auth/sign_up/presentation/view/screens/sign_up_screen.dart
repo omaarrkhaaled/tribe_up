@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
-import 'package:tribe_up/core/resources/font_managar.dart';
-import 'package:tribe_up/core/resources/styles_manager.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/cubit/sign_up_states.dart';
@@ -77,15 +74,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 15.h),
+                  SizedBox(height: 15),
                   Text(
                     UiConstants.createAccountMessage,
-                    style: getBoldStyle(
-                      color: ColorManager.black,
-                      fontSize: FontSize.s24,
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 30.h),
+                  SizedBox(height: 30),
                   Form(
                     key: formKey,
                     child: Column(
@@ -95,23 +91,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           lastName: _lastName,
                           cubit: _signUpCubit,
                         ),
-                        SizedBox(height: 8.h),
+                        SizedBox(height: 8),
                         EmailFieldWidget(
                           controller: _email,
                           cubit: _signUpCubit,
                         ),
-                        SizedBox(height: 8.h),
+                        SizedBox(height: 8),
                         UserNameFieldWidget(
                           controller: _userName,
                           cubit: _signUpCubit,
                         ),
-                        SizedBox(height: 8.h),
+                        SizedBox(height: 8),
                         PasswordFieldsWidget(
                           password: _password,
                           confirmPassword: _confirmPassword,
                           cubit: _signUpCubit,
                         ),
-                        SizedBox(height: 8.h),
+                        SizedBox(height: 8),
                         BlocBuilder<SignUpCubit, SignUpStates>(
                           builder: (_, state) {
                             return SignUpButtonWidget(
@@ -121,10 +117,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                           },
                         ),
-                        SizedBox(height: 12.h),
+                        SizedBox(height: 12),
                         SizedBox(
                           width: double.infinity,
-                          height: 50.h,
+                          height: 50,
                           child: ElevatedButton(
                             onPressed: () {
                               context.pushReplacementNamed(
@@ -138,22 +134,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             child: Text(
                               UiConstants.alreadyHaveAccount,
-                              style: getMediumStyle(
-                                fontSize: 18.sp,
-                                color: ColorManager.black,
-                              ),
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                           ),
                         ),
-                        SizedBox(height: 80.h),
+                        SizedBox(height: 80),
                         Align(
                           alignment: Alignment.center,
                           child: Text(
                             UiConstants.tribeUp,
-                            style: getBoldStyle(
-                              color: ColorManager.primary,
-                              fontSize: 18.sp,
-                            ),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ),
                       ],

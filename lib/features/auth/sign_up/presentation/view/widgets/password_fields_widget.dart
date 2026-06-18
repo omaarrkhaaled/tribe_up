@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/utils/validator.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/cubit/sign_up_cubit.dart';
@@ -33,7 +32,7 @@ class PasswordFieldsWidget extends StatelessWidget {
           validator: Validator.validatePassword,
           onChanged: (v) => cubit.doIntent(PasswordChanged(v)),
         ),
-        SizedBox(height: 8.h),
+        SizedBox(height: 8),
         TextFormField(
           controller: confirmPassword,
           autovalidateMode: AutovalidateMode.onUserInteraction,

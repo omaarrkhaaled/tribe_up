@@ -7,14 +7,16 @@ class PostEntity {
   final String username;
   final int groupId;
   final String groupName;
-  final String groupProfilePicture;
-  final int likesCount;
-  final int commentCount;
+  final String? groupProfilePicture;
+  final int? likesCount;
+  final int? commentCount;
   final bool isLikedByCurrentUser;
-  final double feedScore;
+  final double? feedScore;
   final String createdAt;
   final List<MediaModel> media;
   final bool isDenied;
+  final bool isAuthor;
+  final bool canDelete;
 
   const PostEntity({
     required this.postId,
@@ -23,15 +25,55 @@ class PostEntity {
     required this.username,
     required this.groupId,
     required this.groupName,
-    required this.groupProfilePicture,
-    required this.likesCount,
-    required this.commentCount,
+    this.groupProfilePicture,
+    this.likesCount,
+    this.commentCount,
     required this.isLikedByCurrentUser,
-    required this.feedScore,
+    this.feedScore,
     required this.createdAt,
     required this.media,
     required this.isDenied,
+    this.isAuthor = false,
+    this.canDelete = false,
   });
+
+  PostEntity copyWith({
+    int? postId,
+    String? caption,
+    String? userId,
+    String? username,
+    int? groupId,
+    String? groupName,
+    String? groupProfilePicture,
+    int? likesCount,
+    int? commentCount,
+    bool? isLikedByCurrentUser,
+    double? feedScore,
+    String? createdAt,
+    List<MediaModel>? media,
+    bool? isDenied,
+    bool? isAuthor,
+    bool? canDelete,
+  }) {
+    return PostEntity(
+      postId: postId ?? this.postId,
+      caption: caption ?? this.caption,
+      userId: userId ?? this.userId,
+      username: username ?? this.username,
+      groupId: groupId ?? this.groupId,
+      groupName: groupName ?? this.groupName,
+      groupProfilePicture: groupProfilePicture ?? this.groupProfilePicture,
+      likesCount: likesCount ?? this.likesCount,
+      commentCount: commentCount ?? this.commentCount,
+      isLikedByCurrentUser: isLikedByCurrentUser ?? this.isLikedByCurrentUser,
+      feedScore: feedScore ?? this.feedScore,
+      createdAt: createdAt ?? this.createdAt,
+      media: media ?? this.media,
+      isDenied: isDenied ?? this.isDenied,
+      isAuthor: isAuthor ?? this.isAuthor,
+      canDelete: canDelete ?? this.canDelete,
+    );
+  }
 
   static PostEntity getDummyPost() {
     return PostEntity(
@@ -50,12 +92,14 @@ class PostEntity {
       createdAt: DateTime.now().toIso8601String(),
       media: [
         MediaModel(
+          id: 0,
           mediaURL: 'https://picsum.photos/400/250',
           mediaType: 'Image',
           order: 0,
         ),
       ],
       isDenied: false,
+      isAuthor: false,
     );
   }
 }
