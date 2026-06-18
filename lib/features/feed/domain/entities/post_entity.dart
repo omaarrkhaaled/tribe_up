@@ -37,6 +37,44 @@ class PostEntity {
     this.canDelete = false,
   });
 
+  PostEntity copyWith({
+    int? postId,
+    String? caption,
+    String? userId,
+    String? username,
+    int? groupId,
+    String? groupName,
+    String? groupProfilePicture,
+    int? likesCount,
+    int? commentCount,
+    bool? isLikedByCurrentUser,
+    double? feedScore,
+    String? createdAt,
+    List<MediaModel>? media,
+    bool? isDenied,
+    bool? isAuthor,
+    bool? canDelete,
+  }) {
+    return PostEntity(
+      postId: postId ?? this.postId,
+      caption: caption ?? this.caption,
+      userId: userId ?? this.userId,
+      username: username ?? this.username,
+      groupId: groupId ?? this.groupId,
+      groupName: groupName ?? this.groupName,
+      groupProfilePicture: groupProfilePicture ?? this.groupProfilePicture,
+      likesCount: likesCount ?? this.likesCount,
+      commentCount: commentCount ?? this.commentCount,
+      isLikedByCurrentUser: isLikedByCurrentUser ?? this.isLikedByCurrentUser,
+      feedScore: feedScore ?? this.feedScore,
+      createdAt: createdAt ?? this.createdAt,
+      media: media ?? this.media,
+      isDenied: isDenied ?? this.isDenied,
+      isAuthor: isAuthor ?? this.isAuthor,
+      canDelete: canDelete ?? this.canDelete,
+    );
+  }
+
   static PostEntity getDummyPost() {
     return PostEntity(
       postId: 0,
