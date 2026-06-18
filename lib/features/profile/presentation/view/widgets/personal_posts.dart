@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/features/feed/presentation/view/widgets/post_card.dart';
 import 'package:tribe_up/features/profile/presentation/view_model/profile_states.dart';
 
 class PersonalPosts extends StatelessWidget {
@@ -72,13 +73,18 @@ class PersonalPosts extends StatelessWidget {
       );
     }
 
-    // Replace this with actual feed list when ready
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: state.posts.length,
       itemBuilder: (context, index) {
-        return ListTile(title: Text(state.posts[index].toString()));
+        final post = state.posts[index];
+        return PostCard(
+          post: post,
+          currentUserProfilePicture: state.profile?.isOwnProfile == true
+              ? state.profile?.profilePicture
+              : null,
+        );
       },
     );
   }
