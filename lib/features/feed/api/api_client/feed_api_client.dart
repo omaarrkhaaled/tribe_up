@@ -9,6 +9,7 @@ import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/features/feed/data/models/create_post_response.dart';
 import 'package:tribe_up/features/feed/data/models/feed_response.dart';
 import 'package:tribe_up/features/feed/data/models/toggle_like_response.dart';
+import 'package:tribe_up/features/feed/data/models/post_model.dart';
 
 part 'feed_api_client.g.dart';
 
@@ -59,6 +60,9 @@ abstract class FeedApiClient {
     @Path('postId') int postId,
     @Body() FormData body,
   );
+
+  @GET(ApiConstants.getPostByIdEndPoint)
+  Future<PostModel> getPostById(@Path('postId') int postId);
 
   @GET(ApiConstants.postLikesEndPoint)
   Future<dynamic> getPostLikes(

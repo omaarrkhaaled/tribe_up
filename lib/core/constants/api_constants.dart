@@ -33,6 +33,7 @@ class ApiConstants {
 
   static const String notificationsEndPoint = 'Notification';
   static const String notificationReadEndPoint = 'Notification/{id}/read';
+  static const String notificationReadAllEndPoint = 'Notification/read/all';
 
   //----------------------------profile EndPoints------------------------//
   static const String myProfileEndPoint = 'Profile/Me';
