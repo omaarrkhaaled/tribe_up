@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/features/profile/domain/usecases/get_profile_use_case.dart';
+import 'package:tribe_up/features/profile/domain/usecases/get_personal_posts_use_case.dart';
 import 'package:tribe_up/features/profile/presentation/view_model/profile_intents.dart';
 import 'package:tribe_up/features/profile/presentation/view_model/profile_states.dart';
 import 'package:tribe_up/features/profile/presentation/view_model/profile_ui_intents.dart';
@@ -10,12 +11,14 @@ import 'dart:async';
 @injectable
 class ProfileCubit extends Cubit<ProfileStates> {
   final GetProfileUseCase _getProfileUseCase;
+  final GetPersonalPostsUseCase _getPersonalPostsUseCase;
   final StreamController<ProfileUiIntents> _uiIntentsController =
       StreamController<ProfileUiIntents>.broadcast();
 
   Stream<ProfileUiIntents> get uiIntents => _uiIntentsController.stream;
 
-  ProfileCubit(this._getProfileUseCase) : super(const ProfileStates());
+  ProfileCubit(this._getProfileUseCase, this._getPersonalPostsUseCase)
+    : super(const ProfileStates());
 
   void doIntent(ProfileIntents intent) {
     switch (intent) {
@@ -42,8 +45,16 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   Future<void> _getPersonalPosts(String userName) async {
     emit(state.copyWith(isLoadingPosts: true));
-    await Future.delayed(const Duration(seconds: 2));
-    emit(state.copyWith(isLoadingPosts: false));
+    final response = await _getPersonalPostsUseCase(userName: userName);
+    switch (response) {
+      case SuccessResponse():
+        emit(state.copyWith(isLoadingPosts: false, posts: response.data.posts));
+      case ErrorResponse():
+        emit(state.copyWith(isLoadingPosts: false));
+        _uiIntentsController.add(
+          ShowErrorProfileIntent(message: response.error.message),
+        );
+    }
   }
 
   @override

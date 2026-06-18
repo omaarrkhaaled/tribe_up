@@ -10,6 +10,12 @@ abstract class FeedRepository {
     int pageSize,
   });
 
+  Future<BaseResponse<FeedResponseEntity>> getPersonalFeedPosts({
+    required String username,
+    int page,
+    int pageSize,
+  });
+
   Future<BaseResponse<FeedResponseEntity>> getGroupFeedPosts({
     required int groupId,
     int page,
