@@ -8,4 +8,6 @@ abstract interface class NotificationRepository {
   });
 
   Future<BaseResponse<void>> readNotification({required int id});
+
+  Future<BaseResponse<void>> readAllNotifications();
 }

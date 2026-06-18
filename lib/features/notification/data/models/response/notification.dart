@@ -19,6 +19,10 @@ class Notification {
   String? createdAt;
   @JsonKey(name: 'referenceId')
   int? referenceId;
+  @JsonKey(name: 'actorUserName')
+  String? actorUserName;
+  @JsonKey(name: 'actorPicture')
+  String? actorPicture;
 
   Notification({
     this.id,
@@ -28,6 +32,8 @@ class Notification {
     this.isRead,
     this.createdAt,
     this.referenceId,
+    this.actorUserName,
+    this.actorPicture,
   });
 
   factory Notification.fromJson(Map<String, dynamic> json) =>
@@ -44,6 +50,8 @@ class Notification {
       isRead: isRead,
       createdAt: createdAt,
       referenceId: referenceId,
+      actorUserName: actorUserName,
+      actorPicture: actorPicture,
     );
   }
 }

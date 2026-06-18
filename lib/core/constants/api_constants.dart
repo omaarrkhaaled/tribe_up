@@ -9,7 +9,7 @@ class ApiConstants {
   static const String logoutEndPoint = 'Authentication/Logout';
   //----------------------------posts EndPoints------------------------//
   static const String feedEndPoint = 'Posts/Feed';
-  static const String personalFeedEndPoint = 'Posts/PersonalFeed/{userId}';
+  static const String personalFeedEndPoint = 'Posts/PersonalFeed';
   static const String createPostEndPoint = 'Posts/CreatePost';
   static const String editPostEndPoint = 'Posts/{postId}/EditPost';
   static const String deletePostEndPoint = 'Posts/{postId}/DeletePost';

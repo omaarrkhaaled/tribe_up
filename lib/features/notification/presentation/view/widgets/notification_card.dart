@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/features/notification/domain/entities/notification_entity.dart';
@@ -12,6 +13,11 @@ class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isRead = notification.isRead ?? false;
+    final hasValidActorPicture =
+        notification.actorPicture != null &&
+        notification.actorPicture!.isNotEmpty &&
+        notification.actorPicture != 'null' &&
+        notification.actorPicture!.startsWith('http');
 
     return GestureDetector(
       onTap: onTap,
@@ -33,7 +39,10 @@ class NotificationCard extends StatelessWidget {
           ],
           border: isRead
               ? null
-              : Border.all(color: const Color(0xFFDDD6FE), width: 1),
+              : Border.all(
+                  color: const Color.fromARGB(255, 27, 11, 99),
+                  width: 1,
+                ),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -48,11 +57,18 @@ class NotificationCard extends StatelessWidget {
                       CircleAvatar(
                         radius: 22,
                         backgroundColor: ColorManager.white,
-                        child: Icon(
-                          Icons.person,
-                          color: ColorManager.primary,
-                          size: 24,
-                        ),
+                        backgroundImage: hasValidActorPicture
+                            ? CachedNetworkImageProvider(
+                                notification.actorPicture!,
+                              )
+                            : null,
+                        child: hasValidActorPicture
+                            ? null
+                            : Icon(
+                                Icons.person,
+                                color: ColorManager.primary,
+                                size: 24,
+                              ),
                       ),
                       if (!isRead)
                         Positioned(

@@ -11,3 +11,8 @@ class NavigateToPostIntent extends NotificationUiIntents {
   final int postId;
   const NavigateToPostIntent({required this.postId});
 }
+
+class NavigateToCommentsIntent extends NotificationUiIntents {
+  final int postId;
+  const NavigateToCommentsIntent({required this.postId});
+}

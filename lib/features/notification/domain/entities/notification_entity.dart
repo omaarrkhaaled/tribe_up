@@ -6,6 +6,8 @@ class NotificationEntity {
   final bool? isRead;
   final String? createdAt;
   final int? referenceId;
+  final String? actorUserName;
+  final String? actorPicture;
 
   const NotificationEntity({
     this.id,
@@ -15,6 +17,8 @@ class NotificationEntity {
     this.isRead,
     this.createdAt,
     this.referenceId,
+    this.actorUserName,
+    this.actorPicture,
   });
 
   NotificationEntity copyWith({
@@ -25,6 +29,8 @@ class NotificationEntity {
     bool? isRead,
     String? createdAt,
     int? referenceId,
+    String? actorUserName,
+    String? actorPicture,
   }) {
     return NotificationEntity(
       id: id ?? this.id,
@@ -34,6 +40,8 @@ class NotificationEntity {
       isRead: isRead ?? this.isRead,
       createdAt: createdAt ?? this.createdAt,
       referenceId: referenceId ?? this.referenceId,
+      actorUserName: actorUserName ?? this.actorUserName,
+      actorPicture: actorPicture ?? this.actorPicture,
     );
   }
 
