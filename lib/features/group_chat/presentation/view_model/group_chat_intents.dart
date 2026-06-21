@@ -47,3 +47,12 @@ class StartEditMessageIntent extends GroupChatIntents {
 class CancelEditMessageIntent extends GroupChatIntents {
   const CancelEditMessageIntent();
 }
+
+class ConnectSignalRIntent extends GroupChatIntents {
+  final int groupId;
+  const ConnectSignalRIntent({required this.groupId});
+}
+
+class DisconnectSignalRIntent extends GroupChatIntents {
+  const DisconnectSignalRIntent();
+}

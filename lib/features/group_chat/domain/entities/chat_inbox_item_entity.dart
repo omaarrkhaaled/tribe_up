@@ -26,4 +26,23 @@ class ChatInboxItemEntity extends Equatable {
     lastMessageSenderName,
     lastMessageSentAt,
   ];
+
+  ChatInboxItemEntity copyWith({
+    int? groupId,
+    String? groupName,
+    String? groupProfilePicture,
+    String? lastMessageContent,
+    String? lastMessageSenderName,
+    DateTime? lastMessageSentAt,
+  }) {
+    return ChatInboxItemEntity(
+      groupId: groupId ?? this.groupId,
+      groupName: groupName ?? this.groupName,
+      groupProfilePicture: groupProfilePicture ?? this.groupProfilePicture,
+      lastMessageContent: lastMessageContent ?? this.lastMessageContent,
+      lastMessageSenderName:
+          lastMessageSenderName ?? this.lastMessageSenderName,
+      lastMessageSentAt: lastMessageSentAt ?? this.lastMessageSentAt,
+    );
+  }
 }

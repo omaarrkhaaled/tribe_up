@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/core/enums/chat_message_operations.dart';
+import 'package:tribe_up/core/services/signalr/group_chat_signalr_service.dart';
 import 'package:tribe_up/features/group_chat/domain/entities/chat_message_entity.dart';
 import 'package:tribe_up/features/group_chat/domain/use_cases/delete_group_message_use_case.dart';
 import 'package:tribe_up/features/group_chat/domain/use_cases/edit_group_message_use_case.dart';
@@ -24,15 +25,23 @@ class GroupChatCubit extends Cubit<GroupChatStates> {
   final SendGroupMessageUseCase sendGroupMessageUseCase;
   final DeleteGroupMessageUseCase deleteGroupMessageUseCase;
   final EditGroupMessageUseCase editGroupMessageUseCase;
+  final GroupChatSignalRService signalRService;
 
   static const int _pageSize = 20;
   bool _isFetching = false;
+  int? activeGroupId;
+
+  // SignalR subscriptions
+  StreamSubscription<ChatMessageEntity>? _newMessageSub;
+  StreamSubscription<ChatMessageEntity>? _editMessageSub;
+  StreamSubscription<int>? _deleteMessageSub;
 
   GroupChatCubit({
     required this.getGroupMessagesUseCase,
     required this.sendGroupMessageUseCase,
     required this.deleteGroupMessageUseCase,
     required this.editGroupMessageUseCase,
+    required this.signalRService,
   }) : super(const GroupChatStates());
 
   void doIntent(GroupChatIntents intent) {
@@ -48,18 +57,107 @@ class GroupChatCubit extends Cubit<GroupChatStates> {
 
       case EditGroupMessageIntent(:final messageId, :final text):
         _editMessage(messageId: messageId, text: text);
+
       case ShowMessageOptionsIntent(:final message):
         _groupChatStreamController.add(
           ShowMessageOptionsUiIntent(message: message),
         );
+
       case LoadMoreGroupMessagesIntent(:final groupId):
         _loadMoreMessages(groupId: groupId);
+
       case StartEditMessageIntent(:final messageId):
         _startEditMessage(messageId);
+
       case CancelEditMessageIntent():
         _cancelEditMessage();
+
+      case ConnectSignalRIntent(:final groupId):
+        _connectSignalR(groupId: groupId);
+
+      case DisconnectSignalRIntent():
+        _disconnectSignalR();
     }
   }
+
+  // ── SignalR connection ──────────────────────────────────────────────────────
+
+  Future<void> _connectSignalR({required int groupId}) async {
+    // Cancel any existing subscriptions first
+    await _cancelSignalRSubscriptions();
+
+    activeGroupId = groupId;
+    await signalRService.connect();
+    await signalRService.joinGroupChat(groupId);
+
+    // ReceiveGroupMessage — only process messages for the active group.
+    // NOTE: the server's SignalR payload may omit groupId (defaults to 0).
+    // In that case we trust the message belongs to this chat since the hub
+    // routes per-group. We only hard-reject when groupId is explicitly set
+    // to a *different* group.
+    _newMessageSub = signalRService.onReceiveGroupMessage.listen((message) {
+      if (message.groupId != 0 && message.groupId != groupId) return;
+      // Avoid duplicates: don't add if already present (e.g. sent by current user via REST)
+      if (state.messages.any((m) => m.id == message.id)) return;
+      emit(state.copyWith(messages: [message, ...state.messages]));
+    });
+
+    // ReceiveMessageEdit
+    _editMessageSub = signalRService.onReceiveMessageEdit.listen((edited) {
+      if (edited.groupId != 0 && edited.groupId != groupId) return;
+      final updatedList = state.messages.map((m) {
+        if (m.id == edited.id) {
+          return ChatMessageEntity(
+            id: m.id,
+            groupId: m.groupId,
+            senderId: edited.senderId.isNotEmpty ? edited.senderId : m.senderId,
+            senderName: edited.senderName.isNotEmpty
+                ? edited.senderName
+                : m.senderName,
+            senderProfilePicture:
+                edited.senderProfilePicture ?? m.senderProfilePicture,
+            content: edited.content,
+            sentAt: edited.sentAt.year > 2000 ? edited.sentAt : m.sentAt,
+            isEdited: edited.isEdited,
+          );
+        }
+        return m;
+      }).toList();
+      emit(state.copyWith(messages: updatedList));
+    });
+
+    // ReceiveMessageDeletion
+    _deleteMessageSub = signalRService.onReceiveMessageDeletion.listen((
+      messageId,
+    ) {
+      final updatedList = state.messages
+          .where((m) => m.id != messageId)
+          .toList();
+      emit(state.copyWith(messages: updatedList));
+    });
+  }
+
+  Future<void> _disconnectSignalR() async {
+    await _cancelSignalRSubscriptions();
+    if (activeGroupId != null) {
+      // NOTE: We do not await this so it doesn't block UI disposal,
+      // though the service's own intentional disconnect will handle it smoothly.
+      signalRService.leaveGroupChat(activeGroupId!);
+    }
+    activeGroupId = null;
+    await signalRService.disconnect();
+  }
+
+  Future<void> _cancelSignalRSubscriptions() async {
+    await _newMessageSub?.cancel();
+    await _editMessageSub?.cancel();
+    await _deleteMessageSub?.cancel();
+    _newMessageSub = null;
+    _editMessageSub = null;
+    _deleteMessageSub = null;
+  }
+
+  // ── REST operations (unchanged) ─────────────────────────────────────────────
 
   Future<void> _getMessages({required int groupId}) async {
     emit(state.copyWith(isLoading: true));
@@ -136,12 +234,16 @@ class GroupChatCubit extends Cubit<GroupChatStates> {
     switch (response) {
       case SuccessResponse(:final data):
         final newMessage = data;
-        emit(
-          state.copyWith(
-            clearOperation: true,
-            messages: [newMessage, ...state.messages],
-          ),
-        );
+        if (state.messages.any((m) => m.id == newMessage.id)) {
+          emit(state.copyWith(clearOperation: true));
+        } else {
+          emit(
+            state.copyWith(
+              clearOperation: true,
+              messages: [newMessage, ...state.messages],
+            ),
+          );
+        }
 
       case ErrorResponse(:final error):
         emit(state.copyWith(clearOperation: true));
@@ -238,8 +340,9 @@ class GroupChatCubit extends Cubit<GroupChatStates> {
   }
 
   @override
-  Future<void> close() {
-    _groupChatStreamController.close();
+  Future<void> close() async {
+    await _cancelSignalRSubscriptions();
+    await _groupChatStreamController.close();
     return super.close();
   }
 }
