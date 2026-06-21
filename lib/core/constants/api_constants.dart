@@ -1,5 +1,10 @@
 class ApiConstants {
-  static const String baseUrl = 'http://tribeup.runasp.net/api/';
+  static const String baseUrl =
+      'https://tribe-up-fab6dsa5bpgqa3cy.uaenorth-01.azurewebsites.net/api/';
+  static const String hubBaseUrl =
+      'https://tribe-up-fab6dsa5bpgqa3cy.uaenorth-01.azurewebsites.net';
+  static const String groupChatHubPath = '/hubs/group-chat';
+  static const String notificationsHubPath = '/hubs/notifications';
   //----------------------------Authentication EndPoints------------------------//
   static const String loginEndPoint = 'Authentication/Login';
   static const String refreshEndPoint = 'Authentication/Refresh';

@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/services/signalr/group_chat_signalr_service.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
 import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
 import 'package:tribe_up/features/group_chat/presentation/view/widgets/chat_app_bar.dart';
@@ -79,6 +81,9 @@ class _GroupChatScreenContentState extends State<GroupChatScreenContent> {
     final cubit = context.read<GroupChatCubit>();
     _uiIntentSub = cubit.groupChatStream.listen(_handleUiIntent);
     _scrollController.addListener(_onScroll);
+
+    // Start the SignalR connection so real-time messages flow in
+    cubit.doIntent(ConnectSignalRIntent(groupId: widget.groupId));
   }
 
   Future<void> _fetchUserId() async {
@@ -159,6 +164,7 @@ class _GroupChatScreenContentState extends State<GroupChatScreenContent> {
 
   @override
   void dispose() {
+    context.read<GroupChatCubit>().doIntent(const DisconnectSignalRIntent());
     _uiIntentSub?.cancel();
     _messageController.dispose();
     _scrollController.dispose();
@@ -177,6 +183,10 @@ class _GroupChatScreenContentState extends State<GroupChatScreenContent> {
           ),
           body: Column(
             children: [
+              // ── DEBUG: SignalR connection status banner ──────────────────
+              if (kDebugMode)
+                _SignalRStatusBanner(service: getIt<GroupChatSignalRService>()),
+              // ────────────────────────────────────────────────────────────
               Expanded(
                 child: ChatMessagesList(
                   state: state,
@@ -205,6 +215,74 @@ class _GroupChatScreenContentState extends State<GroupChatScreenContent> {
     );
   }
 }
+
+// ── DEBUG ONLY ── Only shown in debug builds (kDebugMode) ────────────────────
+class _SignalRStatusBanner extends StatefulWidget {
+  final GroupChatSignalRService service;
+  const _SignalRStatusBanner({required this.service});
+
+  @override
+  State<_SignalRStatusBanner> createState() => _SignalRStatusBannerState();
+}
+
+class _SignalRStatusBannerState extends State<_SignalRStatusBanner> {
+  late Timer _timer;
+  SignalRConnectionStatus _status = SignalRConnectionStatus.disconnected;
+
+  @override
+  void initState() {
+    super.initState();
+    _status = widget.service.status;
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted && widget.service.status != _status) {
+        setState(() => _status = widget.service.status);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final (color, label) = switch (_status) {
+      SignalRConnectionStatus.connected => (
+        Colors.green.shade600,
+        '🟢 SignalR Connected',
+      ),
+      SignalRConnectionStatus.connecting => (
+        Colors.orange.shade600,
+        '🟡 SignalR Connecting…',
+      ),
+      SignalRConnectionStatus.error => (
+        Colors.red.shade600,
+        '🔴 SignalR Error — check logs',
+      ),
+      SignalRConnectionStatus.disconnected => (
+        Colors.grey.shade500,
+        '⚫ SignalR Disconnected',
+      ),
+    };
+    return Container(
+      width: double.infinity,
+      color: color.withValues(alpha: 0.15),
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Text(
+        label,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+          color: color,
+        ),
+      ),
+    );
+  }
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 class _MessageOptionsSheet extends StatelessWidget {
   final VoidCallback onEdit;
