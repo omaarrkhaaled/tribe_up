@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
+import 'package:tribe_up/core/services/signalr/notification_signalr_service.dart';
+import 'package:tribe_up/features/notification/domain/entities/notification_entity.dart';
 import 'package:tribe_up/features/notification/domain/entities/notification_response_entity.dart';
 import 'package:tribe_up/features/notification/domain/use_cases/get_notifications_use_case.dart';
 import 'package:tribe_up/features/notification/domain/use_cases/read_all_notifications_use_case.dart';
@@ -20,23 +22,56 @@ class NotificationCubit extends Cubit<NotificationStates> {
   final GetNotificationsUseCase _getNotificationsUseCase;
   final ReadNotificationUseCase _readNotificationUseCase;
   final ReadAllNotificationsUseCase _readAllNotificationsUseCase;
+  final NotificationSignalRService _signalRService;
 
   static const int _pageSize = 20;
   bool _isFetching = false;
   bool _hasReachedEnd = false;
   int _currentPage = 1;
 
+  StreamSubscription<NotificationEntity>? _notificationSub;
+
   NotificationCubit(
     this._getNotificationsUseCase,
     this._readNotificationUseCase,
     this._readAllNotificationsUseCase,
+    this._signalRService,
   ) : super(
         const NotificationStates(
           data: NotificationResponseEntity(notifications: []),
           isLoading: false,
           errorMessage: null,
         ),
+      ) {
+    _subscribeToRealTimeNotifications();
+  }
+
+  /// Subscribes to the SignalR `notification-received` event.
+  /// New notifications are prepended to the list and the unread badge increments.
+  void _subscribeToRealTimeNotifications() {
+    _notificationSub = _signalRService.onNotificationReceived.listen((n) {
+      final current = state.data?.notifications ?? [];
+      // Avoid duplicates
+      if (n.id != null && current.any((existing) => existing.id == n.id)) {
+        return;
+      }
+      final updated = [n, ...current];
+      final currentUnread = state.data?.unreadCount ?? 0;
+      emit(
+        state.copyWith(
+          data:
+              state.data?.copyWith(
+                notifications: updated,
+                unreadCount: currentUnread + 1,
+              ) ??
+              NotificationResponseEntity(
+                notifications: updated,
+                unreadCount: 1,
+              ),
+        ),
       );
+    });
+  }
 
   void doIntent(NotificationIntents intent) {
     switch (intent) {
@@ -218,8 +253,9 @@ class NotificationCubit extends Cubit<NotificationStates> {
   }
 
   @override
-  Future<void> close() {
-    _uiStreamController.close();
+  Future<void> close() async {
+    await _notificationSub?.cancel();
+    await _uiStreamController.close();
     return super.close();
   }
 }
