@@ -5,6 +5,7 @@ import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/features/groups/data/data_sources/groups_data_source.dart';
 import 'package:tribe_up/features/groups/data/models/request/update_group_request.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
+import 'package:tribe_up/features/groups/data/models/response/leaderboard_response.dart';
 import 'package:tribe_up/features/groups/domain/repositories/groups_repository.dart';
 
 @LazySingleton(as: GroupsRepository)
@@ -111,6 +112,31 @@ class GroupsRepositoryImpl implements GroupsRepository {
     String? search,
   ) async {
     final response = await _dataSource.exploreGroups(page, pageSize, search);
+    switch (response) {
+      case SuccessResponse(data: var data):
+        return SuccessResponse(data: data);
+      case ErrorResponse(error: var error):
+        return ErrorResponse(error: error);
+    }
+  }
+
+  @override
+  Future<BaseResponse<GroupsResponse>> followedGroups(
+    int? page,
+    int? pageSize,
+  ) async {
+    final response = await _dataSource.followedGroups(page, pageSize);
+    switch (response) {
+      case SuccessResponse(data: var data):
+        return SuccessResponse(data: data);
+      case ErrorResponse(error: var error):
+        return ErrorResponse(error: error);
+    }
+  }
+
+  @override
+  Future<BaseResponse<List<LeaderboardEntry>>> getLeaderboard(int top) async {
+    final response = await _dataSource.getLeaderboard(top);
     switch (response) {
       case SuccessResponse(data: var data):
         return SuccessResponse(data: data);
