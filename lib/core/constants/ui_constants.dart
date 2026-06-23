@@ -252,6 +252,10 @@ class UiConstants {
   static const String activeNow = 'Active now';
   static const String postUpdatedSuccessfully = 'Post updated successfully';
   static const String postNotFound = 'Post Not Found';
+  static const String leaderboard = 'Leaderboard';
+  static const String competingTribes = 'Competing Tribes';
+  static const String failedToLoadLeaderboard = 'Failed to load leaderboard';
+  static const String points = 'Points';
 }
 
 class GoogleFontsKeys {
