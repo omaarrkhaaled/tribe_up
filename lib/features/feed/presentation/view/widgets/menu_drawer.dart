@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
+import 'package:tribe_up/core/enums/feed_nav_tab.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
 import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
@@ -13,6 +14,8 @@ import 'package:tribe_up/features/auth/login/domain/entities/login_response/user
 import 'package:tribe_up/features/auth/logout/presentation/logout_cubit.dart';
 import 'package:tribe_up/features/auth/logout/presentation/logout_intents.dart';
 import 'package:tribe_up/features/auth/logout/presentation/logout_ui_intents.dart';
+import 'package:tribe_up/features/feed/presentation/cubit/feed_cubit.dart';
+import 'package:tribe_up/features/feed/presentation/cubit/feed_intents.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -69,6 +72,11 @@ class _MenuDrawerState extends State<MenuDrawer> {
     super.dispose();
   }
 
+  void _navigateAndClose(VoidCallback action) {
+    Navigator.pop(context);
+    action();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -102,11 +110,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
               final user = snapshot.data;
               return InkWell(
                 onTap: () {
-                  Navigator.pop(context);
-                  context.pushNamed(
-                    AppRoutesConstants.profile,
-                    extra: user?.userName,
-                  );
+                  _navigateAndClose(() {
+                    context.pushNamed(
+                      AppRoutesConstants.profile,
+                      extra: user?.userName,
+                    );
+                  });
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -166,39 +175,55 @@ class _MenuDrawerState extends State<MenuDrawer> {
             context,
             icon: FontAwesomeIcons.user,
             title: UiConstants.profile,
-            onTap: () {
-              context.pushNamed(AppRoutesConstants.profile);
-            },
+            onTap: () => _navigateAndClose(
+              () => context.pushNamed(AppRoutesConstants.profile),
+            ),
           ),
           _buildMenuItem(
             context,
             icon: FontAwesomeIcons.bell,
             title: UiConstants.notification,
-            onTap: () {},
+            onTap: () => _navigateAndClose(() {
+              context.read<FeedCubit>().doIntent(
+                SelectTabIntent(FeedNavTab.notifications),
+              );
+            }),
           ),
           _buildMenuItem(
             context,
-            icon: FontAwesomeIcons.magnifyingGlass,
-            title: UiConstants.search,
-            onTap: () {},
+            icon: FontAwesomeIcons.trophy,
+            title: 'Leaderboard',
+            onTap: () => _navigateAndClose(
+              () => context.pushNamed(AppRoutesConstants.leaderboard),
+            ),
           ),
           _buildMenuItem(
             context,
             icon: FontAwesomeIcons.gear,
             title: UiConstants.setting,
-            onTap: () {},
+            onTap: () => _navigateAndClose(
+              () => context.pushNamed(AppRoutesConstants.settings),
+            ),
           ),
           _buildMenuItem(
             context,
             icon: FontAwesomeIcons.users,
             title: UiConstants.myTribes,
-            onTap: () {},
+            onTap: () => _navigateAndClose(() {
+              context.read<FeedCubit>().doIntent(
+                SelectTabIntent(FeedNavTab.groups),
+              );
+            }),
           ),
           _buildMenuItem(
             context,
             icon: FontAwesomeIcons.paperPlane,
             title: UiConstants.chat,
-            onTap: () {},
+            onTap: () => _navigateAndClose(() {
+              context.read<FeedCubit>().doIntent(
+                SelectTabIntent(FeedNavTab.chat),
+              );
+            }),
           ),
 
           _buildMenuItem(

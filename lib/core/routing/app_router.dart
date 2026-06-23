@@ -20,6 +20,9 @@ import 'package:tribe_up/features/group_chat/presentation/view/screens/group_cha
 import 'package:tribe_up/features/feed/presentation/view/screens/post_detail_screen.dart';
 import 'package:tribe_up/features/settings/presentation/view/screens/settings_screen.dart';
 import 'package:tribe_up/features/groups/presentation/view/screens/leaderboard_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tribe_up/features/groups/presentation/view_model/leaderboard/leaderboard_cubit.dart';
+import 'package:tribe_up/features/groups/presentation/view_model/leaderboard/leaderboard_intents.dart';
 
 abstract class AppRouter {
   static GoRouter router = GoRouter(
@@ -125,7 +128,11 @@ abstract class AppRouter {
       GoRoute(
         path: AppRoutesConstants.leaderboard,
         name: AppRoutesConstants.leaderboard,
-        builder: (context, state) => const LeaderboardScreen(),
+        builder: (context, state) => BlocProvider(
+          create: (_) =>
+              getIt<LeaderboardCubit>()..doIntent(LoadLeaderboardIntent()),
+          child: const LeaderboardScreen(),
+        ),
       ),
     ],
   );
