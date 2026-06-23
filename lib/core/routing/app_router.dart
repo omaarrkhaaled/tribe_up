@@ -18,6 +18,8 @@ import 'package:tribe_up/features/groups/presentation/view/screens/tribe_profile
 import 'package:tribe_up/features/profile/presentation/view/screens/profile_screen.dart';
 import 'package:tribe_up/features/group_chat/presentation/view/screens/group_chat_screen.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/post_detail_screen.dart';
+import 'package:tribe_up/features/settings/presentation/view/screens/settings_screen.dart';
+import 'package:tribe_up/features/groups/presentation/view/screens/leaderboard_screen.dart';
 
 abstract class AppRouter {
   static GoRouter router = GoRouter(
@@ -114,6 +116,16 @@ abstract class AppRouter {
             showComments: extra['showComments'] as bool? ?? false,
           );
         },
+      ),
+      GoRoute(
+        path: AppRoutesConstants.settings,
+        name: AppRoutesConstants.settings,
+        builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutesConstants.leaderboard,
+        name: AppRoutesConstants.leaderboard,
+        builder: (context, state) => const LeaderboardScreen(),
       ),
     ],
   );
