@@ -18,6 +18,12 @@ class TribesState extends Equatable {
   final bool isLoadingDiscover;
   final String searchQuery;
 
+  // --- Following ---
+  final List<Group> followingTribes;
+  final int followingPage;
+  final bool hasMoreFollowing;
+  final bool isLoadingFollowing;
+
   // --- Shared ---
   final bool isLoadingMore;
   final String? errorMessage;
@@ -35,6 +41,10 @@ class TribesState extends Equatable {
     this.hasMoreDiscover = true,
     this.isLoadingDiscover = false,
     this.searchQuery = '',
+    this.followingTribes = const [],
+    this.followingPage = 1,
+    this.hasMoreFollowing = true,
+    this.isLoadingFollowing = false,
     this.isLoadingMore = false,
     this.errorMessage,
     this.pendingActionIds = const {},
@@ -51,6 +61,10 @@ class TribesState extends Equatable {
     bool? hasMoreDiscover,
     bool? isLoadingDiscover,
     String? searchQuery,
+    List<Group>? followingTribes,
+    int? followingPage,
+    bool? hasMoreFollowing,
+    bool? isLoadingFollowing,
     bool? isLoadingMore,
     String? errorMessage,
     bool clearError = false,
@@ -67,6 +81,10 @@ class TribesState extends Equatable {
       hasMoreDiscover: hasMoreDiscover ?? this.hasMoreDiscover,
       isLoadingDiscover: isLoadingDiscover ?? this.isLoadingDiscover,
       searchQuery: searchQuery ?? this.searchQuery,
+      followingTribes: followingTribes ?? this.followingTribes,
+      followingPage: followingPage ?? this.followingPage,
+      hasMoreFollowing: hasMoreFollowing ?? this.hasMoreFollowing,
+      isLoadingFollowing: isLoadingFollowing ?? this.isLoadingFollowing,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
       pendingActionIds: pendingActionIds ?? this.pendingActionIds,
@@ -85,6 +103,10 @@ class TribesState extends Equatable {
     hasMoreDiscover,
     isLoadingDiscover,
     searchQuery,
+    followingTribes,
+    followingPage,
+    hasMoreFollowing,
+    isLoadingFollowing,
     isLoadingMore,
     errorMessage,
     pendingActionIds,

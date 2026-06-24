@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
-import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/enums/user_relation.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/mixins/post_actions_mixin.dart';
 import 'package:tribe_up/features/feed/domain/use_case/delete_post_use_case.dart';
@@ -207,11 +205,6 @@ class TribeProfileCubit extends Cubit<TribeProfileState> with PostActionsMixin {
           membersCount: current.membersCount,
         );
         emit(state.copyWith(tribe: updatedTribe, isActionLoading: false));
-        final relation = UserRelation.fromInt(data.currentRelation);
-        final msg = relation == UserRelation.follower
-            ? UiConstants.followingTribe
-            : UiConstants.unfollowedTribe;
-        _uiController.add(ShowSuccessUiIntent(msg));
         doIntent(LoadTribePostsIntent(current.id!));
       case ErrorResponse(:final error):
         emit(
