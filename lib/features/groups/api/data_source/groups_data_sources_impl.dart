@@ -7,6 +7,7 @@ import 'package:tribe_up/features/groups/api/api_client/groups_api_client.dart';
 import 'package:tribe_up/features/groups/data/data_sources/groups_data_source.dart';
 import 'package:tribe_up/features/groups/data/models/request/update_group_request.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
+import 'package:tribe_up/features/groups/data/models/response/leaderboard_response.dart';
 
 @Injectable(as: GroupsDataSource)
 class GroupsDataSourceImpl implements GroupsDataSource {
@@ -66,5 +67,18 @@ class GroupsDataSourceImpl implements GroupsDataSource {
     String? search,
   ) {
     return safeApiCall(() => _apiClient.exploreGroups(page, pageSize, search));
+  }
+
+  @override
+  Future<BaseResponse<GroupsResponse>> followedGroups(
+    int? page,
+    int? pageSize,
+  ) {
+    return safeApiCall(() => _apiClient.followedGroups(page, pageSize));
+  }
+
+  @override
+  Future<BaseResponse<List<LeaderboardEntry>>> getLeaderboard(int top) {
+    return safeApiCall(() => _apiClient.getLeaderboard(top));
   }
 }

@@ -12,4 +12,6 @@ abstract class AppRoutesConstants {
   static const String tribeProfile = '/tribeProfile';
   static const String groupChat = '/groupChat';
   static const String postDetail = '/postDetail';
+  static const String settings = '/settings';
+  static const String leaderboard = '/leaderboard';
 }

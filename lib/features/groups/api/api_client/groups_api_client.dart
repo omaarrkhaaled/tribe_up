@@ -7,6 +7,7 @@ import 'package:retrofit/http.dart';
 import 'package:tribe_up/core/constants/api_constants.dart';
 import 'package:tribe_up/features/groups/data/models/request/update_group_request.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
+import 'package:tribe_up/features/groups/data/models/response/leaderboard_response.dart';
 
 part 'groups_api_client.g.dart';
 
@@ -57,4 +58,13 @@ abstract class GroupsApiClient {
     @Query("pageSize") int? pageSize,
     @Query("search") String? search,
   );
+
+  @GET(ApiConstants.followedGroupsEndPoint)
+  Future<GroupsResponse> followedGroups(
+    @Query("page") int? page,
+    @Query("pageSize") int? pageSize,
+  );
+
+  @GET(ApiConstants.leaderboardEndPoint)
+  Future<List<LeaderboardEntry>> getLeaderboard(@Query("top") int top);
 }

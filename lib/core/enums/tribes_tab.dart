@@ -1,1 +1,1 @@
-enum TribesTab { joined, discover }
+enum TribesTab { joined, discover, following }
