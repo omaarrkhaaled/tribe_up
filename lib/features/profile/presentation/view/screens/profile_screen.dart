@@ -55,6 +55,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _handleUiIntent(ProfileUiIntents intent) async {
     if (!mounted) return;
     switch (intent) {
+      case ShowSuccessProfileIntent(:final message):
+        UIUtils.showPremiumMessage(context, message);
+        break;
       case ShowErrorProfileIntent(:final message):
         UIUtils.showPremiumMessage(
           context,
