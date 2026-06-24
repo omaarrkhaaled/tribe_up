@@ -56,7 +56,7 @@ class _CreatePostContentState extends State<_CreatePostContent> {
   }
 
   void _onInputChanged() {
-    setState(() {}); // rebuild to validate button
+    setState(() {});
   }
 
   @override
@@ -126,12 +126,12 @@ class _CreatePostContentState extends State<_CreatePostContent> {
               children: [
                 Center(
                   child: Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    width: 40,
-                    height: 4,
+                    margin: const EdgeInsets.only(bottom: 16),
+                    width: 48,
+                    height: 5,
                     decoration: BoxDecoration(
-                      color: ColorManager.lightGrey,
-                      borderRadius: BorderRadius.circular(4),
+                      color: ColorManager.lightGrey.withValues(alpha: 0.4),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                 ),
@@ -140,15 +140,24 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.close),
+                      icon: Icon(
+                        Icons.close,
+                        color: ColorManager.black,
+                        size: 28,
+                      ),
                       onPressed: () => Navigator.pop(context),
                     ),
-                    Text(UiConstants.createPost, style: _textTheme.titleLarge),
+                    Text(
+                      UiConstants.createPost,
+                      style: _textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: ColorManager.black,
+                      ),
+                    ),
                     const SizedBox(width: 48),
                   ],
                 ),
-                Divider(color: ColorManager.lightGrey.withValues(alpha: 0.3)),
-                const SizedBox(height: 12),
+                const SizedBox(height: 16),
 
                 Container(
                   padding: const EdgeInsets.all(4),
@@ -234,83 +243,84 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     alignment: Alignment.center,
                     child: Text(
-                      'Select a tribe',
+                      UiConstants.selectATribe,
                       style: _textTheme.bodyMedium?.copyWith(
                         color: ColorManager.grey,
                       ),
                     ),
                   )
                 else
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: ColorManager.primary.withValues(alpha: 0.5),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 4,
                       ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: DropdownButton<Group>(
-                      value: _selectedGroup,
-                      isExpanded: true,
-                      underline: const SizedBox.shrink(),
-                      hint: Text(
-                        UiConstants.selectAGroup,
-                        style: _textTheme.bodyMedium?.copyWith(
-                          color: ColorManager.grey,
+                      decoration: BoxDecoration(
+                        color: ColorManager.primary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<Group>(
+                          value: _selectedGroup,
+                          icon: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: ColorManager.primary,
+                          ),
+                          hint: Text(
+                            UiConstants.selectAGroup,
+                            style: _textTheme.bodyMedium?.copyWith(
+                              color: ColorManager.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          onChanged: (group) {
+                            setState(() {
+                              _selectedGroup = group;
+                            });
+                          },
+                          items: widget.groups
+                              .where((g) => g.id != null)
+                              .map(
+                                (g) => DropdownMenuItem<Group>(
+                                  value: g,
+                                  child: Text(
+                                    g.groupName ?? '',
+                                    style: _textTheme.bodyMedium?.copyWith(
+                                      color: ColorManager.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              )
+                              .toList(),
                         ),
                       ),
-                      icon: Icon(
-                        Icons.keyboard_arrow_down,
-                        color: ColorManager.primary,
-                      ),
-                      onChanged: (group) {
-                        setState(() {
-                          _selectedGroup = group;
-                        });
-                      },
-                      items: widget.groups
-                          .where((g) => g.id != null)
-                          .map(
-                            (g) => DropdownMenuItem<Group>(
-                              value: g,
-                              child: Text(
-                                g.groupName ?? '',
-                                style: _textTheme.bodyMedium?.copyWith(
-                                  color: ColorManager.black,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          )
-                          .toList(),
                     ),
                   ),
                 const SizedBox(height: 16),
 
-                Container(
-                  decoration: BoxDecoration(
-                    color: ColorManager.lightGrey.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: ColorManager.lightGrey.withValues(alpha: 0.5),
+                TextField(
+                  controller: _captionController,
+                  maxLines: 10,
+                  minLines: 4,
+                  style: _textTheme.bodyLarge?.copyWith(fontSize: 18),
+                  decoration: InputDecoration(
+                    hintText: UiConstants.whatIsInYourMind,
+                    hintStyle: _textTheme.bodyLarge?.copyWith(
+                      color: ColorManager.grey.withValues(alpha: 0.5),
+                      fontSize: 18,
                     ),
-                  ),
-                  child: TextField(
-                    controller: _captionController,
-                    maxLines: 3,
-                    minLines: 1,
-                    decoration: InputDecoration(
-                      hintText: UiConstants.whatIsInYourMind,
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(16),
-                    ),
+                    border: InputBorder.none,
                   ),
                 ),
                 const SizedBox(height: 16),
 
                 if (_selectedFiles.isNotEmpty)
                   SizedBox(
-                    height: 100,
+                    height: 130,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: _selectedFiles.length,
@@ -318,11 +328,20 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                         return Stack(
                           children: [
                             Container(
-                              margin: const EdgeInsets.only(right: 12),
-                              width: 100,
-                              height: 100,
+                              margin: const EdgeInsets.only(right: 8, top: 8),
+                              width: 110,
+                              height: 110,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(16),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: ColorManager.black.withValues(
+                                      alpha: 0.1,
+                                    ),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
                                 image: DecorationImage(
                                   image: FileImage(_selectedFiles[index]),
                                   fit: BoxFit.cover,
@@ -330,8 +349,8 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                               ),
                             ),
                             Positioned(
-                              top: 4,
-                              right: 16,
+                              top: 0,
+                              right: 6,
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -341,12 +360,18 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                                 child: Container(
                                   padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
-                                    color: ColorManager.black,
+                                    color: ColorManager.black.withValues(
+                                      alpha: 0.7,
+                                    ),
                                     shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: ColorManager.white,
+                                      width: 2,
+                                    ),
                                   ),
                                   child: Icon(
                                     Icons.close,
-                                    size: 14,
+                                    size: 16,
                                     color: ColorManager.white,
                                   ),
                                 ),
@@ -358,72 +383,80 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                     ),
                   ),
                 if (_selectedFiles.isNotEmpty) const SizedBox(height: 16),
-
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    decoration: BoxDecoration(
-                      color: ColorManager.lightGrey.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.image_outlined, color: ColorManager.black),
-                        const SizedBox(width: 8),
-                        Text(UiConstants.upload, style: _textTheme.titleMedium),
-                      ],
-                    ),
-                  ),
-                ),
                 const SizedBox(height: 24),
 
-                BlocBuilder<CreatePostCubit, CreatePostState>(
-                  builder: (context, state) {
-                    final isLoading = state is CreatePostLoading;
-                    final bool isValid =
-                        _selectedGroup != null &&
-                        _selectedGroup!.id != null &&
-                        (_captionController.text.trim().isNotEmpty ||
-                            _selectedFiles.isNotEmpty);
-                    return SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: (isLoading || !isValid)
-                            ? null
-                            : () {
-                                context.read<CreatePostCubit>().createPost(
-                                  groupId: _selectedGroup!.id!,
-                                  caption: _captionController.text,
-                                  mediaFiles: _selectedFiles,
-                                );
-                              },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorManager.primary,
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: _pickImage,
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: ColorManager.lightGrey.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        child: isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : Text(
-                                UiConstants.post,
-                                style: _textTheme.titleMedium!.copyWith(
-                                  color: ColorManager.white,
-                                ),
-                              ),
+                        child: Icon(
+                          Icons.image_outlined,
+                          color: ColorManager.primary,
+                          size: 28,
+                        ),
                       ),
-                    );
-                  },
+                    ),
+
+                    BlocBuilder<CreatePostCubit, CreatePostState>(
+                      builder: (context, state) {
+                        final isLoading = state is CreatePostLoading;
+                        final bool isValid =
+                            _selectedGroup != null &&
+                            _selectedGroup!.id != null &&
+                            (_captionController.text.trim().isNotEmpty ||
+                                _selectedFiles.isNotEmpty);
+
+                        return SizedBox(
+                          width: 130,
+                          height: 52,
+                          child: ElevatedButton(
+                            onPressed: (isLoading || !isValid)
+                                ? null
+                                : () {
+                                    context.read<CreatePostCubit>().createPost(
+                                      groupId: _selectedGroup!.id!,
+                                      caption: _captionController.text,
+                                      mediaFiles: _selectedFiles,
+                                    );
+                                  },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: ColorManager.primary,
+                              disabledBackgroundColor: ColorManager.primary
+                                  .withValues(alpha: 0.5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(26),
+                              ),
+                              elevation: isValid ? 4 : 0,
+                            ),
+                            child: isLoading
+                                ? const SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Text(
+                                    UiConstants.post,
+                                    style: _textTheme.titleMedium?.copyWith(
+                                      color: ColorManager.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 32),
               ],

@@ -4,6 +4,7 @@ import 'package:tribe_up/core/enums/user_relation.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
 import 'package:tribe_up/features/groups/presentation/view/widgets/dialogs/confirm_leave_dialog.dart';
+import 'package:tribe_up/features/groups/presentation/view/widgets/dialogs/confirm_unfollow_dialog.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_profile/tribe_profile_cubit.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_profile/tribe_profile_intents.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_profile/tribe_profile_states.dart';
@@ -55,7 +56,20 @@ class _ActionButtonState extends State<ActionButton> {
       case UserRelation.none:
       case UserRelation.follower:
         return ElevatedButton(
-          onPressed: () => widget.cubit.doIntent(const ToggleFollowIntent()),
+          onPressed: () {
+            if (widget.relation == UserRelation.follower) {
+              showDialog(
+                context: context,
+                builder: (_) => ConfirmUnfollowDialog(
+                  tribeName: widget.tribe.groupName ?? 'Unknown',
+                  onConfirm: () =>
+                      widget.cubit.doIntent(const ToggleFollowIntent()),
+                ),
+              );
+            } else {
+              widget.cubit.doIntent(const ToggleFollowIntent());
+            }
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: ColorManager.primary,
             foregroundColor: Colors.white,
