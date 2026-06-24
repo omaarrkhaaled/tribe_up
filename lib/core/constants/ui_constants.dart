@@ -256,6 +256,8 @@ class UiConstants {
   static const String competingTribes = 'Competing Tribes';
   static const String failedToLoadLeaderboard = 'Failed to load leaderboard';
   static const String points = 'Points';
+  static const String preferences = 'Preferences';
+  static const String selectATribe = 'Select a tribe';
 }
 
 class GoogleFontsKeys {
