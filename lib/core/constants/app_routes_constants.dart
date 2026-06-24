@@ -14,4 +14,5 @@ abstract class AppRoutesConstants {
   static const String postDetail = '/postDetail';
   static const String settings = '/settings';
   static const String leaderboard = '/leaderboard';
+  static const String notifications = '/notifications';
 }

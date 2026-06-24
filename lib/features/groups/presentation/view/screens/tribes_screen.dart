@@ -93,6 +93,7 @@ class _TribesScreenState extends State<TribesScreen> {
         if (didChange == true) {
           cubit.doIntent(const LoadJoinedTribesIntent());
           cubit.doIntent(const LoadDiscoverTribesIntent());
+          cubit.doIntent(const LoadFollowingTribesIntent());
         }
       case ShowCreateTribeSheetUiIntent():
         showModalBottomSheet(

@@ -197,10 +197,13 @@ class TribeCard extends StatelessWidget {
       onPressed: onAction,
       style: ElevatedButton.styleFrom(
         backgroundColor: isFollowing
-            ? ColorManager.lightGrey
-            : ColorManager.primary,
-        foregroundColor: ColorManager.white,
+            ? ColorManager.primary
+            : Colors.transparent,
+        foregroundColor: isFollowing ? Colors.white : ColorManager.primary,
         elevation: 0,
+        side: isFollowing
+            ? BorderSide.none
+            : BorderSide(color: ColorManager.primary, width: 1.5),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         padding: const EdgeInsets.symmetric(vertical: 10),
       ),
@@ -208,7 +211,7 @@ class TribeCard extends StatelessWidget {
         label,
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
           fontWeight: FontWeight.w600,
-          color: isFollowing ? ColorManager.black : ColorManager.white,
+          color: isFollowing ? Colors.white : ColorManager.primary,
         ),
       ),
     );
