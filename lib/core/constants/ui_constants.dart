@@ -264,6 +264,15 @@ class UiConstants {
   static const String points = 'Points';
   static const String preferences = 'Preferences';
   static const String selectATribe = 'Select a tribe';
+  static const String yourStory = 'Your story';
+  static const String removeBio = 'Remove Bio';
+  static const String removeBioMessage =
+      'Are you sure you want to remove your bio?';
+  static const String removeBioPosActionName = 'Remove';
+  static const String removePhoneNumber = 'Remove Phone Number';
+  static const String removePhoneNumberMessage =
+      'Are you sure you want to remove your phone number?';
+  static const String removePhoneNumberPosActionName = 'Remove';
 }
 
 class GoogleFontsKeys {

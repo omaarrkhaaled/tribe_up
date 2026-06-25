@@ -135,7 +135,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       onEdit: () =>
                           _showBottomSheet(EditPhoneSheet(cubit: _cubit)),
                       onRemove: state.data?.phoneNumber?.isNotEmpty == true
-                          ? () => _cubit.doIntent(RemovePhoneNumberIntent())
+                          ? () {
+                              UIUtils.showPremiumDialog(
+                                context: context,
+                                title: UiConstants.removePhoneNumber,
+                                message: UiConstants.removePhoneNumberMessage,
+                                posActionName:
+                                    UiConstants.removeBioPosActionName,
+                                posAction: () =>
+                                    _cubit.doIntent(RemovePhoneNumberIntent()),
+                                negActionName: UiConstants.cancel,
+                              );
+                            }
                           : null,
                     ),
                     SectionCard(
@@ -148,7 +159,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       onEdit: () =>
                           _showBottomSheet(EditBioSheet(cubit: _cubit)),
                       onRemove: state.data?.bio?.isNotEmpty == true
-                          ? () => _cubit.doIntent(RemoveBioIntent())
+                          ? () {
+                              UIUtils.showPremiumDialog(
+                                context: context,
+                                title: UiConstants.removeBio,
+                                message: UiConstants.removeBioMessage,
+                                posActionName:
+                                    UiConstants.removeBioPosActionName,
+                                posAction: () =>
+                                    _cubit.doIntent(RemoveBioIntent()),
+                                negActionName: UiConstants.cancel,
+                              );
+                            }
                           : null,
                     ),
                     const ChangePasswordSection(),

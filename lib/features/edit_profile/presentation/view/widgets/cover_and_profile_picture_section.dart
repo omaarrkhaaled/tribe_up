@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/utils/ui_utils.dart';
+import 'package:tribe_up/features/edit_profile/presentation/view/screens/image_cropper_screen.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view_model/edit_profile_cubit.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view_model/edit_profile_intents.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view_model/edit_profile_states.dart';
@@ -48,10 +50,19 @@ class _CoverAndProfilePictureSectionState
     );
     if (pickedImage != null) {
       final file = File(pickedImage.path);
-      if (isCover) {
-        widget.cubit.doIntent(UploadCoverIntent(file: file));
-      } else {
-        widget.cubit.doIntent(UploadProfilePictureIntent(file: file));
+      if (!mounted) return;
+      final croppedFile = await Navigator.of(context).push<File>(
+        MaterialPageRoute(
+          builder: (context) =>
+              ImageCropperScreen(imageFile: file, isCover: isCover),
+        ),
+      );
+      if (croppedFile != null) {
+        if (isCover) {
+          widget.cubit.doIntent(UploadCoverIntent(file: croppedFile));
+        } else {
+          widget.cubit.doIntent(UploadProfilePictureIntent(file: croppedFile));
+        }
       }
     }
   }
@@ -150,8 +161,16 @@ class _CoverAndProfilePictureSectionState
                             child: _CircularActionButton(
                               icon: Icons.delete,
                               color: Colors.redAccent,
-                              onPressed: () =>
-                                  widget.cubit.doIntent(RemoveCoverIntent()),
+                              onPressed: () => UIUtils.showPremiumDialog(
+                                context: context,
+                                title: "Remove Cover Photo",
+                                message:
+                                    "Are you sure you want to remove your cover photo?",
+                                posActionName: "Remove",
+                                posAction: () =>
+                                    widget.cubit.doIntent(RemoveCoverIntent()),
+                                negActionName: "Cancel",
+                              ),
                             ),
                           ),
                       ],
@@ -269,8 +288,16 @@ class _CoverAndProfilePictureSectionState
                             size: 34,
                             iconSize: 18,
                             color: Colors.redAccent,
-                            onPressed: () => widget.cubit.doIntent(
-                              RemoveProfilePictureIntent(),
+                            onPressed: () => UIUtils.showPremiumDialog(
+                              context: context,
+                              title: "Remove Profile Picture",
+                              message:
+                                  "Are you sure you want to remove your profile picture?",
+                              posActionName: "Remove",
+                              posAction: () => widget.cubit.doIntent(
+                                RemoveProfilePictureIntent(),
+                              ),
+                              negActionName: "Cancel",
                             ),
                           ),
                         ),
