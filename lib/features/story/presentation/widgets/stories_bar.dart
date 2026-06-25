@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
 import 'package:tribe_up/features/story/presentation/cubit/story_cubit.dart';
@@ -145,7 +146,7 @@ class _StoriesBarState extends State<StoriesBar> {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          'Your Story',
+                          UiConstants.yourStory,
                           style: textTheme.bodySmall?.copyWith(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -170,8 +171,8 @@ class _StoriesBarState extends State<StoriesBar> {
                       builder: (routeCtx) => BlocProvider.value(
                         value: context.read<StoryCubit>(),
                         child: StoryViewerScreen(
-                          groupId: item.groupId,
-                          groupName: item.groupName ?? 'Tribe',
+                          allFeedItems: feedItems,
+                          initialGroupIndex: index - 1,
                         ),
                       ),
                     ),
