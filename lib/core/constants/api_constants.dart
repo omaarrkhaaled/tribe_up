@@ -128,4 +128,7 @@ class CacheConstants {
   static const String deviceIdBoxName = 'deviceIdBox';
   static const String deviceIdKey = 'deviceId';
   static const String userSummaryKey = 'userSummary';
+  static const String storiesBoxName = 'storiesBox';
+  static const String storyFeedKey = 'storyFeed';
+  static const String groupStoriesPrefix = 'groupStories_';
 }
