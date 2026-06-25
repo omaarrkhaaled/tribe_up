@@ -7,17 +7,19 @@ import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
 import 'package:tribe_up/features/profile/presentation/view/screens/profile_screen.dart';
 import 'package:tribe_up/features/story/domain/entities/story_entity.dart';
+import 'package:tribe_up/features/story/domain/entities/story_feed_item_entity.dart';
 import 'package:tribe_up/features/story/presentation/cubit/story_cubit.dart';
 import 'package:tribe_up/features/story/presentation/cubit/story_states.dart';
 
 class StoryViewerScreen extends StatefulWidget {
-  final int groupId;
-  final String groupName;
+  final List<StoryFeedItemEntity> allFeedItems;
+
+  final int initialGroupIndex;
 
   const StoryViewerScreen({
     super.key,
-    required this.groupId,
-    required this.groupName,
+    required this.allFeedItems,
+    required this.initialGroupIndex,
   });
 
   @override
@@ -27,17 +29,27 @@ class StoryViewerScreen extends StatefulWidget {
 class _StoryViewerScreenState extends State<StoryViewerScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  int _currentIndex = 0;
+
+  late int _currentGroupIndex;
+
+  int _currentStoryIndex = 0;
   bool _isGroupLoaded = false;
   bool _isDeleting = false;
-  double? _lastTapPositionX; // captured in onTapDown, consumed in onTap
+  double? _lastTapPositionX;
   List<StoryEntity> _stories = [];
   String? _currentUserId;
   String? _currentUserName;
 
+  StoryFeedItemEntity get _currentFeedItem =>
+      widget.allFeedItems[_currentGroupIndex];
+  int get _currentGroupId => _currentFeedItem.groupId;
+  String get _currentGroupName => _currentFeedItem.groupName ?? 'Tribe';
+
   @override
   void initState() {
     super.initState();
+    _currentGroupIndex = widget.initialGroupIndex;
+
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
@@ -49,8 +61,7 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
       }
     });
 
-    // Fetch the stories for the group
-    context.read<StoryCubit>().loadGroupStories(widget.groupId);
+    _loadGroup(_currentGroupIndex);
     _loadCurrentUser();
   }
 
@@ -70,6 +81,19 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
     super.dispose();
   }
 
+  void _loadGroup(int groupIndex) {
+    setState(() {
+      _isGroupLoaded = false;
+      _stories = [];
+      _currentStoryIndex = 0;
+    });
+    _animationController.stop();
+    _animationController.reset();
+    context.read<StoryCubit>().loadGroupStories(
+      widget.allFeedItems[groupIndex].groupId,
+    );
+  }
+
   void _startStory() {
     if (_stories.isEmpty) return;
     _animationController.stop();
@@ -77,30 +101,39 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
     _animationController.forward();
 
     // Mark current story as viewed
-    final currentStory = _stories[_currentIndex];
+    final currentStory = _stories[_currentStoryIndex];
     context.read<StoryCubit>().markStoryAsViewed(
-      widget.groupId,
+      _currentGroupId,
       currentStory.id,
     );
   }
 
   void _nextStory() {
-    if (_currentIndex < _stories.length - 1) {
-      setState(() {
-        _currentIndex++;
-      });
+    if (_currentStoryIndex < _stories.length - 1) {
+      // More stories in the same tribe
+      setState(() => _currentStoryIndex++);
       _startStory();
     } else {
-      // Finished all stories in the group, close the viewer
-      Navigator.pop(context);
+      // No more stories in this tribe → try the next tribe
+      _advanceToNextGroup();
+    }
+  }
+
+  void _advanceToNextGroup() {
+    final nextGroupIndex = _currentGroupIndex + 1;
+    if (nextGroupIndex < widget.allFeedItems.length) {
+      // There IS a next tribe
+      setState(() => _currentGroupIndex = nextGroupIndex);
+      _loadGroup(nextGroupIndex);
+    } else {
+      // We've watched all tribes
+      if (mounted) Navigator.pop(context);
     }
   }
 
   void _previousStory() {
-    if (_currentIndex > 0) {
-      setState(() {
-        _currentIndex--;
-      });
+    if (_currentStoryIndex > 0) {
+      setState(() => _currentStoryIndex--);
       _startStory();
     } else {
       // Already on the first story, restart it
@@ -108,13 +141,8 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
     }
   }
 
-  void _pauseStory() {
-    _animationController.stop();
-  }
-
-  void _resumeStory() {
-    _animationController.forward();
-  }
+  void _pauseStory() => _animationController.stop();
+  void _resumeStory() => _animationController.forward();
 
   bool _isOwner(StoryEntity story) {
     if (_currentUserId == null && _currentUserName == null) return false;
@@ -133,7 +161,7 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
   }
 
   void _confirmDelete(StoryEntity story) {
-    _pauseStory(); // Pause the story timer while the confirmation dialog is open
+    _pauseStory();
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -152,7 +180,7 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
           TextButton(
             onPressed: () {
               Navigator.pop(dialogCtx);
-              _resumeStory(); // Resume playing if canceled
+              _resumeStory();
             },
             child: const Text(
               'Cancel',
@@ -162,7 +190,6 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
           TextButton(
             onPressed: () {
               Navigator.pop(dialogCtx);
-              // Call directly — it's async and safe; _isDeleting flag guards the listener
               _performDelete(story);
             },
             child: const Text(
@@ -185,7 +212,7 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
     EasyLoading.show(status: 'Deleting story...');
 
     final success = await context.read<StoryCubit>().deleteStory(
-      widget.groupId,
+      _currentGroupId,
       story.id,
     );
 
@@ -196,23 +223,19 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
     if (success) {
       final remaining = _stories.where((s) => s.id != story.id).toList();
       if (remaining.isEmpty) {
-        // Last story deleted — _isDeleting stays true so the listener stays guarded.
-        // We are the sole caller of pop here.
-        Navigator.pop(context);
+        setState(() => _isDeleting = false);
+        _advanceToNextGroup();
       } else {
-        // More stories remain — safe to reset flag inside the same setState that
-        // updates _stories, so the listener never sees old-count + flag=false.
         setState(() {
           _isDeleting = false;
           _stories = remaining;
-          if (_currentIndex >= _stories.length) {
-            _currentIndex = _stories.length - 1;
+          if (_currentStoryIndex >= _stories.length) {
+            _currentStoryIndex = _stories.length - 1;
           }
         });
         _startStory();
       }
     } else {
-      // Failure — reset the guard, resume playback and show error.
       setState(() => _isDeleting = false);
       _resumeStory();
       final errorMsg =
@@ -230,33 +253,31 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
       backgroundColor: Colors.black,
       body: BlocConsumer<StoryCubit, StoryState>(
         listener: (context, state) {
-          // Don't react to state changes while a delete is in-flight;
-          // _performDelete will handle navigation after the API responds.
           if (_isDeleting) return;
 
-          final groupStories = state.groupStories[widget.groupId];
+          final groupStories = state.groupStories[_currentGroupId];
           if (groupStories != null) {
             if (!_isGroupLoaded || groupStories.length != _stories.length) {
               setState(() {
                 _stories = groupStories;
                 _isGroupLoaded = true;
-                // Adjust index if it goes out of bounds after a deletion
-                if (_currentIndex >= _stories.length) {
-                  _currentIndex = _stories.isNotEmpty ? _stories.length - 1 : 0;
+                if (_currentStoryIndex >= _stories.length) {
+                  _currentStoryIndex = _stories.isNotEmpty
+                      ? _stories.length - 1
+                      : 0;
                 }
               });
               if (_stories.isNotEmpty) {
                 _startStory();
               } else {
-                // No stories left in this group, exit the viewer
-                Navigator.pop(context);
+                _advanceToNextGroup();
               }
             }
           }
         },
         builder: (context, state) {
           final isLoading =
-              state.isLoadingGroupStories[widget.groupId] ?? false;
+              state.isLoadingGroupStories[_currentGroupId] ?? false;
 
           if (isLoading || !_isGroupLoaded) {
             return Center(
@@ -266,7 +287,7 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
                   CircularProgressIndicator(color: ColorManager.primary),
                   const SizedBox(height: 16),
                   Text(
-                    'Loading ${widget.groupName} stories...',
+                    'Loading $_currentGroupName stories...',
                     style: const TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ],
@@ -293,15 +314,12 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
             );
           }
 
-          final story = _stories[_currentIndex];
+          final story = _stories[_currentStoryIndex];
 
           return GestureDetector(
-            // Record position on down so onTap can use it for left/right detection.
             onTapDown: (details) {
               _lastTapPositionX = details.globalPosition.dx;
             },
-            // Use onTap (not onTapDown) so child widgets (IconButton, etc.) can win
-            // the gesture arena and consume the tap before we act on it.
             onTap: () {
               final screenWidth = MediaQuery.of(context).size.width;
               final dx = _lastTapPositionX ?? screenWidth;
@@ -313,7 +331,6 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
             },
             onLongPressStart: (_) => _pauseStory(),
             onLongPressEnd: (_) => _resumeStory(),
-            // Drag down to dismiss
             onVerticalDragUpdate: (details) {
               if (details.delta.dy > 10) {
                 Navigator.pop(context);
@@ -357,7 +374,6 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
                       ),
 
                 // ── Gradient Shadow overlays ──
-                // Top Shadow for status indicators
                 Positioned(
                   top: 0,
                   left: 0,
@@ -376,7 +392,6 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
                     ),
                   ),
                 ),
-                // Bottom Shadow for Caption (only if story media is present)
                 if (story.mediaURL != null &&
                     story.caption != null &&
                     story.caption!.isNotEmpty)
@@ -407,36 +422,48 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Progress Bars
-                      Row(
-                        children: List.generate(_stories.length, (index) {
-                          return Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 2.0,
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(2),
-                                child: LinearProgressIndicator(
-                                  value: index == _currentIndex
-                                      ? _animationController.value
-                                      : (index < _currentIndex ? 1.0 : 0.0),
-                                  backgroundColor: Colors.white.withValues(
-                                    alpha: 0.3,
+                      // ── Animated Progress Bars ──
+                      AnimatedBuilder(
+                        animation: _animationController,
+                        builder: (context, _) {
+                          return Row(
+                            children: List.generate(_stories.length, (index) {
+                              double progressValue;
+                              if (index < _currentStoryIndex) {
+                                progressValue = 1.0;
+                              } else if (index == _currentStoryIndex) {
+                                progressValue = _animationController.value;
+                              } else {
+                                progressValue = 0.0;
+                              }
+                              return Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 2.0,
                                   ),
-                                  valueColor:
-                                      const AlwaysStoppedAnimation<Color>(
-                                        Colors.white,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(2),
+                                    child: LinearProgressIndicator(
+                                      value: progressValue,
+                                      backgroundColor: Colors.white.withValues(
+                                        alpha: 0.3,
                                       ),
-                                  minHeight: 3,
+                                      valueColor:
+                                          const AlwaysStoppedAnimation<Color>(
+                                            Colors.white,
+                                          ),
+                                      minHeight: 3,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
+                              );
+                            }),
                           );
-                        }),
+                        },
                       ),
                       const SizedBox(height: 12),
-                      // Header: Group details + Close button
+
+                      // ── Header: Group details + Close button ──
                       Row(
                         children: [
                           CircleAvatar(
@@ -469,7 +496,7 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.groupName,
+                                  _currentGroupName,
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,

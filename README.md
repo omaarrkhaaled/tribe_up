@@ -1,4 +1,4 @@
-# tribe_up
+# Tribe Up
 
 A new Flutter project.
 
