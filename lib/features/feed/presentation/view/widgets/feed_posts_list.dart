@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_cubit.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_intents.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_states.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/feed_create_post_trigger.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/post_card.dart';
+import 'package:tribe_up/features/story/presentation/cubit/story_cubit.dart';
+import 'package:tribe_up/features/story/presentation/widgets/stories_bar.dart';
 
 class FeedPostsList extends StatelessWidget {
   final FeedStates state;
@@ -47,17 +50,27 @@ class FeedPostsList extends StatelessWidget {
           padding: EdgeInsets.only(
             top: kToolbarHeight + MediaQuery.of(context).padding.top,
           ),
-          // +1 for the create-post trigger at top
-          itemCount: (state.isLoading ? 5 : state.posts.length) + 1,
+          // +2 for the StoriesBar and the create-post trigger at top
+          itemCount: (state.isLoading ? 5 : state.posts.length) + 2,
           itemBuilder: (context, index) {
-            // First item is always the create-post trigger
+            // First item is always the StoriesBar
             if (index == 0) {
+              return BlocProvider<StoryCubit>(
+                create: (_) => getIt<StoryCubit>(),
+                child: StoriesBar(
+                  currentUserProfilePicture: currentUserProfilePicture,
+                  joinedGroups: state.joinedGroups,
+                ),
+              );
+            }
+            // Second item is always the create-post trigger
+            if (index == 1) {
               return FeedCreatePostTrigger(
                 state: state,
                 userProfilePicture: currentUserProfilePicture,
               );
             }
-            final postIndex = index - 1;
+            final postIndex = index - 2;
             final post = state.isLoading
                 ? PostEntity.getDummyPost()
                 : state.posts[postIndex];

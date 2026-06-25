@@ -135,6 +135,12 @@ class UiConstants {
   static const String post = 'post';
   static const String story = 'story';
   static const String whatIsInYourMind = 'What\'s in your mind?';
+  static const String sharePost = 'Share Post';
+  static const String shareStory = 'Share Story';
+  static const String createStory = 'Create Story';
+  static const String writeStoryCaption = 'Write a caption for your story...';
+  static const String addStoryMedia = 'Add Story Media';
+  static const String storiesRequireMedia = 'Stories require a photo/video';
   static const String upload = 'Upload';
   static const String public = 'public';
   static const String private = 'private';

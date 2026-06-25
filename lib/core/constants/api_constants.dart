@@ -27,6 +27,14 @@ class ApiConstants {
   static const String changeEntityContentStatusEndPoint =
       'Posts/ChangeEntityContentStatus';
 
+  //----------------------------Story EndPoints------------------------//
+  static const String createStoryEndPoint = 'Story/CreateStory';
+  static const String deleteStoryEndPoint = 'Story/DeleteStory/{storyId}';
+  static const String getGroupStoriesEndPoint =
+      'Story/GetGroupStories/{groupId}';
+  static const String getStoryFeedEndPoint = 'Story/GetStoryFeed';
+  static const String markAsViewedEndPoint = 'Story/MarkAsViewed/{storyId}';
+
   //----------------------------comments EndPoints------------------------//
   static const String commentsEndPoint = 'Comment/{postId}/Comments';
   static const String addCommentEndPoint = 'Comment/{postId}/AddComment';
@@ -120,4 +128,7 @@ class CacheConstants {
   static const String deviceIdBoxName = 'deviceIdBox';
   static const String deviceIdKey = 'deviceId';
   static const String userSummaryKey = 'userSummary';
+  static const String storiesBoxName = 'storiesBox';
+  static const String storyFeedKey = 'storyFeed';
+  static const String groupStoriesPrefix = 'groupStories_';
 }
