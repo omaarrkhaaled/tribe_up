@@ -102,8 +102,8 @@ class _TribesScreenState extends State<TribesScreen> {
           backgroundColor: ColorManager.transparent,
           builder: (_) => CreateTribeSheet(
             onTribeCreated: (tribe) {
-              // Reload joined after creation
-              cubit.doIntent(const LoadJoinedTribesIntent());
+              // Insert the new tribe at the top
+              cubit.doIntent(AddCreatedTribeIntent(tribe));
             },
           ),
         );

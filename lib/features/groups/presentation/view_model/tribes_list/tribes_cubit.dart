@@ -58,6 +58,8 @@ class TribesListCubit extends Cubit<TribesState> {
         _uiIntentController.add(NavigateToTribeProfileUiIntent(group));
       case OpenCreateTribeIntent():
         _uiIntentController.add(const ShowCreateTribeSheetUiIntent());
+      case AddCreatedTribeIntent(:final group):
+        emit(state.copyWith(joinedTribes: [group, ...state.joinedTribes]));
     }
   }
 

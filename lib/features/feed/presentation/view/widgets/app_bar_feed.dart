@@ -30,11 +30,14 @@ class _FeedAppBarState extends State<FeedAppBar> {
           builder: (context) => GestureDetector(
             onTap: () => Scaffold.of(context).openDrawer(),
             child: CircleAvatar(
+              radius: 20,
               backgroundColor: ColorManager.white,
-              foregroundImage: profilePic != null
+              backgroundImage: profilePic != null
                   ? CachedNetworkImageProvider(profilePic)
                   : null,
-              child: Icon(Icons.person, color: ColorManager.grey),
+              child: profilePic == null
+                  ? Icon(Icons.person, color: ColorManager.grey)
+                  : null,
             ),
           ),
         ),

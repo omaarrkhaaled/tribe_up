@@ -12,6 +12,7 @@ import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/dialogs/edit_post_sheet.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/video_player_widget.dart';
 import 'package:tribe_up/features/comments/presentation/view/widgets/comments_bottom_sheet.dart';
+import 'package:tribe_up/features/feed/presentation/view/widgets/expandable_text.dart';
 
 class PostCard extends StatelessWidget {
   final PostEntity post;
@@ -108,13 +109,9 @@ class PostCard extends StatelessWidget {
             if (post.caption != null && post.caption!.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(bottom: 12.0),
-                child: Text(
-                  post.caption!,
-                  style: textTheme.bodyMedium?.copyWith(
-                    fontSize: 15,
-                    height: 1.4,
-                    fontWeight: FontWeight.w400,
-                  ),
+                child: ExpandableText(
+                  text: post.caption!,
+                  style: textTheme.bodyMedium,
                 ),
               ),
 

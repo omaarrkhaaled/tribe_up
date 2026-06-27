@@ -20,6 +20,13 @@ import 'package:tribe_up/features/feed/presentation/view/widgets/feed_nav_bar.da
 import 'package:tribe_up/features/feed/presentation/view/widgets/feed_posts_list.dart';
 import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/menu_drawer.dart';
+import 'package:tribe_up/config/base_response/base_response.dart';
+import 'package:tribe_up/features/edit_profile/domain/use_cases/get_profile_info_use_case.dart';
+import 'package:tribe_up/features/auth/login/data/models/login_response/user_summary_model.dart';
+import 'package:tribe_up/core/services/signalr/notification_signalr_service.dart';
+import 'package:tribe_up/core/widgets/in_app_notification_banner.dart';
+import 'package:tribe_up/core/constants/app_routes_constants.dart';
+import 'package:go_router/go_router.dart';
 
 class FeedScreen extends StatelessWidget {
   final UserSummaryEntity? userSummary;
@@ -60,6 +67,10 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
     _userSummary = widget.userSummary;
     if (_userSummary == null) _loadUserSummary();
 
+    // Start the notifications SignalR hub immediately so real-time banners
+    // are active as soon as the user reaches the home screen.
+    getIt<NotificationSignalRService>().connect();
+
     final cubit = context.read<FeedCubit>();
     cubit.doIntent(const LoadFeedIntent());
 
@@ -68,10 +79,30 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
   }
 
   Future<void> _loadUserSummary() async {
-    final model = await getIt<LoginLocalDataSource>().getUserSummary();
+    final localDataSource = getIt<LoginLocalDataSource>();
+    final model = await localDataSource.getUserSummary();
     if (model != null && mounted) {
       setState(() => _userSummary = model.toEntity());
     }
+
+    try {
+      final result = await getIt<GetProfileInfoUseCase>().call();
+      switch (result) {
+        case SuccessResponse(:final data):
+          final newSummary = UserSummaryModel(
+            id: model?.id,
+            userName: data.userName,
+            fullName: '${data.firstName} ${data.lastName}'.trim(),
+            profilePicture: data.profilePicture,
+          );
+          await localDataSource.saveUserSummary(userSummary: newSummary);
+          if (mounted) {
+            setState(() => _userSummary = newSummary.toEntity());
+          }
+        case ErrorResponse():
+          break;
+      }
+    } catch (_) {}
   }
 
   void _handleUiIntent(FeedUiIntents intent) {
@@ -113,35 +144,51 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FeedCubit, FeedStates>(
-      builder: (context, state) {
-        return Scaffold(
-          drawer: MenuDrawer(
-            localDataSource: getIt<LoginLocalDataSource>(),
-            userSummary: _userSummary,
-          ),
-          body: Stack(
-            children: [
-              _buildCurrentScreen(state.currentTab, state),
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 400),
-                top: (_isAppBarVisible && state.currentTab == FeedNavTab.feed)
-                    ? 0
-                    : -(kToolbarHeight + MediaQuery.of(context).padding.top),
-                left: 0,
-                right: 0,
-                child: FeedAppBar(userSummary: _userSummary),
-              ),
-            ],
-          ),
-          bottomNavigationBar: FeedNavBar(
-            currentTab: state.currentTab,
-            onTabSelected: (tab) {
-              context.read<FeedCubit>().doIntent(SelectTabIntent(tab));
-            },
-          ),
-        );
+    return InAppNotificationOverlay(
+      notificationStream:
+          getIt<NotificationSignalRService>().onNotificationReceived,
+      onNotificationTap: (notification) {
+        final referenceId = notification.referenceId;
+        final type = notification.type?.toLowerCase() ?? '';
+        if (referenceId != null) {
+          final showComments = type.contains('comment');
+          context.pushNamed(
+            AppRoutesConstants.postDetail,
+            extra: {'postId': referenceId, 'showComments': showComments},
+          );
+        }
       },
+      child: BlocBuilder<FeedCubit, FeedStates>(
+        builder: (context, state) {
+          return Scaffold(
+            drawer: MenuDrawer(
+              localDataSource: getIt<LoginLocalDataSource>(),
+              userSummary: _userSummary,
+              onProfilePopped: _loadUserSummary,
+            ),
+            body: Stack(
+              children: [
+                _buildCurrentScreen(state.currentTab, state),
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 400),
+                  top: (_isAppBarVisible && state.currentTab == FeedNavTab.feed)
+                      ? 0
+                      : -(kToolbarHeight + MediaQuery.of(context).padding.top),
+                  left: 0,
+                  right: 0,
+                  child: FeedAppBar(userSummary: _userSummary),
+                ),
+              ],
+            ),
+            bottomNavigationBar: FeedNavBar(
+              currentTab: state.currentTab,
+              onTabSelected: (tab) {
+                context.read<FeedCubit>().doIntent(SelectTabIntent(tab));
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 
