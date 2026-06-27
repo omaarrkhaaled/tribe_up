@@ -273,6 +273,8 @@ class UiConstants {
   static const String removePhoneNumberMessage =
       'Are you sure you want to remove your phone number?';
   static const String removePhoneNumberPosActionName = 'Remove';
+  static const String seeMore = 'See more';
+  static const String seeLess = 'See less';
 }
 
 class GoogleFontsKeys {
