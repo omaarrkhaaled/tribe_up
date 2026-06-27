@@ -40,6 +40,9 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
   String? _currentUserId;
   String? _currentUserName;
 
+  bool _hasStartedCurrentStory = false;
+  bool _isUserHolding = false;
+
   StoryFeedItemEntity get _currentFeedItem =>
       widget.allFeedItems[_currentGroupIndex];
   int get _currentGroupId => _currentFeedItem.groupId;
@@ -98,7 +101,8 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
     if (_stories.isEmpty) return;
     _animationController.stop();
     _animationController.reset();
-    _animationController.forward();
+    _hasStartedCurrentStory = false;
+    _isUserHolding = false;
 
     // Mark current story as viewed
     final currentStory = _stories[_currentStoryIndex];
@@ -106,6 +110,11 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
       _currentGroupId,
       currentStory.id,
     );
+
+    if (currentStory.mediaURL == null) {
+      _hasStartedCurrentStory = true;
+      _animationController.forward();
+    }
   }
 
   void _nextStory() {
@@ -141,8 +150,17 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
     }
   }
 
-  void _pauseStory() => _animationController.stop();
-  void _resumeStory() => _animationController.forward();
+  void _pauseStory() {
+    _isUserHolding = true;
+    _animationController.stop();
+  }
+
+  void _resumeStory() {
+    _isUserHolding = false;
+    if (_hasStartedCurrentStory) {
+      _animationController.forward();
+    }
+  }
 
   bool _isOwner(StoryEntity story) {
     if (_currentUserId == null && _currentUserName == null) return false;
@@ -344,6 +362,22 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
                     ? CachedNetworkImage(
                         imageUrl: story.mediaURL!,
                         fit: BoxFit.contain,
+                        imageBuilder: (context, imageProvider) {
+                          if (!_hasStartedCurrentStory) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (mounted && !_hasStartedCurrentStory) {
+                                _hasStartedCurrentStory = true;
+                                if (!_isUserHolding) {
+                                  _animationController.forward();
+                                }
+                              }
+                            });
+                          }
+                          return Image(
+                            image: imageProvider,
+                            fit: BoxFit.contain,
+                          );
+                        },
                         placeholder: (context, url) => const Center(
                           child: CircularProgressIndicator(color: Colors.white),
                         ),

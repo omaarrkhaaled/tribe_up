@@ -49,3 +49,8 @@ final class ViewTribeIntent extends TribesIntents {
 final class OpenCreateTribeIntent extends TribesIntents {
   const OpenCreateTribeIntent();
 }
+
+final class AddCreatedTribeIntent extends TribesIntents {
+  final Group group;
+  const AddCreatedTribeIntent(this.group);
+}
