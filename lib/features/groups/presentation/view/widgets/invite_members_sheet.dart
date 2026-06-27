@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,6 +35,9 @@ class _InviteMembersSheetState extends State<InviteMembersSheet> {
     super.initState();
     _cubit = getIt<InviteCubit>();
     _maxUsesController = TextEditingController();
+    _maxUsesController.addListener(() {
+      setState(() {});
+    });
     _uiSub = _cubit.uiIntents.listen(_handleUiIntent);
     _cubit.doIntent(LoadActiveInvitationIntent(widget.groupId));
   }
@@ -173,7 +175,11 @@ class _InviteMembersSheetState extends State<InviteMembersSheet> {
                   CreateInviteButton(
                     isCreating: state.isCreating,
                     onPressed:
-                        hasActive || state.isCreating || state.isLoadingActive
+                        hasActive ||
+                            state.isCreating ||
+                            state.isLoadingActive ||
+                            _maxUsesController.text.trim().isEmpty ||
+                            _selectedDate == null
                         ? null
                         : _create,
                   ),
