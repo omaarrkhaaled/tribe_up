@@ -6,8 +6,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class FeedAppBar extends StatefulWidget implements PreferredSizeWidget {
   final UserSummaryEntity? userSummary;
+  final VoidCallback? onMenuTap;
 
-  const FeedAppBar({super.key, this.userSummary});
+  const FeedAppBar({super.key, this.userSummary, this.onMenuTap});
 
   @override
   State<FeedAppBar> createState() => _FeedAppBarState();
@@ -26,9 +27,10 @@ class _FeedAppBarState extends State<FeedAppBar> {
       elevation: 2,
       leading: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Builder(
-          builder: (context) => GestureDetector(
-            onTap: () => Scaffold.of(context).openDrawer(),
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: widget.onMenuTap,
+          child: Center(
             child: CircleAvatar(
               radius: 20,
               backgroundColor: ColorManager.white,
