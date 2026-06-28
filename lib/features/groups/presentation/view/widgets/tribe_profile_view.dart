@@ -157,45 +157,48 @@ class TribeProfileViewState extends State<TribeProfileView> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Text(
-                      _formatCount(tribe.membersCount),
-                      style: textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Spacer(),
-                    // Invite button (admin only)
-                    if (relation.isAdmin || relation.isOwner) ...[
-                      ElevatedButton.icon(
-                        onPressed: () =>
-                            cubit.doIntent(const OpenInviteIntent()),
-                        icon: const Icon(Icons.add, size: 18),
-                        label: Text(UiConstants.invite),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorManager.primary,
-                          foregroundColor: ColorManager.white,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 0,
-                          ),
-                          minimumSize: const Size(0, 36),
+                Skeletonizer(
+                  enabled: tribe.membersCount == null && state.isLoadingPosts,
+                  child: Row(
+                    children: [
+                      Text(
+                        _formatCount(tribe.membersCount),
+                        style: textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const Spacer(),
+                      // Invite button (admin only)
+                      if (relation.isAdmin || relation.isOwner) ...[
+                        ElevatedButton.icon(
+                          onPressed: () =>
+                              cubit.doIntent(const OpenInviteIntent()),
+                          icon: const Icon(Icons.add, size: 18),
+                          label: Text(UiConstants.invite),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorManager.primary,
+                            foregroundColor: ColorManager.white,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 0,
+                            ),
+                            minimumSize: const Size(0, 36),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                      ActionButton(
+                        state: state,
+                        cubit: cubit,
+                        relation: relation,
+                        tribe: tribe,
+                      ),
                     ],
-                    ActionButton(
-                      state: state,
-                      cubit: cubit,
-                      relation: relation,
-                      tribe: tribe,
-                    ),
-                  ],
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Divider(color: ColorManager.lightGrey.withValues(alpha: 0.3)),
@@ -209,7 +212,7 @@ class TribeProfileViewState extends State<TribeProfileView> {
                   ),
                 ],
 
-                if (!relation.isMemberOrAbove) ...[
+                if (!relation.isMemberOrAbove && !state.isLoadingPosts) ...[
                   SizedBox(height: 32),
                   Center(
                     child: Column(

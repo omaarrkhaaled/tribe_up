@@ -23,12 +23,14 @@ class MenuDrawer extends StatefulWidget {
   final LoginLocalDataSource localDataSource;
   final UserSummaryEntity? userSummary;
   final VoidCallback? onProfilePopped;
+  final VoidCallback? onClose;
 
   const MenuDrawer({
     super.key,
     required this.localDataSource,
     this.userSummary,
     this.onProfilePopped,
+    this.onClose,
   });
 
   @override
@@ -76,7 +78,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
 
   void _navigateAndClose(void Function(GoRouter) action) {
     final router = GoRouter.of(context);
-    Navigator.pop(context);
+    widget.onClose?.call();
     action(router);
   }
 
@@ -93,7 +95,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
               children: [
                 IconButton(
                   icon: Icon(Icons.arrow_back, color: ColorManager.black),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => widget.onClose?.call(),
                 ),
                 const SizedBox(width: 8),
                 Text(
@@ -248,7 +250,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                   context.read<LogoutCubit>().doIntent(LogoutIntent());
                 },
                 negAction: () {
-                  Navigator.pop(context);
+                  // showPremiumDialog already pops the dialog, so we do nothing here.
                 },
                 posActionName: UiConstants.yes,
                 negActionName: UiConstants.no,
