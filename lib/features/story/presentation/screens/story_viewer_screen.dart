@@ -239,20 +239,7 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
     if (!mounted) return;
 
     if (success) {
-      final remaining = _stories.where((s) => s.id != story.id).toList();
-      if (remaining.isEmpty) {
-        setState(() => _isDeleting = false);
-        _advanceToNextGroup();
-      } else {
-        setState(() {
-          _isDeleting = false;
-          _stories = remaining;
-          if (_currentStoryIndex >= _stories.length) {
-            _currentStoryIndex = _stories.length - 1;
-          }
-        });
-        _startStory();
-      }
+      setState(() => _isDeleting = false);
     } else {
       setState(() => _isDeleting = false);
       _resumeStory();

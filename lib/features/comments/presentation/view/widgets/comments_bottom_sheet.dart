@@ -88,99 +88,101 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                 color: ColorManager.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 55,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: ColorManager.grey.withValues(alpha: .4),
-                      borderRadius: BorderRadius.circular(10),
+              child: SafeArea(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 55,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: ColorManager.grey.withValues(alpha: .4),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    UiConstants.comments,
-                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
+                    const SizedBox(height: 12),
+                    Text(
+                      UiConstants.comments,
+                      style: Theme.of(context).textTheme.headlineLarge
+                          ?.copyWith(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  Divider(
-                    color: ColorManager.lightGrey,
-                    thickness: .5,
-                    height: 20,
-                  ),
-                  const SizedBox(height: 8),
-                  Expanded(
-                    child: BlocBuilder<CommentsCubit, CommentsStates>(
-                      builder: (context, state) {
-                        return Skeletonizer(
-                          enabled: state.isLoading,
-                          child: RefreshIndicator(
-                            onRefresh: () async => _commentsCubit.doIntent(
-                              GetCommentsIntent(postId: widget.postId),
-                            ),
-                            child: state.comments.isEmpty && !state.isLoading
-                                ? const EmptyCommentsWidget()
-                                : ListView.separated(
-                                    physics:
-                                        const AlwaysScrollableScrollPhysics(),
-                                    itemCount: state.isLoading
-                                        ? 5
-                                        : state.comments.length +
-                                              (state.isLoadingMore ? 1 : 0),
-                                    itemBuilder: (context, index) {
-                                      // Show spinner as the last extra item
-                                      if (state.isLoadingMore &&
-                                          index == state.comments.length) {
-                                        return Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 16,
-                                          ),
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                              color: ColorManager.primary,
+                    Divider(
+                      color: ColorManager.lightGrey,
+                      thickness: .5,
+                      height: 20,
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: BlocBuilder<CommentsCubit, CommentsStates>(
+                        builder: (context, state) {
+                          return Skeletonizer(
+                            enabled: state.isLoading,
+                            child: RefreshIndicator(
+                              onRefresh: () async => _commentsCubit.doIntent(
+                                GetCommentsIntent(postId: widget.postId),
+                              ),
+                              child: state.comments.isEmpty && !state.isLoading
+                                  ? const EmptyCommentsWidget()
+                                  : ListView.separated(
+                                      physics:
+                                          const AlwaysScrollableScrollPhysics(),
+                                      itemCount: state.isLoading
+                                          ? 5
+                                          : state.comments.length +
+                                                (state.isLoadingMore ? 1 : 0),
+                                      itemBuilder: (context, index) {
+                                        // Show spinner as the last extra item
+                                        if (state.isLoadingMore &&
+                                            index == state.comments.length) {
+                                          return Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 16,
                                             ),
-                                          ),
+                                            child: Center(
+                                              child: CircularProgressIndicator(
+                                                color: ColorManager.primary,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        // Trigger load more near the end
+                                        if (index >=
+                                                state.comments.length - 2 &&
+                                            state.hasMore &&
+                                            !state.isLoading &&
+                                            !state.isLoadingMore) {
+                                          _commentsCubit.doIntent(
+                                            LoadMoreCommentsIntent(
+                                              postId: widget.postId,
+                                            ),
+                                          );
+                                        }
+                                        final comment = state.isLoading
+                                            ? CommentItemEntity.getDummyCommentItem()
+                                            : state.comments[index];
+                                        return CommentCard(
+                                          key: ValueKey(comment.id ?? index),
+                                          comment: comment,
                                         );
-                                      }
-                                      // Trigger load more near the end
-                                      if (index >= state.comments.length - 2 &&
-                                          state.hasMore &&
-                                          !state.isLoading &&
-                                          !state.isLoadingMore) {
-                                        _commentsCubit.doIntent(
-                                          LoadMoreCommentsIntent(
-                                            postId: widget.postId,
-                                          ),
-                                        );
-                                      }
-                                      final comment = state.isLoading
-                                          ? CommentItemEntity.getDummyCommentItem()
-                                          : state.comments[index];
-                                      return CommentCard(
-                                        key: ValueKey(comment.id ?? index),
-                                        comment: comment,
-                                      );
-                                    },
-                                    separatorBuilder: (_, __) => Divider(
-                                      thickness: .5,
-                                      color: ColorManager.lightGrey,
+                                      },
+                                      separatorBuilder: (_, __) => Divider(
+                                        thickness: .5,
+                                        color: ColorManager.lightGrey,
+                                      ),
                                     ),
-                                  ),
-                          ),
-                        );
-                      },
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  AddCommentWidget(
-                    postId: widget.postId,
-                    cubit: _commentsCubit,
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    AddCommentWidget(
+                      postId: widget.postId,
+                      cubit: _commentsCubit,
+                      userProfilePicture: widget.userProfilePicture,
+                    ),
+                  ],
+                ),
               ),
             ),
           );

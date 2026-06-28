@@ -20,6 +20,7 @@ import 'package:tribe_up/features/feed/presentation/view/widgets/feed_nav_bar.da
 import 'package:tribe_up/features/feed/presentation/view/widgets/feed_posts_list.dart';
 import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/menu_drawer.dart';
+import 'package:tribe_up/features/feed/presentation/view/widgets/sliding_drawer_wrapper.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/features/edit_profile/domain/use_cases/get_profile_info_use_case.dart';
 import 'package:tribe_up/features/auth/login/data/models/login_response/user_summary_model.dart';
@@ -56,6 +57,8 @@ class FeedScreenContent extends StatefulWidget {
 
 class _FeedScreenContentState extends State<FeedScreenContent> {
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey<SlidingDrawerWrapperState> _drawerKey =
+      GlobalKey<SlidingDrawerWrapperState>();
   bool _isAppBarVisible = true;
   double _lastScrollOffset = 0;
   UserSummaryEntity? _userSummary;
@@ -160,31 +163,52 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
       },
       child: BlocBuilder<FeedCubit, FeedStates>(
         builder: (context, state) {
-          return Scaffold(
+          return SlidingDrawerWrapper(
+            key: _drawerKey,
             drawer: MenuDrawer(
               localDataSource: getIt<LoginLocalDataSource>(),
               userSummary: _userSummary,
               onProfilePopped: _loadUserSummary,
+              onClose: () => _drawerKey.currentState?.close(),
             ),
-            body: Stack(
-              children: [
-                _buildCurrentScreen(state.currentTab, state),
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 400),
-                  top: (_isAppBarVisible && state.currentTab == FeedNavTab.feed)
-                      ? 0
-                      : -(kToolbarHeight + MediaQuery.of(context).padding.top),
-                  left: 0,
-                  right: 0,
-                  child: FeedAppBar(userSummary: _userSummary),
-                ),
-              ],
-            ),
-            bottomNavigationBar: FeedNavBar(
-              currentTab: state.currentTab,
-              onTabSelected: (tab) {
-                context.read<FeedCubit>().doIntent(SelectTabIntent(tab));
-              },
+            child: Scaffold(
+              body: Stack(
+                children: [
+                  _buildCurrentScreen(state.currentTab, state),
+                  AnimatedPositioned(
+                    duration: const Duration(milliseconds: 400),
+                    top:
+                        (_isAppBarVisible &&
+                            state.currentTab == FeedNavTab.feed)
+                        ? 0
+                        : -(kToolbarHeight +
+                              MediaQuery.of(context).padding.top),
+                    left: 0,
+                    right: 0,
+                    child: FeedAppBar(
+                      userSummary: _userSummary,
+                      onMenuTap: () {
+                        final drawerState = _drawerKey.currentState;
+                        if (drawerState == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Drawer state is null!"),
+                            ),
+                          );
+                        } else {
+                          drawerState.toggle();
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              bottomNavigationBar: FeedNavBar(
+                currentTab: state.currentTab,
+                onTabSelected: (tab) {
+                  context.read<FeedCubit>().doIntent(SelectTabIntent(tab));
+                },
+              ),
             ),
           );
         },
