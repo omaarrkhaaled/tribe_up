@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,6 +35,9 @@ class _InviteMembersSheetState extends State<InviteMembersSheet> {
     super.initState();
     _cubit = getIt<InviteCubit>();
     _maxUsesController = TextEditingController();
+    _maxUsesController.addListener(() {
+      setState(() {});
+    });
     _uiSub = _cubit.uiIntents.listen(_handleUiIntent);
     _cubit.doIntent(LoadActiveInvitationIntent(widget.groupId));
   }
@@ -121,80 +123,86 @@ class _InviteMembersSheetState extends State<InviteMembersSheet> {
           final hasActive =
               state.hasActiveInvitation && state.activeInvitation != null;
 
-          return Container(
-            decoration: BoxDecoration(
-              color: ColorManager.white,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(20),
+          return SafeArea(
+            bottom: true,
+            child: Container(
+              decoration: BoxDecoration(
+                color: ColorManager.white,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
               ),
-            ),
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: 20,
-              bottom: MediaQuery.of(context).viewInsets.bottom + 24,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header
-                  Row(
-                    children: [
-                      Text(
-                        UiConstants.inviteMembers,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
+              padding: EdgeInsets.only(
+                left: 20,
+                right: 20,
+                top: 20,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header
+                    Row(
+                      children: [
+                        Text(
+                          UiConstants.inviteMembers,
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: Icon(Icons.close, color: ColorManager.black),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+
+                    ExpiryDatePicker(
+                      selectedDate: _selectedDate,
+                      enabled: !hasActive,
+                      onTap: hasActive ? null : _pickDate,
+                    ),
+                    const SizedBox(height: 16),
+
+                    MaxUsesField(
+                      controller: _maxUsesController,
+                      enabled: !hasActive,
+                    ),
+                    const SizedBox(height: 20),
+
+                    CreateInviteButton(
+                      isCreating: state.isCreating,
+                      onPressed:
+                          hasActive ||
+                              state.isCreating ||
+                              state.isLoadingActive ||
+                              _maxUsesController.text.trim().isEmpty ||
+                              _selectedDate == null
+                          ? null
+                          : _create,
+                    ),
+
+                    if (state.isLoadingActive) ...[
+                      const SizedBox(height: 24),
+                      Center(
+                        child: CircularProgressIndicator(
+                          color: ColorManager.primary,
                         ),
                       ),
-                      const Spacer(),
-                      IconButton(
-                        icon: Icon(Icons.close, color: ColorManager.black),
-                        onPressed: () => Navigator.pop(context),
+                    ] else if (hasActive) ...[
+                      ActiveInvitationCard(
+                        invitation: state.activeInvitation!,
+                        isRevoking: state.isRevoking,
+                        onRevoke: () => _cubit.doIntent(
+                          RevokeInvitationIntent(state.activeInvitation!.id!),
+                        ),
                       ),
                     ],
-                  ),
-                  const SizedBox(height: 20),
-
-                  ExpiryDatePicker(
-                    selectedDate: _selectedDate,
-                    enabled: !hasActive,
-                    onTap: hasActive ? null : _pickDate,
-                  ),
-                  const SizedBox(height: 16),
-
-                  MaxUsesField(
-                    controller: _maxUsesController,
-                    enabled: !hasActive,
-                  ),
-                  const SizedBox(height: 20),
-
-                  CreateInviteButton(
-                    isCreating: state.isCreating,
-                    onPressed:
-                        hasActive || state.isCreating || state.isLoadingActive
-                        ? null
-                        : _create,
-                  ),
-
-                  if (state.isLoadingActive) ...[
-                    const SizedBox(height: 24),
-                    Center(
-                      child: CircularProgressIndicator(
-                        color: ColorManager.primary,
-                      ),
-                    ),
-                  ] else if (hasActive) ...[
-                    ActiveInvitationCard(
-                      invitation: state.activeInvitation!,
-                      isRevoking: state.isRevoking,
-                      onRevoke: () => _cubit.doIntent(
-                        RevokeInvitationIntent(state.activeInvitation!.id!),
-                      ),
-                    ),
                   ],
-                ],
+                ),
               ),
             ),
           );

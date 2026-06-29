@@ -15,6 +15,7 @@ import 'package:tribe_up/features/feed/presentation/view/screens/feed_screen.dar
 import 'package:tribe_up/features/edit_profile/presentation/view/screens/edit_profile_screen.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
 import 'package:tribe_up/features/groups/presentation/view/screens/tribe_profile_screen.dart';
+import 'package:tribe_up/features/notification/presentation/view/screens/notification_screen.dart';
 import 'package:tribe_up/features/profile/presentation/view/screens/profile_screen.dart';
 import 'package:tribe_up/features/group_chat/presentation/view/screens/group_chat_screen.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/post_detail_screen.dart';
@@ -133,6 +134,11 @@ abstract class AppRouter {
               getIt<LeaderboardCubit>()..doIntent(LoadLeaderboardIntent()),
           child: const LeaderboardScreen(),
         ),
+      ),
+      GoRoute(
+        path: AppRoutesConstants.notifications,
+        name: AppRoutesConstants.notifications,
+        builder: (context, state) => const NotificationsScreen(),
       ),
     ],
   );

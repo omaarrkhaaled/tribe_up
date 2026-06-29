@@ -1,0 +1,6 @@
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/tribeUp.jpeg"
+  adaptive_icon_background: "#f5f5f5"
+  adaptive_icon_foreground: "assets/icons/tribeUp.jpeg"

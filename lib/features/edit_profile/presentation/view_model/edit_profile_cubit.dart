@@ -8,6 +8,8 @@ import 'package:tribe_up/features/edit_profile/domain/use_cases/edit_profile_use
 import 'package:tribe_up/features/edit_profile/presentation/view_model/edit_profile_intents.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view_model/edit_profile_states.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view_model/edit_profile_ui_intents.dart';
+import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
+import 'package:tribe_up/features/auth/login/data/models/login_response/user_summary_model.dart';
 
 @injectable
 class EditProfileCubit extends Cubit<EditProfileStates> {
@@ -21,6 +23,7 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
   final DeleteBioUseCase deleteBioUseCase;
   final DeletePhoneUseCase deletePhoneNumberUseCase;
   final DeletePictureUseCase deletePictureUseCase;
+  final LoginLocalDataSource loginLocalDataSource;
 
   EditProfileCubit({
     required this.getProfileInfoUseCase,
@@ -33,6 +36,7 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
     required this.deleteBioUseCase,
     required this.deletePhoneNumberUseCase,
     required this.deletePictureUseCase,
+    required this.loginLocalDataSource,
   }) : super(const EditProfileStates());
 
   final StreamController<EditProfileUiIntents> _uiIntentsController =
@@ -74,6 +78,18 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
     final result = await getProfileInfoUseCase();
     switch (result) {
       case SuccessResponse(data: final data):
+        final oldSummary = await loginLocalDataSource.getUserSummary();
+        if (oldSummary != null) {
+          await loginLocalDataSource.saveUserSummary(
+            userSummary: UserSummaryModel(
+              id: oldSummary.id,
+              userName: data.userName,
+              fullName: '${data.firstName} ${data.lastName}'.trim(),
+              profilePicture: data.profilePicture,
+            ),
+          );
+        }
+
         emit(
           state.copyWith(
             data: data,

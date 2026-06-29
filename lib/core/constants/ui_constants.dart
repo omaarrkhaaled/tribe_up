@@ -135,6 +135,12 @@ class UiConstants {
   static const String post = 'post';
   static const String story = 'story';
   static const String whatIsInYourMind = 'What\'s in your mind?';
+  static const String sharePost = 'Share Post';
+  static const String shareStory = 'Share Story';
+  static const String createStory = 'Create Story';
+  static const String writeStoryCaption = 'Write a caption for your story...';
+  static const String addStoryMedia = 'Add Story Media';
+  static const String storiesRequireMedia = 'Stories require a photo/video';
   static const String upload = 'Upload';
   static const String public = 'public';
   static const String private = 'private';
@@ -256,6 +262,19 @@ class UiConstants {
   static const String competingTribes = 'Competing Tribes';
   static const String failedToLoadLeaderboard = 'Failed to load leaderboard';
   static const String points = 'Points';
+  static const String preferences = 'Preferences';
+  static const String selectATribe = 'Select a tribe';
+  static const String yourStory = 'Your story';
+  static const String removeBio = 'Remove Bio';
+  static const String removeBioMessage =
+      'Are you sure you want to remove your bio?';
+  static const String removeBioPosActionName = 'Remove';
+  static const String removePhoneNumber = 'Remove Phone Number';
+  static const String removePhoneNumberMessage =
+      'Are you sure you want to remove your phone number?';
+  static const String removePhoneNumberPosActionName = 'Remove';
+  static const String seeMore = 'See more';
+  static const String seeLess = 'See less';
 }
 
 class GoogleFontsKeys {

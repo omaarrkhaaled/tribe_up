@@ -14,8 +14,13 @@ import 'package:tribe_up/features/groups/data/models/response/groups_response.da
 
 class CreatePostSheet extends StatefulWidget {
   final List<Group> groups;
+  final bool startAsPost;
 
-  const CreatePostSheet({super.key, required this.groups});
+  const CreatePostSheet({
+    super.key,
+    required this.groups,
+    this.startAsPost = true,
+  });
 
   @override
   State<CreatePostSheet> createState() => _CreatePostSheetState();
@@ -26,15 +31,19 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
   Widget build(BuildContext context) {
     return BlocProvider<CreatePostCubit>(
       create: (_) => getIt<CreatePostCubit>(),
-      child: _CreatePostContent(groups: widget.groups),
+      child: _CreatePostContent(
+        groups: widget.groups,
+        startAsPost: widget.startAsPost,
+      ),
     );
   }
 }
 
 class _CreatePostContent extends StatefulWidget {
   final List<Group> groups;
+  final bool startAsPost;
 
-  const _CreatePostContent({required this.groups});
+  const _CreatePostContent({required this.groups, this.startAsPost = true});
 
   @override
   State<_CreatePostContent> createState() => _CreatePostContentState();
@@ -43,12 +52,13 @@ class _CreatePostContent extends StatefulWidget {
 class _CreatePostContentState extends State<_CreatePostContent> {
   final TextEditingController _captionController = TextEditingController();
   final List<File> _selectedFiles = [];
-  bool _isPost = true;
+  late bool _isPost;
   Group? _selectedGroup;
 
   @override
   void initState() {
     super.initState();
+    _isPost = widget.startAsPost;
     if (widget.groups.isNotEmpty) {
       _selectedGroup = widget.groups.first;
     }
@@ -56,7 +66,7 @@ class _CreatePostContentState extends State<_CreatePostContent> {
   }
 
   void _onInputChanged() {
-    setState(() {}); // rebuild to validate button
+    setState(() {});
   }
 
   @override
@@ -99,10 +109,13 @@ class _CreatePostContentState extends State<_CreatePostContent> {
             UiConstants.postCreatedSuccessfully,
           );
           Navigator.pop(context, state.post);
+        } else if (state is CreateStorySuccess) {
+          UIUtils.showPremiumMessage(context, 'Story shared successfully');
+          Navigator.pop(context, state.story);
         } else if (state is CreatePostError) {
           UIUtils.showPremiumMessage(
             context,
-            UiConstants.failedToCreatePost,
+            state.errorMessage ?? UiConstants.failedToCreatePost,
             backgroundColor: ColorManager.red,
           );
         }
@@ -117,43 +130,60 @@ class _CreatePostContentState extends State<_CreatePostContent> {
             decoration: BoxDecoration(
               color: ColorManager.white,
               borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(20),
+                top: Radius.circular(24),
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: ColorManager.black.withValues(alpha: 0.15),
+                  blurRadius: 20,
+                  offset: const Offset(0, -5),
+                ),
+              ],
             ),
             child: ListView(
               controller: scrollController,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               children: [
                 Center(
                   child: Container(
-                    margin: const EdgeInsets.only(bottom: 8),
+                    margin: const EdgeInsets.only(bottom: 12, top: 4),
                     width: 40,
-                    height: 4,
+                    height: 5,
                     decoration: BoxDecoration(
-                      color: ColorManager.lightGrey,
-                      borderRadius: BorderRadius.circular(4),
+                      color: ColorManager.lightGrey.withValues(alpha: 0.4),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.close),
+                      icon: Icon(
+                        Icons.close_rounded,
+                        color: ColorManager.black,
+                        size: 26,
+                      ),
                       onPressed: () => Navigator.pop(context),
                     ),
-                    Text(UiConstants.createPost, style: _textTheme.titleLarge),
+                    Text(
+                      _isPost
+                          ? UiConstants.createPost
+                          : UiConstants.createStory,
+                      style: _textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: ColorManager.black,
+                        fontSize: 20,
+                      ),
+                    ),
                     const SizedBox(width: 48),
                   ],
                 ),
-                Divider(color: ColorManager.lightGrey.withValues(alpha: 0.3)),
-                const SizedBox(height: 12),
-
+                const SizedBox(height: 16),
                 Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: ColorManager.lightGrey.withValues(alpha: 0.2),
+                    color: ColorManager.lightGrey.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Row(
@@ -161,7 +191,8 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () => setState(() => _isPost = true),
-                          child: Container(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             decoration: BoxDecoration(
                               color: _isPost
@@ -172,9 +203,10 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                                   ? [
                                       BoxShadow(
                                         color: ColorManager.black.withValues(
-                                          alpha: 0.05,
+                                          alpha: 0.06,
                                         ),
                                         blurRadius: 4,
+                                        offset: const Offset(0, 2),
                                       ),
                                     ]
                                   : [],
@@ -184,8 +216,11 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                               UiConstants.post,
                               style: _textTheme.titleMedium?.copyWith(
                                 color: _isPost
-                                    ? ColorManager.black
+                                    ? ColorManager.primary
                                     : ColorManager.grey,
+                                fontWeight: _isPost
+                                    ? FontWeight.bold
+                                    : FontWeight.w500,
                               ),
                             ),
                           ),
@@ -194,7 +229,8 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () => setState(() => _isPost = false),
-                          child: Container(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             decoration: BoxDecoration(
                               color: !_isPost
@@ -205,9 +241,10 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                                   ? [
                                       BoxShadow(
                                         color: ColorManager.black.withValues(
-                                          alpha: 0.05,
+                                          alpha: 0.06,
                                         ),
                                         blurRadius: 4,
+                                        offset: const Offset(0, 2),
                                       ),
                                     ]
                                   : [],
@@ -217,8 +254,11 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                               UiConstants.story,
                               style: _textTheme.titleMedium?.copyWith(
                                 color: !_isPost
-                                    ? ColorManager.black
+                                    ? ColorManager.primary
                                     : ColorManager.grey,
+                                fontWeight: !_isPost
+                                    ? FontWeight.bold
+                                    : FontWeight.w500,
                               ),
                             ),
                           ),
@@ -228,89 +268,146 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                   ),
                 ),
                 const SizedBox(height: 16),
-
-                if (widget.groups.isEmpty)
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Select a tribe',
-                      style: _textTheme.bodyMedium?.copyWith(
-                        color: ColorManager.grey,
-                      ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 6,
                     ),
-                  )
-                else
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
+                      color: ColorManager.primary.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(24),
                       border: Border.all(
-                        color: ColorManager.primary.withValues(alpha: 0.5),
+                        color: ColorManager.primary.withValues(alpha: 0.15),
+                        width: 1,
                       ),
-                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: DropdownButton<Group>(
-                      value: _selectedGroup,
-                      isExpanded: true,
-                      underline: const SizedBox.shrink(),
-                      hint: Text(
-                        UiConstants.selectAGroup,
-                        style: _textTheme.bodyMedium?.copyWith(
-                          color: ColorManager.grey,
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<Group>(
+                        value: _selectedGroup,
+                        dropdownColor: ColorManager.white,
+                        borderRadius: BorderRadius.circular(16),
+                        icon: Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          color: ColorManager.primary,
                         ),
-                      ),
-                      icon: Icon(
-                        Icons.keyboard_arrow_down,
-                        color: ColorManager.primary,
-                      ),
-                      onChanged: (group) {
-                        setState(() {
-                          _selectedGroup = group;
-                        });
-                      },
-                      items: widget.groups
-                          .where((g) => g.id != null)
-                          .map(
-                            (g) => DropdownMenuItem<Group>(
-                              value: g,
-                              child: Text(
-                                g.groupName ?? '',
-                                style: _textTheme.bodyMedium?.copyWith(
-                                  color: ColorManager.black,
+                        hint: Text(
+                          UiConstants.selectAGroup,
+                          style: _textTheme.bodyMedium?.copyWith(
+                            color: ColorManager.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onChanged: (group) {
+                          setState(() {
+                            _selectedGroup = group;
+                          });
+                        },
+                        items: widget.groups
+                            .where((g) => g.id != null)
+                            .map(
+                              (g) => DropdownMenuItem<Group>(
+                                value: g,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.groups_rounded,
+                                      color: ColorManager.primary,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      g.groupName ?? '',
+                                      style: _textTheme.bodyMedium?.copyWith(
+                                        color: ColorManager.primary,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
                                 ),
-                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ),
-                const SizedBox(height: 16),
-
-                Container(
-                  decoration: BoxDecoration(
-                    color: ColorManager.lightGrey.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: ColorManager.lightGrey.withValues(alpha: 0.5),
-                    ),
-                  ),
-                  child: TextField(
-                    controller: _captionController,
-                    maxLines: 3,
-                    minLines: 1,
-                    decoration: InputDecoration(
-                      hintText: UiConstants.whatIsInYourMind,
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(16),
+                            )
+                            .toList(),
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 16),
-
-                if (_selectedFiles.isNotEmpty)
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: ColorManager.lightGrey.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: TextField(
+                    controller: _captionController,
+                    maxLines: 6,
+                    minLines: 4,
+                    style: _textTheme.bodyLarge?.copyWith(
+                      fontSize: 16,
+                      color: ColorManager.black,
+                      height: 1.4,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: _isPost
+                          ? UiConstants.whatIsInYourMind
+                          : UiConstants.writeStoryCaption,
+                      hintStyle: _textTheme.bodyLarge?.copyWith(
+                        color: ColorManager.grey.withValues(alpha: 0.5),
+                        fontSize: 16,
+                      ),
+                      border: InputBorder.none,
+                      isDense: true,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                if (!_isPost && _selectedFiles.isEmpty)
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      height: 140,
+                      decoration: BoxDecoration(
+                        color: ColorManager.primary.withValues(alpha: 0.04),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: ColorManager.primary.withValues(alpha: 0.3),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.add_photo_alternate_outlined,
+                            size: 40,
+                            color: ColorManager.primary,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            UiConstants.addStoryMedia,
+                            style: _textTheme.titleSmall?.copyWith(
+                              color: ColorManager.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            UiConstants.storiesRequireMedia,
+                            style: _textTheme.bodySmall?.copyWith(
+                              color: ColorManager.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                else if (_selectedFiles.isNotEmpty)
                   SizedBox(
-                    height: 100,
+                    height: 130,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: _selectedFiles.length,
@@ -318,11 +415,17 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                         return Stack(
                           children: [
                             Container(
-                              margin: const EdgeInsets.only(right: 12),
-                              width: 100,
-                              height: 100,
+                              margin: const EdgeInsets.only(right: 8, top: 8),
+                              width: 110,
+                              height: 110,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: ColorManager.lightGrey.withValues(
+                                    alpha: 0.5,
+                                  ),
+                                  width: 1,
+                                ),
                                 image: DecorationImage(
                                   image: FileImage(_selectedFiles[index]),
                                   fit: BoxFit.cover,
@@ -330,8 +433,8 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                               ),
                             ),
                             Positioned(
-                              top: 4,
-                              right: 16,
+                              top: 0,
+                              right: 6,
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -341,8 +444,14 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                                 child: Container(
                                   padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
-                                    color: ColorManager.black,
+                                    color: ColorManager.black.withValues(
+                                      alpha: 0.7,
+                                    ),
                                     shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: ColorManager.white,
+                                      width: 2,
+                                    ),
                                   ),
                                   child: Icon(
                                     Icons.close,
@@ -357,75 +466,132 @@ class _CreatePostContentState extends State<_CreatePostContent> {
                       },
                     ),
                   ),
-                if (_selectedFiles.isNotEmpty) const SizedBox(height: 16),
+                if (_selectedFiles.isNotEmpty ||
+                    (!_isPost && _selectedFiles.isEmpty))
+                  const SizedBox(height: 16),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: _pickImage,
+                      borderRadius: BorderRadius.circular(14),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: ColorManager.lightGrey.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Icon(
+                          Icons.add_photo_alternate_outlined,
+                          color: ColorManager.primary,
+                          size: 26,
+                        ),
+                      ),
+                    ),
+                    BlocBuilder<CreatePostCubit, CreatePostState>(
+                      builder: (context, state) {
+                        final isLoading = state is CreatePostLoading;
+                        final bool isValid =
+                            _selectedGroup != null &&
+                            _selectedGroup!.id != null &&
+                            (_isPost
+                                ? (_captionController.text.trim().isNotEmpty ||
+                                      _selectedFiles.isNotEmpty)
+                                : _selectedFiles.isNotEmpty);
 
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    decoration: BoxDecoration(
-                      color: ColorManager.lightGrey.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(12),
+                        return SizedBox(
+                          width: 140,
+                          height: 52,
+                          child: ElevatedButton(
+                            onPressed: (isLoading || !isValid)
+                                ? null
+                                : () {
+                                    if (_isPost) {
+                                      context
+                                          .read<CreatePostCubit>()
+                                          .createPost(
+                                            groupId: _selectedGroup!.id!,
+                                            caption: _captionController.text,
+                                            mediaFiles: _selectedFiles,
+                                          );
+                                    } else {
+                                      context
+                                          .read<CreatePostCubit>()
+                                          .createStory(
+                                            groupId: _selectedGroup!.id!,
+                                            caption: _captionController.text,
+                                            mediaFiles: _selectedFiles,
+                                          );
+                                    }
+                                  },
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(26),
+                              ),
+                            ),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 250),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(26),
+                                gradient: (isLoading || !isValid)
+                                    ? null
+                                    : LinearGradient(
+                                        colors: [
+                                          ColorManager.primary,
+                                          ColorManager.primary.withValues(
+                                            alpha: 0.8,
+                                          ),
+                                        ],
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                      ),
+                                color: (isLoading || !isValid)
+                                    ? ColorManager.lightGrey.withValues(
+                                        alpha: 0.5,
+                                      )
+                                    : null,
+                                boxShadow: isValid
+                                    ? [
+                                        BoxShadow(
+                                          color: ColorManager.primary
+                                              .withValues(alpha: 0.3),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 4),
+                                        ),
+                                      ]
+                                    : [],
+                              ),
+                              alignment: Alignment.center,
+                              child: isLoading
+                                  ? const SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : Text(
+                                      _isPost
+                                          ? UiConstants.sharePost
+                                          : UiConstants.shareStory,
+                                      style: _textTheme.titleMedium?.copyWith(
+                                        color: ColorManager.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.image_outlined, color: ColorManager.black),
-                        const SizedBox(width: 8),
-                        Text(UiConstants.upload, style: _textTheme.titleMedium),
-                      ],
-                    ),
-                  ),
+                  ],
                 ),
                 const SizedBox(height: 24),
-
-                BlocBuilder<CreatePostCubit, CreatePostState>(
-                  builder: (context, state) {
-                    final isLoading = state is CreatePostLoading;
-                    final bool isValid =
-                        _selectedGroup != null &&
-                        _selectedGroup!.id != null &&
-                        (_captionController.text.trim().isNotEmpty ||
-                            _selectedFiles.isNotEmpty);
-                    return SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: (isLoading || !isValid)
-                            ? null
-                            : () {
-                                context.read<CreatePostCubit>().createPost(
-                                  groupId: _selectedGroup!.id!,
-                                  caption: _captionController.text,
-                                  mediaFiles: _selectedFiles,
-                                );
-                              },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorManager.primary,
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : Text(
-                                UiConstants.post,
-                                style: _textTheme.titleMedium!.copyWith(
-                                  color: ColorManager.white,
-                                ),
-                              ),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 32),
               ],
             ),
           );

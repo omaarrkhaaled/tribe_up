@@ -60,6 +60,7 @@ abstract class HiveModule {
     await Hive.initFlutter();
     await Hive.openBox<String>(CacheConstants.tokenBoxName);
     await Hive.openBox<String>(CacheConstants.deviceIdBoxName);
+    await Hive.openBox<String>(CacheConstants.storiesBoxName);
     return Hive;
   }
 
@@ -72,5 +73,11 @@ abstract class HiveModule {
   @Named(CacheConstants.deviceIdBoxName)
   Box<String> deviceIdBox() {
     return Hive.box<String>(CacheConstants.deviceIdBoxName);
+  }
+
+  @singleton
+  @Named(CacheConstants.storiesBoxName)
+  Box<String> storiesBox() {
+    return Hive.box<String>(CacheConstants.storiesBoxName);
   }
 }

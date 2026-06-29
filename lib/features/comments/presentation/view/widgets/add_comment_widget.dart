@@ -11,10 +11,13 @@ import 'package:tribe_up/features/comments/presentation/view_model/comments_stat
 class AddCommentWidget extends StatefulWidget {
   final int postId;
   final CommentsCubit cubit;
+  final String? userProfilePicture;
+
   const AddCommentWidget({
     super.key,
     required this.postId,
     required this.cubit,
+    this.userProfilePicture,
   });
 
   @override
@@ -42,10 +45,7 @@ class _AddCommentWidgetState extends State<AddCommentWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<CommentsCubit, CommentsStates>(
       builder: (context, state) {
-        final profilePic = state.comments
-            .where((comment) => comment.postId == widget.postId)
-            .firstOrNull
-            ?.profilePicture;
+        final profilePic = widget.userProfilePicture;
 
         return Container(
           padding: const EdgeInsets.only(
