@@ -22,11 +22,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 class MenuDrawer extends StatefulWidget {
   final LoginLocalDataSource localDataSource;
   final UserSummaryEntity? userSummary;
+  final VoidCallback? onProfilePopped;
+  final VoidCallback? onClose;
 
   const MenuDrawer({
     super.key,
     required this.localDataSource,
     this.userSummary,
+    this.onProfilePopped,
+    this.onClose,
   });
 
   @override
@@ -72,9 +76,10 @@ class _MenuDrawerState extends State<MenuDrawer> {
     super.dispose();
   }
 
-  void _navigateAndClose(VoidCallback action) {
-    Navigator.pop(context);
-    action();
+  void _navigateAndClose(void Function(GoRouter) action) {
+    final router = GoRouter.of(context);
+    widget.onClose?.call();
+    action(router);
   }
 
   @override
@@ -90,7 +95,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
               children: [
                 IconButton(
                   icon: Icon(Icons.arrow_back, color: ColorManager.black),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => widget.onClose?.call(),
                 ),
                 const SizedBox(width: 8),
                 Text(
@@ -110,11 +115,13 @@ class _MenuDrawerState extends State<MenuDrawer> {
               final user = snapshot.data;
               return InkWell(
                 onTap: () {
-                  _navigateAndClose(() {
-                    context.pushNamed(
-                      AppRoutesConstants.profile,
-                      extra: user?.userName,
-                    );
+                  _navigateAndClose((router) {
+                    router
+                        .pushNamed(
+                          AppRoutesConstants.profile,
+                          extra: user?.userName,
+                        )
+                        .then((_) => widget.onProfilePopped?.call());
                   });
                 },
                 child: Padding(
@@ -131,9 +138,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
                                   imageUrl: user!.profilePicture!,
                                   fit: BoxFit.cover,
                                   errorWidget: (context, url, error) =>
-                                      const Icon(Icons.person),
+                                      const Icon(
+                                        FontAwesomeIcons.solidUser,
+                                        size: 20,
+                                      ),
                                 )
-                              : const Icon(Icons.person),
+                              : const Icon(FontAwesomeIcons.solidUser),
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -173,17 +183,19 @@ class _MenuDrawerState extends State<MenuDrawer> {
           const Divider(),
           _buildMenuItem(
             context,
-            icon: FontAwesomeIcons.user,
+            icon: FontAwesomeIcons.solidUser,
             title: UiConstants.profile,
             onTap: () => _navigateAndClose(
-              () => context.pushNamed(AppRoutesConstants.profile),
+              (router) => router
+                  .pushNamed(AppRoutesConstants.profile)
+                  .then((_) => widget.onProfilePopped?.call()),
             ),
           ),
           _buildMenuItem(
             context,
-            icon: FontAwesomeIcons.bell,
+            icon: FontAwesomeIcons.solidBell,
             title: UiConstants.notification,
-            onTap: () => _navigateAndClose(() {
+            onTap: () => _navigateAndClose((_) {
               context.read<FeedCubit>().doIntent(
                 SelectTabIntent(FeedNavTab.notifications),
               );
@@ -194,7 +206,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
             icon: FontAwesomeIcons.trophy,
             title: 'Leaderboard',
             onTap: () => _navigateAndClose(
-              () => context.pushNamed(AppRoutesConstants.leaderboard),
+              (router) => router.pushNamed(AppRoutesConstants.leaderboard),
             ),
           ),
           _buildMenuItem(
@@ -202,14 +214,14 @@ class _MenuDrawerState extends State<MenuDrawer> {
             icon: FontAwesomeIcons.gear,
             title: UiConstants.setting,
             onTap: () => _navigateAndClose(
-              () => context.pushNamed(AppRoutesConstants.settings),
+              (router) => router.pushNamed(AppRoutesConstants.settings),
             ),
           ),
           _buildMenuItem(
             context,
             icon: FontAwesomeIcons.users,
             title: UiConstants.myTribes,
-            onTap: () => _navigateAndClose(() {
+            onTap: () => _navigateAndClose((_) {
               context.read<FeedCubit>().doIntent(
                 SelectTabIntent(FeedNavTab.groups),
               );
@@ -217,9 +229,9 @@ class _MenuDrawerState extends State<MenuDrawer> {
           ),
           _buildMenuItem(
             context,
-            icon: FontAwesomeIcons.paperPlane,
+            icon: FontAwesomeIcons.solidPaperPlane,
             title: UiConstants.chat,
-            onTap: () => _navigateAndClose(() {
+            onTap: () => _navigateAndClose((_) {
               context.read<FeedCubit>().doIntent(
                 SelectTabIntent(FeedNavTab.chat),
               );
@@ -238,7 +250,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                   context.read<LogoutCubit>().doIntent(LogoutIntent());
                 },
                 negAction: () {
-                  Navigator.pop(context);
+                  // showPremiumDialog already pops the dialog, so we do nothing here.
                 },
                 posActionName: UiConstants.yes,
                 negActionName: UiConstants.no,

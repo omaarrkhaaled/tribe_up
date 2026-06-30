@@ -1,4 +1,5 @@
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
+import 'package:tribe_up/features/story/domain/entities/story_entity.dart';
 
 sealed class CreatePostState {
   final bool isLoading;
@@ -18,6 +19,11 @@ class CreatePostLoading extends CreatePostState {
 class CreatePostSuccess extends CreatePostState {
   final PostEntity post;
   const CreatePostSuccess(this.post) : super(isLoading: false);
+}
+
+class CreateStorySuccess extends CreatePostState {
+  final StoryEntity story;
+  const CreateStorySuccess(this.story) : super(isLoading: false);
 }
 
 class CreatePostError extends CreatePostState {

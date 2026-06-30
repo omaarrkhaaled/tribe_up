@@ -13,6 +13,10 @@ final class LoadDiscoverTribesIntent extends TribesIntents {
   const LoadDiscoverTribesIntent();
 }
 
+final class LoadFollowingTribesIntent extends TribesIntents {
+  const LoadFollowingTribesIntent();
+}
+
 final class SwitchTribesTabIntent extends TribesIntents {
   final TribesTab tab;
   const SwitchTribesTabIntent(this.tab);
@@ -44,4 +48,9 @@ final class ViewTribeIntent extends TribesIntents {
 
 final class OpenCreateTribeIntent extends TribesIntents {
   const OpenCreateTribeIntent();
+}
+
+final class AddCreatedTribeIntent extends TribesIntents {
+  final Group group;
+  const AddCreatedTribeIntent(this.group);
 }

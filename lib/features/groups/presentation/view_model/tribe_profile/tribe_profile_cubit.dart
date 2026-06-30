@@ -3,9 +3,10 @@ import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:collection/collection.dart';
+import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
-import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/enums/user_relation.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/my_groups_use_case.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/mixins/post_actions_mixin.dart';
 import 'package:tribe_up/features/feed/domain/use_case/delete_post_use_case.dart';
@@ -145,19 +146,40 @@ class TribeProfileCubit extends Cubit<TribeProfileState> with PostActionsMixin {
         var updatedData = data;
         final initialRelation =
             initialGroup?.userRelation ?? state.tribe?.userRelation;
-        if ((data.userRelation == null || data.userRelation == 0) &&
-            initialRelation != null &&
-            initialRelation != 0) {
-          updatedData = Group(
-            id: data.id,
-            groupName: data.groupName,
-            description: data.description,
-            groupProfilePicture: data.groupProfilePicture,
-            createdAt: data.createdAt,
-            accessibility: data.accessibility,
-            userRelation: initialRelation,
-            membersCount: data.membersCount,
-          );
+        if (data.userRelation == null || data.userRelation == 0) {
+          if (initialRelation != null && initialRelation != 0) {
+            updatedData = Group(
+              id: data.id,
+              groupName: data.groupName,
+              description: data.description,
+              groupProfilePicture: data.groupProfilePicture,
+              createdAt: data.createdAt,
+              accessibility: data.accessibility,
+              userRelation: initialRelation,
+              membersCount: data.membersCount,
+            );
+          } else {
+            try {
+              final myGroupsResponse = await getIt<MyGroupsUseCase>()(1, 100);
+              if (myGroupsResponse is SuccessResponse<GroupsResponse>) {
+                final match = myGroupsResponse.data.items?.firstWhereOrNull(
+                  (g) => g.id == groupId,
+                );
+                if (match != null && match.userRelation != null) {
+                  updatedData = Group(
+                    id: data.id,
+                    groupName: data.groupName,
+                    description: data.description,
+                    groupProfilePicture: data.groupProfilePicture,
+                    createdAt: data.createdAt,
+                    accessibility: data.accessibility,
+                    userRelation: match.userRelation,
+                    membersCount: data.membersCount,
+                  );
+                }
+              }
+            } catch (_) {}
+          }
         }
         emit(state.copyWith(tribe: updatedData, isLoading: false));
         doIntent(LoadTribePostsIntent(groupId));
@@ -207,11 +229,6 @@ class TribeProfileCubit extends Cubit<TribeProfileState> with PostActionsMixin {
           membersCount: current.membersCount,
         );
         emit(state.copyWith(tribe: updatedTribe, isActionLoading: false));
-        final relation = UserRelation.fromInt(data.currentRelation);
-        final msg = relation == UserRelation.follower
-            ? UiConstants.followingTribe
-            : UiConstants.unfollowedTribe;
-        _uiController.add(ShowSuccessUiIntent(msg));
         doIntent(LoadTribePostsIntent(current.id!));
       case ErrorResponse(:final error):
         emit(

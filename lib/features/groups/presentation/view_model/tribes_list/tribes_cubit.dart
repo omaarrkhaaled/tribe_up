@@ -6,6 +6,7 @@ import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/core/enums/tribes_tab.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
 import 'package:tribe_up/features/groups/domain/use_cases/explore_groups_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/followed_groups_use_case.dart';
 import 'package:tribe_up/features/groups/domain/use_cases/leave_group_use_case.dart';
 import 'package:tribe_up/features/groups/domain/use_cases/my_groups_use_case.dart';
 import 'package:tribe_up/features/groups/domain/use_cases/toggle_follow_use_case.dart';
@@ -19,6 +20,7 @@ class TribesListCubit extends Cubit<TribesState> {
   final ExploreGroupsUseCase _exploreGroupsUseCase;
   final LeaveGroupUseCase _leaveGroupUseCase;
   final ToggleFollowUseCase _toggleFollowUseCase;
+  final FollowedGroupsUseCase _followedGroupsUseCase;
 
   static const int _pageSize = 10;
 
@@ -31,6 +33,7 @@ class TribesListCubit extends Cubit<TribesState> {
     this._exploreGroupsUseCase,
     this._leaveGroupUseCase,
     this._toggleFollowUseCase,
+    this._followedGroupsUseCase,
   ) : super(const TribesState());
 
   void doIntent(TribesIntents intent) {
@@ -39,6 +42,8 @@ class TribesListCubit extends Cubit<TribesState> {
         _loadJoined(refresh: true);
       case LoadDiscoverTribesIntent():
         _loadDiscover(refresh: true);
+      case LoadFollowingTribesIntent():
+        _loadFollowing(refresh: true);
       case SwitchTribesTabIntent(:final tab):
         _switchTab(tab);
       case SearchTribesIntent(:final query):
@@ -53,6 +58,8 @@ class TribesListCubit extends Cubit<TribesState> {
         _uiIntentController.add(NavigateToTribeProfileUiIntent(group));
       case OpenCreateTribeIntent():
         _uiIntentController.add(const ShowCreateTribeSheetUiIntent());
+      case AddCreatedTribeIntent(:final group):
+        emit(state.copyWith(joinedTribes: [group, ...state.joinedTribes]));
     }
   }
 
@@ -112,12 +119,46 @@ class TribesListCubit extends Cubit<TribesState> {
     }
   }
 
+  Future<void> _loadFollowing({bool refresh = false}) async {
+    if (refresh) {
+      emit(
+        state.copyWith(
+          isLoadingFollowing: true,
+          followingPage: 1,
+          clearError: true,
+        ),
+      );
+    }
+    final response = await _followedGroupsUseCase(1, _pageSize);
+    switch (response) {
+      case SuccessResponse(:final data):
+        emit(
+          state.copyWith(
+            followingTribes: data.items ?? [],
+            followingPage: 1,
+            hasMoreFollowing: data.hasMore ?? false,
+            isLoadingFollowing: false,
+          ),
+        );
+      case ErrorResponse(:final error):
+        emit(
+          state.copyWith(
+            isLoadingFollowing: false,
+            errorMessage: error.message,
+          ),
+        );
+        _uiIntentController.add(ShowErrorUiIntent(error.message));
+    }
+  }
+
   void _switchTab(TribesTab tab) {
     emit(state.copyWith(currentTab: tab));
     if (tab == TribesTab.joined && state.joinedTribes.isEmpty) {
       _loadJoined(refresh: true);
     } else if (tab == TribesTab.discover && state.discoverTribes.isEmpty) {
       _loadDiscover(refresh: true);
+    } else if (tab == TribesTab.following && state.followingTribes.isEmpty) {
+      _loadFollowing(refresh: true);
     }
   }
 
@@ -143,6 +184,29 @@ class TribesListCubit extends Cubit<TribesState> {
               joinedTribes: [...state.joinedTribes, ...(data.items ?? [])],
               joinedPage: nextPage,
               hasMoreJoined: data.hasMore ?? false,
+              isLoadingMore: false,
+            ),
+          );
+        case ErrorResponse(:final error):
+          emit(
+            state.copyWith(isLoadingMore: false, errorMessage: error.message),
+          );
+      }
+    } else if (state.currentTab == TribesTab.following) {
+      if (!state.hasMoreFollowing) return;
+      emit(state.copyWith(isLoadingMore: true));
+      final nextPage = state.followingPage + 1;
+      final response = await _followedGroupsUseCase(nextPage, _pageSize);
+      switch (response) {
+        case SuccessResponse(:final data):
+          emit(
+            state.copyWith(
+              followingTribes: [
+                ...state.followingTribes,
+                ...(data.items ?? []),
+              ],
+              followingPage: nextPage,
+              hasMoreFollowing: data.hasMore ?? false,
               isLoadingMore: false,
             ),
           );
@@ -216,9 +280,34 @@ class TribesListCubit extends Cubit<TribesState> {
 
     switch (response) {
       case SuccessResponse(:final data):
-        final updatedList = state.discoverTribes.map((g) {
+        final isNowFollowing = data.currentRelation == 1; // follower relation
+        Group? targetGroup;
+
+        final updatedDiscover = state.discoverTribes.map((g) {
           if (g.id == groupId) {
-            return Group(
+            final updatedGroup = Group(
+              id: g.id,
+              groupName: g.groupName,
+              description: g.description,
+              groupProfilePicture: g.groupProfilePicture,
+              createdAt: g.createdAt,
+              accessibility: g.accessibility,
+              userRelation: data.currentRelation,
+              membersCount: g.membersCount,
+            );
+            targetGroup ??= updatedGroup;
+            return updatedGroup;
+          }
+          return g;
+        }).toList();
+
+        List<Group> updatedFollowing = List.from(state.followingTribes);
+
+        if (targetGroup == null) {
+          final idx = updatedFollowing.indexWhere((g) => g.id == groupId);
+          if (idx != -1) {
+            final g = updatedFollowing[idx];
+            targetGroup = Group(
               id: g.id,
               groupName: g.groupName,
               description: g.description,
@@ -229,11 +318,21 @@ class TribesListCubit extends Cubit<TribesState> {
               membersCount: g.membersCount,
             );
           }
-          return g;
-        }).toList();
+        }
+
+        if (isNowFollowing) {
+          if (targetGroup != null &&
+              !updatedFollowing.any((g) => g.id == groupId)) {
+            updatedFollowing.insert(0, targetGroup!);
+          }
+        } else {
+          updatedFollowing.removeWhere((g) => g.id == groupId);
+        }
+
         emit(
           state.copyWith(
-            discoverTribes: updatedList,
+            discoverTribes: updatedDiscover,
+            followingTribes: updatedFollowing,
             pendingActionIds: updated,
           ),
         );

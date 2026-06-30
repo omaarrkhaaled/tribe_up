@@ -12,6 +12,8 @@ import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/dialogs/edit_post_sheet.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/video_player_widget.dart';
 import 'package:tribe_up/features/comments/presentation/view/widgets/comments_bottom_sheet.dart';
+import 'package:tribe_up/features/feed/presentation/view/widgets/expandable_text.dart';
+import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
 
 class PostCard extends StatelessWidget {
   final PostEntity post;
@@ -54,17 +56,43 @@ class PostCard extends StatelessWidget {
             // ── Header row ──
             Row(
               children: [
-                _GroupAvatar(groupProfilePicture: post.groupProfilePicture),
+                GestureDetector(
+                  onTap: () {
+                    context.pushNamed(
+                      AppRoutesConstants.tribeProfile,
+                      extra: Group(
+                        id: post.groupId,
+                        groupName: post.groupName,
+                        groupProfilePicture: post.groupProfilePicture,
+                      ),
+                    );
+                  },
+                  child: _GroupAvatar(
+                    groupProfilePicture: post.groupProfilePicture,
+                  ),
+                ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        post.groupName,
-                        style: textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
+                      GestureDetector(
+                        onTap: () {
+                          context.pushNamed(
+                            AppRoutesConstants.tribeProfile,
+                            extra: Group(
+                              id: post.groupId,
+                              groupName: post.groupName,
+                              groupProfilePicture: post.groupProfilePicture,
+                            ),
+                          );
+                        },
+                        child: Text(
+                          post.groupName,
+                          style: textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                       GestureDetector(
@@ -108,13 +136,9 @@ class PostCard extends StatelessWidget {
             if (post.caption != null && post.caption!.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(bottom: 12.0),
-                child: Text(
-                  post.caption!,
-                  style: textTheme.bodyMedium?.copyWith(
-                    fontSize: 15,
-                    height: 1.4,
-                    fontWeight: FontWeight.w400,
-                  ),
+                child: ExpandableText(
+                  text: post.caption!,
+                  style: textTheme.bodyMedium,
                 ),
               ),
 
@@ -322,46 +346,94 @@ class _PostMoreMenuState extends State<_PostMoreMenu> {
   }
 }
 
-class _MediaSection extends StatelessWidget {
+class _MediaSection extends StatefulWidget {
   final List<dynamic> media;
   const _MediaSection({required this.media});
 
   @override
+  State<_MediaSection> createState() => _MediaSectionState();
+}
+
+class _MediaSectionState extends State<_MediaSection> {
+  int _currentIndex = 0;
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 250,
-      child: PageView.builder(
-        controller: PageController(viewportFraction: 0.9),
-        itemCount: media.length,
-        itemBuilder: (context, index) {
-          final postMedia = media[index];
-          if (postMedia.mediaType == 'Image') {
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: CachedNetworkImage(
-                imageUrl: postMedia.mediaURL,
-                fit: BoxFit.fitWidth,
-                placeholder: (_, __) => Container(
-                  height: 250,
-                  width: double.infinity,
-                  color: ColorManager.lightGrey.withValues(alpha: 0.2),
-                ),
-                errorWidget: (_, __, ___) => Center(
-                  child: Icon(
-                    Icons.broken_image,
-                    size: 40,
-                    color: ColorManager.grey,
+    return Column(
+      children: [
+        SizedBox(
+          height: 250,
+          child: PageView.builder(
+            controller: PageController(viewportFraction: 0.93),
+            onPageChanged: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            itemCount: widget.media.length,
+            itemBuilder: (context, index) {
+              final postMedia = widget.media[index];
+              Widget mediaWidget;
+
+              if (postMedia.mediaType == 'Image') {
+                mediaWidget = ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: CachedNetworkImage(
+                    imageUrl: postMedia.mediaURL,
+                    fit: BoxFit.cover,
+                    placeholder: (_, __) => Container(
+                      height: 250,
+                      width: double.infinity,
+                      color: ColorManager.lightGrey.withValues(alpha: 0.2),
+                    ),
+                    errorWidget: (_, __, ___) => Center(
+                      child: Icon(
+                        Icons.broken_image,
+                        size: 40,
+                        color: ColorManager.grey,
+                      ),
+                    ),
+                  ),
+                );
+              } else if (postMedia.mediaType == 'Video') {
+                mediaWidget = ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: VideoPlayerWidget(url: postMedia.mediaURL),
+                );
+              } else {
+                mediaWidget = const SizedBox.shrink();
+              }
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: mediaWidget,
+              );
+            },
+          ),
+        ),
+        if (widget.media.length > 1)
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                widget.media.length,
+                (index) => AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                  height: 6,
+                  width: _currentIndex == index ? 20 : 6,
+                  decoration: BoxDecoration(
+                    color: _currentIndex == index
+                        ? ColorManager.primary
+                        : ColorManager.grey.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(3),
                   ),
                 ),
               ),
-            );
-          }
-          if (postMedia.mediaType == 'Video') {
-            return VideoPlayerWidget(url: postMedia.mediaURL);
-          }
-          return const SizedBox.shrink();
-        },
-      ),
+            ),
+          ),
+      ],
     );
   }
 }

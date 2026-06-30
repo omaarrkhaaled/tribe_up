@@ -87,12 +87,19 @@ class _TribeProfileScreenState extends State<TribeProfileScreen> {
               ),
             );
           }
+          final initialRelation = widget.group?.userRelation;
+          final currentRelation = state.tribe?.userRelation;
+          final relationChanged =
+              initialRelation != null &&
+              currentRelation != null &&
+              initialRelation != currentRelation;
+
           return TribeProfileView(
             tribe: tribe,
             state: state,
             cubit: _cubit,
             userProfilePicture: _currentUser?.profilePicture,
-            didChangeTribe: _didChangeTribe,
+            didChangeTribe: _didChangeTribe || relationChanged,
           );
         },
       ),

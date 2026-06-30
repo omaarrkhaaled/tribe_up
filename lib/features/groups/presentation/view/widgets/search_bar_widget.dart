@@ -13,10 +13,10 @@ class SearchBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isJoined = state.currentTab == TribesTab.joined;
+    final isDiscover = state.currentTab == TribesTab.discover;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: isJoined
+      child: !isDiscover
           ? const SizedBox.shrink()
           : TextField(
               onChanged: (query) => cubit.doIntent(SearchTribesIntent(query)),

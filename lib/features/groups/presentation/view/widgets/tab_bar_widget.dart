@@ -11,6 +11,17 @@ class TabBarWidget extends StatelessWidget {
   final TribesState state;
   const TabBarWidget({super.key, required this.cubit, required this.state});
 
+  String _tabLabel(TribesTab tab) {
+    switch (tab) {
+      case TribesTab.joined:
+        return UiConstants.joinedIn;
+      case TribesTab.discover:
+        return UiConstants.discover;
+      case TribesTab.following:
+        return 'Following';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,6 +41,10 @@ class TabBarWidget extends StatelessWidget {
                     if (tab == TribesTab.discover &&
                         state.discoverTribes.isEmpty) {
                       cubit.doIntent(const LoadDiscoverTribesIntent());
+                    }
+                    if (tab == TribesTab.following &&
+                        state.followingTribes.isEmpty) {
+                      cubit.doIntent(const LoadFollowingTribesIntent());
                     }
                   },
                   child: AnimatedContainer(
@@ -53,9 +68,7 @@ class TabBarWidget extends StatelessWidget {
                           : [],
                     ),
                     child: Text(
-                      tab == TribesTab.joined
-                          ? UiConstants.joinedIn
-                          : UiConstants.discover,
+                      _tabLabel(tab),
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontWeight: state.currentTab == tab

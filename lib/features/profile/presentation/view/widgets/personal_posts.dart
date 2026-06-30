@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/post_card.dart';
+import 'package:tribe_up/features/profile/presentation/view_model/profile_cubit.dart';
+import 'package:tribe_up/features/profile/presentation/view_model/profile_intents.dart';
 import 'package:tribe_up/features/profile/presentation/view_model/profile_states.dart';
 
 class PersonalPosts extends StatelessWidget {
@@ -84,6 +87,29 @@ class PersonalPosts extends StatelessWidget {
           currentUserProfilePicture: state.profile?.isOwnProfile == true
               ? state.profile?.profilePicture
               : null,
+          isTogglingLike: state.togglingLikePostIds.contains(post.postId),
+          isDeleting: state.deletingPostIds.contains(post.postId),
+          isEditing: state.editingPostIds.contains(post.postId),
+          onToggleLike: () {
+            context.read<ProfileCubit>().doIntent(
+              ToggleLikeIntent(post.postId),
+            );
+          },
+          onDelete: () {
+            context.read<ProfileCubit>().doIntent(
+              DeletePostIntent(post.postId),
+            );
+          },
+          onEditSubmit: (caption, newMediaFiles, deleteMediaIds) {
+            context.read<ProfileCubit>().doIntent(
+              EditPostIntent(
+                postId: post.postId,
+                caption: caption,
+                newMediaFiles: newMediaFiles,
+                deleteMediaIds: deleteMediaIds,
+              ),
+            );
+          },
         );
       },
     );
