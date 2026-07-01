@@ -33,16 +33,14 @@ class ChatSearchBar extends StatelessWidget {
         child: TextField(
           controller: controller,
           onChanged: onChanged,
-          style: TextStyle(
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: ColorManager.black,
-            fontSize: 15,
             fontWeight: FontWeight.w500,
           ),
           decoration: InputDecoration(
             hintText: 'chat',
-            hintStyle: TextStyle(
+            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: ColorManager.black,
-              fontSize: 15,
               fontWeight: FontWeight.w600,
             ),
             prefixIcon: Padding(

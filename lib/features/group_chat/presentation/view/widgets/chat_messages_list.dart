@@ -97,7 +97,7 @@ class ChatMessagesList extends StatelessWidget {
         if (showDateHeader) {
           return Column(
             mainAxisSize: MainAxisSize.min,
-            children: [_buildDateHeader(message.sentAt), bubble],
+            children: [_buildDateHeader(context, message.sentAt), bubble],
           );
         }
 
@@ -110,7 +110,7 @@ class ChatMessagesList extends StatelessWidget {
     return d1.year == d2.year && d1.month == d2.month && d1.day == d2.day;
   }
 
-  Widget _buildDateHeader(DateTime date) {
+  Widget _buildDateHeader(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final yesterday = today.subtract(const Duration(days: 1));
@@ -149,9 +149,8 @@ class ChatMessagesList extends StatelessWidget {
         ),
         child: Text(
           dateString,
-          style: TextStyle(
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
             color: ColorManager.grey,
-            fontSize: 12,
             fontWeight: FontWeight.w600,
           ),
         ),
