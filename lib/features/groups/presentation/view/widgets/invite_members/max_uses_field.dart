@@ -32,7 +32,9 @@ class MaxUsesField extends StatelessWidget {
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
             hintText: UiConstants.maxUsesHint,
-            hintStyle: TextStyle(color: ColorManager.lightGrey),
+            hintStyle: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: ColorManager.lightGrey),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: ColorManager.lightGrey),

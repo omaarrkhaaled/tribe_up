@@ -34,9 +34,9 @@ class SettingRow extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(
-                  fontSize: 15,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w500,
+                  color: ColorManager.black,
                 ),
               ),
             ),
