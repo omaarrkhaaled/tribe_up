@@ -100,9 +100,8 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 const SizedBox(width: 8),
                 Text(
                   UiConstants.back,
-                  style: TextStyle(
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: ColorManager.black,
-                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -153,10 +152,8 @@ class _MenuDrawerState extends State<MenuDrawer> {
                           children: [
                             Text(
                               user?.fullName ?? 'Alex Johnson',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -164,10 +161,8 @@ class _MenuDrawerState extends State<MenuDrawer> {
                               user?.userName != null
                                   ? '@${user!.userName}'
                                   : 'loading...',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(color: Colors.grey),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -274,9 +269,8 @@ class _MenuDrawerState extends State<MenuDrawer> {
       leading: Icon(icon, color: isDestructive ? Colors.red : null, size: 21),
       title: Text(
         title,
-        style: TextStyle(
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
           color: isDestructive ? Colors.red : null,
-          fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
       ),

@@ -38,7 +38,7 @@ class ExpiryDatePicker extends StatelessWidget {
               enabled: enabled,
               decoration: InputDecoration(
                 hintText: selectedDate == null ? 'mm/dd/yyyy' : displayDate,
-                hintStyle: TextStyle(
+                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: selectedDate == null
                       ? ColorManager.lightGrey
                       : ColorManager.black,

@@ -186,13 +186,18 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
       builder: (dialogCtx) => AlertDialog(
         backgroundColor: Colors.grey[900],
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text(
+        title: Text(
           'Delete Story',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        content: const Text(
+        content: Text(
           'Are you sure you want to delete this story? This cannot be undone.',
-          style: TextStyle(color: Colors.white70),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
         ),
         actions: [
           TextButton(
@@ -200,9 +205,11 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
               Navigator.pop(dialogCtx);
               _resumeStory();
             },
-            child: const Text(
+            child: Text(
               'Cancel',
-              style: TextStyle(color: Colors.white70),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
             ),
           ),
           TextButton(
@@ -210,9 +217,9 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
               Navigator.pop(dialogCtx);
               _performDelete(story);
             },
-            child: const Text(
+            child: Text(
               'Delete',
-              style: TextStyle(
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Colors.redAccent,
                 fontWeight: FontWeight.bold,
               ),
@@ -293,7 +300,9 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
                   const SizedBox(height: 16),
                   Text(
                     'Loading $_currentGroupName stories...',
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleMedium?.copyWith(color: Colors.white),
                   ),
                 ],
               ),
@@ -305,9 +314,11 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'No stories found in this Tribe.',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleMedium?.copyWith(color: Colors.white),
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
@@ -383,11 +394,11 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
                             padding: const EdgeInsets.all(24.0),
                             child: Text(
                               story.caption ?? '',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.headlineMedium
+                                  ?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -518,11 +529,11 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
                               children: [
                                 Text(
                                   _currentGroupName,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -541,12 +552,14 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
                                     },
                                     child: Text(
                                       'by @${story.creatorUserName}',
-                                      style: TextStyle(
-                                        color: Colors.white.withValues(
-                                          alpha: 0.7,
-                                        ),
-                                        fontSize: 11,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall
+                                          ?.copyWith(
+                                            color: Colors.white.withValues(
+                                              alpha: 0.7,
+                                            ),
+                                          ),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -587,9 +600,8 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
                     right: 20,
                     child: Text(
                       story.caption!,
-                      style: const TextStyle(
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Colors.white,
-                        fontSize: 16,
                         fontWeight: FontWeight.w500,
                         shadows: [
                           Shadow(

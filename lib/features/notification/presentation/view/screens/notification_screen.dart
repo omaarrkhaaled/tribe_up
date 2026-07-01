@@ -142,7 +142,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     Text(
                       state.errorMessage!,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: ColorManager.red),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: ColorManager.red),
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
@@ -169,7 +171,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     const SizedBox(height: 12),
                     Text(
                       UiConstants.noNotifications,
-                      style: TextStyle(color: ColorManager.black, fontSize: 16),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: ColorManager.black,
+                      ),
                     ),
                   ],
                 ),

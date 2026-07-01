@@ -52,9 +52,8 @@ class ChatMessageBubble extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 4, bottom: 4),
                     child: Text(
                       '@${message.senderName}',
-                      style: TextStyle(
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: ColorManager.grey,
-                        fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -108,12 +107,12 @@ class ChatMessageBubble extends StatelessWidget {
                       children: [
                         Text(
                           message.content,
-                          style: TextStyle(
-                            color: isMe ? Colors.white : ColorManager.black,
-                            fontSize: 14.5,
-                            fontWeight: FontWeight.w400,
-                            height: 1.4,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: isMe ? Colors.white : ColorManager.black,
+                                fontWeight: FontWeight.w400,
+                                height: 1.4,
+                              ),
                         ),
                         const SizedBox(height: 4),
                         Row(
@@ -122,24 +121,24 @@ class ChatMessageBubble extends StatelessWidget {
                             if (message.isEdited) ...[
                               Text(
                                 'edited • ',
-                                style: TextStyle(
-                                  color: isMe
-                                      ? Colors.white.withValues(alpha: 0.6)
-                                      : ColorManager.lightGrey,
-                                  fontSize: 10,
-                                  fontStyle: FontStyle.italic,
-                                ),
+                                style: Theme.of(context).textTheme.labelSmall
+                                    ?.copyWith(
+                                      color: isMe
+                                          ? Colors.white.withValues(alpha: 0.6)
+                                          : ColorManager.lightGrey,
+                                      fontStyle: FontStyle.italic,
+                                    ),
                               ),
                             ],
                             Text(
                               _formatTime(message.sentAt),
-                              style: TextStyle(
-                                color: isMe
-                                    ? Colors.white.withValues(alpha: 0.7)
-                                    : ColorManager.lightGrey,
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w400,
-                              ),
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(
+                                    color: isMe
+                                        ? Colors.white.withValues(alpha: 0.7)
+                                        : ColorManager.lightGrey,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                             ),
                           ],
                         ),
@@ -223,9 +222,8 @@ class _InitialsAvatar extends StatelessWidget {
       child: Center(
         child: Text(
           initials,
-          style: TextStyle(
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
             color: ColorManager.primary,
-            fontSize: 13,
             fontWeight: FontWeight.w700,
           ),
         ),

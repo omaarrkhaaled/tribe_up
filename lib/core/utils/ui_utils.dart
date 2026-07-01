@@ -1,28 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tribe_up/core/resources/assets_managar.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 
 class UIUtils {
-  static void showEasyLoading({String? status}) {
-    EasyLoading.instance
-      ..indicatorType = EasyLoadingIndicatorType.fadingCircle
-      ..indicatorSize = 60.0
-      ..loadingStyle = EasyLoadingStyle.custom
-      ..radius = 20.0
-      ..backgroundColor = ColorManager.primary.withValues(alpha: 0.85)
-      ..indicatorColor = Colors.white
-      ..textColor = ColorManager.white
-      ..maskType = EasyLoadingMaskType.black
-      ..contentPadding = EdgeInsets.all(20);
-    EasyLoading.show(status: status ?? 'Loading...');
-  }
-
-  static void hideEasyLoading() => EasyLoading.dismiss();
-
   static void showPremiumLoading(
     BuildContext context, {
     String? text,
