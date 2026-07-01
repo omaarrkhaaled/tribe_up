@@ -192,9 +192,8 @@ class _ActionTileState extends State<_ActionTile> {
             const SizedBox(width: 14),
             Text(
               widget.label,
-              style: TextStyle(
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: widget.labelColor,
-                fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
             ),

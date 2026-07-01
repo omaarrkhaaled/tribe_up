@@ -60,9 +60,8 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               Text(
                 groupName,
-                style: TextStyle(
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: ColorManager.white,
-                  fontSize: 16,
                   fontWeight: FontWeight.w700,
                   letterSpacing: -0.3,
                 ),

@@ -155,10 +155,8 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
                               Text(
                                 '${_formatDuration(position)} / ${_formatDuration(duration)}',
-                                style: TextStyle(
-                                  color: ColorManager.white,
-                                  fontSize: 11,
-                                ),
+                                style: Theme.of(context).textTheme.labelSmall
+                                    ?.copyWith(color: ColorManager.white),
                               ),
 
                               const Spacer(),

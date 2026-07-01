@@ -211,9 +211,8 @@ class _ImageCropperScreenState extends State<ImageCropperScreen>
         ),
         title: Text(
           widget.isCover ? "Edit Cover Photo" : "Edit Profile Picture",
-          style: TextStyle(
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: ColorManager.white,
-            fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -298,9 +297,8 @@ class _ImageCropperScreenState extends State<ImageCropperScreen>
                   ],
                   Text(
                     "Drag to Move • Pinch or Use Slider to Zoom",
-                    style: TextStyle(
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: ColorManager.lightGrey,
-                      fontSize: 13,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -327,12 +325,10 @@ class _ImageCropperScreenState extends State<ImageCropperScreen>
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         "Cancel",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
@@ -358,12 +354,10 @@ class _ImageCropperScreenState extends State<ImageCropperScreen>
                                 color: ColorManager.white,
                               ),
                             )
-                          : const Text(
+                          : Text(
                               "Apply",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.w600),
                             ),
                     ),
                   ),

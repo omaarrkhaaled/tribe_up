@@ -135,7 +135,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       const SizedBox(height: 12),
                       Text(
                         state.errorMessage!,
-                        style: TextStyle(color: ColorManager.red),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ColorManager.red),
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
