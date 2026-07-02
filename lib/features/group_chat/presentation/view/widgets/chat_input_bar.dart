@@ -75,18 +75,16 @@ class _ChatInputBarState extends State<ChatInputBar> {
                   maxLines: 4,
                   minLines: 1,
                   textCapitalization: TextCapitalization.sentences,
-                  style: TextStyle(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: ColorManager.black,
-                    fontSize: 15,
                     fontWeight: FontWeight.w400,
                   ),
                   decoration: InputDecoration(
                     hintText: widget.isEditing
                         ? 'Edit message...'
                         : 'Type msg...',
-                    hintStyle: TextStyle(
+                    hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: ColorManager.lightGrey,
-                      fontSize: 14.5,
                     ),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 18,

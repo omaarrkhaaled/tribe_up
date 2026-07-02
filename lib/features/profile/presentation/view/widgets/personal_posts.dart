@@ -68,7 +68,9 @@ class PersonalPosts extends StatelessWidget {
               const SizedBox(height: 16),
               Text(
                 UiConstants.noPostsYet,
-                style: TextStyle(color: ColorManager.grey, fontSize: 18),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(color: ColorManager.grey),
               ),
             ],
           ),

@@ -212,9 +212,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   child: Text(
                                     UiConstants.editProfile,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: ColorManager.black,
+                                        ),
                                   ),
                                 ),
                               if (state.profile?.isOwnProfile == false)

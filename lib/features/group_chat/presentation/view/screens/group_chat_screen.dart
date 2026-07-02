@@ -273,8 +273,7 @@ class _SignalRStatusBannerState extends State<_SignalRStatusBanner> {
       child: Text(
         label,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 11,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
           fontWeight: FontWeight.w600,
           color: color,
         ),
@@ -379,9 +378,8 @@ class _OptionTile extends StatelessWidget {
             const SizedBox(width: 16),
             Text(
               label,
-              style: TextStyle(
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: color,
-                fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),

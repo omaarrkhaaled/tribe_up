@@ -61,20 +61,20 @@ class ChatInboxItemCard extends StatelessWidget {
                           if (hasSender)
                             TextSpan(
                               text: '${item.lastMessageSenderName}: ',
-                              style: TextStyle(
-                                color: ColorManager.grey,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 13,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: ColorManager.grey,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                             ),
                           if (hasContent)
                             TextSpan(
                               text: '"${item.lastMessageContent}"',
-                              style: TextStyle(
-                                color: ColorManager.lightGrey,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 13,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: ColorManager.lightGrey,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                             ),
                         ],
                       ),
