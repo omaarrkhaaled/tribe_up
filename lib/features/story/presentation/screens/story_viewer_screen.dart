@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tribe_up/config/di/di.dart';
+import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_managar.dart';
 import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
 import 'package:tribe_up/features/profile/presentation/view/screens/profile_screen.dart';
@@ -187,14 +188,14 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
         backgroundColor: Colors.grey[900],
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
-          'Delete Story',
+          UiConstants.delete,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
         content: Text(
-          'Are you sure you want to delete this story? This cannot be undone.',
+          UiConstants.deleteStoryMessage,
           style: Theme.of(
             context,
           ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
@@ -206,7 +207,7 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
               _resumeStory();
             },
             child: Text(
-              'Cancel',
+              UiConstants.cancel,
               style: Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
@@ -218,7 +219,7 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
               _performDelete(story);
             },
             child: Text(
-              'Delete',
+              UiConstants.delete,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Colors.redAccent,
                 fontWeight: FontWeight.bold,
