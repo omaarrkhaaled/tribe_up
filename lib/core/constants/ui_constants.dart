@@ -275,6 +275,9 @@ class UiConstants {
   static const String removePhoneNumberPosActionName = 'Remove';
   static const String seeMore = 'See more';
   static const String seeLess = 'See less';
+  static const String deleteStoryMessage =
+      'Are you sure you want to delete this story? This cannot be undone.';
+  static const String deleteStory = 'Delete Story';
 }
 
 class GoogleFontsKeys {
