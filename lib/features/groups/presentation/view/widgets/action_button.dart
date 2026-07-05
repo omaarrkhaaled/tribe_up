@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/enums/user_relation.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
 import 'package:tribe_up/features/groups/presentation/view/widgets/dialogs/confirm_leave_dialog.dart';
 import 'package:tribe_up/features/groups/presentation/view/widgets/dialogs/confirm_unfollow_dialog.dart';

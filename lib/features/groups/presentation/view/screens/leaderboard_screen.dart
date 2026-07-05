@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/groups/presentation/view/widgets/competing_tribes.dart';
 import 'package:tribe_up/features/groups/presentation/view/widgets/leaderboard_entry_row.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/leaderboard/leaderboard_cubit.dart';

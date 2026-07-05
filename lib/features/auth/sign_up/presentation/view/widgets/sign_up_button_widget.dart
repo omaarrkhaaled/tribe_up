@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/cubit/sign_up_intents.dart';
 import 'package:tribe_up/features/auth/sign_up/presentation/cubit/sign_up_states.dart';

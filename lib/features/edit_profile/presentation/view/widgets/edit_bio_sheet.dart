@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view_model/edit_profile_cubit.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view_model/edit_profile_intents.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view_model/edit_profile_states.dart';

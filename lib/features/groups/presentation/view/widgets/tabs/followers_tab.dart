@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/features/groups/presentation/view/widgets/tribe_follower_tile.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_settings/tribe_settings_cubit.dart';

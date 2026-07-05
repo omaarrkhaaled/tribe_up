@@ -2,8 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:tribe_up/core/resources/assets_managar.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/assets_manager.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 
 class UIUtils {
   static void showPremiumLoading(
