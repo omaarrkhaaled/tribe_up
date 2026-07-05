@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tribe_up/core/constants/date_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/dialogs/confirm_delete_post_dialog.dart';

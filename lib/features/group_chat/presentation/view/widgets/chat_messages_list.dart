@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/group_chat/domain/entities/chat_message_entity.dart';
 import 'package:tribe_up/features/group_chat/presentation/view/widgets/chat_message_bubble.dart';
 import 'package:tribe_up/features/group_chat/presentation/view_model/group_chat_states.dart';

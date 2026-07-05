@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 
 class SectionCard extends StatelessWidget {
   final String title;

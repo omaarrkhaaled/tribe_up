@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
 import 'package:tribe_up/features/auth/forget_password/presentation/cubit/faorget_password_intents.dart';
 import 'package:tribe_up/features/auth/forget_password/presentation/cubit/forget_passord_states.dart';

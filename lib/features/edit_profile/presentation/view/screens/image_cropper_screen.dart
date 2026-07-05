@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 
 class ImageCropperScreen extends StatefulWidget {
   final File imageFile;

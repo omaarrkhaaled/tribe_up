@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/notification/domain/entities/notification_entity.dart';
 
 /// A Facebook-style in-app notification banner that slides down from the top,

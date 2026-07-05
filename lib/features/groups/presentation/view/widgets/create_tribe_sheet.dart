@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/groups/presentation/view/widgets/privacy_row.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/create_tribe/create_tribe_cubit.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/create_tribe/create_tribe_intents.dart';

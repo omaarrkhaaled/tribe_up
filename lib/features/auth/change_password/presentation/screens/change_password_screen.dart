@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
 import 'package:tribe_up/core/utils/validator.dart';
 import 'package:tribe_up/features/auth/change_password/presentation/cubit/change_password_cubit.dart';

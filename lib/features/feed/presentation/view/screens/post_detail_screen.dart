@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
 import 'package:tribe_up/features/comments/presentation/view/widgets/comments_bottom_sheet.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';

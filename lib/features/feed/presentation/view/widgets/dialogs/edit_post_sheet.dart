@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/dialogs/edit_post_components/edit_post_caption_field.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/dialogs/edit_post_components/edit_post_existing_media.dart';

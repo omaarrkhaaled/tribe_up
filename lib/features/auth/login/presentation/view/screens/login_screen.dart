@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
 import 'package:tribe_up/features/auth/login/presentation/cubit/login_cubit.dart';
 import 'package:tribe_up/features/auth/login/presentation/cubit/login_states.dart';

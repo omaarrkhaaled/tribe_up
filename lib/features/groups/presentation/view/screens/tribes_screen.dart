@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
 import 'package:tribe_up/features/groups/presentation/view/widgets/create_tribe_sheet.dart';
 import 'package:tribe_up/features/groups/presentation/view/widgets/search_bar_widget.dart';

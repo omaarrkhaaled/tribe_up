@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 
 class CoverPlaceholder extends StatelessWidget {
   const CoverPlaceholder({super.key});
