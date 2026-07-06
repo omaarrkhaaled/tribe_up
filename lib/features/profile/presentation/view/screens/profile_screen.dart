@@ -13,7 +13,7 @@ import 'package:tribe_up/features/profile/presentation/view_model/profile_cubit.
 import 'package:tribe_up/features/profile/presentation/view_model/profile_intents.dart';
 import 'package:tribe_up/features/profile/presentation/view_model/profile_states.dart';
 import 'package:tribe_up/features/profile/presentation/view_model/profile_ui_intents.dart';
-import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
+import 'package:tribe_up/features/auth/data/data_sources/local/login_local_data_source.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
 

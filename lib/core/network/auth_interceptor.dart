@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tribe_up/core/constants/api_constants.dart';
 import 'package:tribe_up/core/network/device_id_manager.dart';
-import 'package:tribe_up/features/auth/login/data/models/login_request/refresh_token_request_model.dart';
-import 'package:tribe_up/features/auth/login/data/models/login_response/login_response_model.dart';
+import 'package:tribe_up/features/auth/data/models/login_request/refresh_token_request_model.dart';
+import 'package:tribe_up/features/auth/data/models/login_response/login_response_model.dart';
 
 class AuthInterceptor extends Interceptor {
   final Box<String> tokenBox;
