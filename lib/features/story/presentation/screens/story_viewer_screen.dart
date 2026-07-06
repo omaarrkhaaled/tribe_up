@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tribe_up/config/di/di.dart';
 
-import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
+import 'package:tribe_up/features/auth/data/data_sources/local/login_local_data_source.dart';
 import 'package:tribe_up/features/story/domain/entities/story_entity.dart';
 import 'package:tribe_up/features/story/domain/entities/story_feed_item_entity.dart';
 import 'package:tribe_up/features/story/presentation/cubit/story_cubit.dart';

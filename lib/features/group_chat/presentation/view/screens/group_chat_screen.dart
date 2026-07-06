@@ -7,7 +7,7 @@ import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/core/services/signalr/group_chat_signalr_service.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
-import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
+import 'package:tribe_up/features/auth/data/data_sources/local/login_local_data_source.dart';
 import 'package:tribe_up/features/group_chat/presentation/view/widgets/chat_app_bar.dart';
 import 'package:tribe_up/features/group_chat/presentation/view/widgets/chat_edit_banner.dart';
 import 'package:tribe_up/features/group_chat/presentation/view/widgets/chat_input_bar.dart';
