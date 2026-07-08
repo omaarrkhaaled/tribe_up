@@ -224,6 +224,14 @@ class _MenuDrawerState extends State<MenuDrawer> {
           ),
           _buildMenuItem(
             context,
+            icon: FontAwesomeIcons.squarePollVertical,
+            title: 'Polls',
+            onTap: () => _navigateAndClose(
+              (router) => router.pushNamed(AppRoutesConstants.pollsGroups),
+            ),
+          ),
+          _buildMenuItem(
+            context,
             icon: FontAwesomeIcons.solidPaperPlane,
             title: UiConstants.chat,
             onTap: () => _navigateAndClose((_) {
