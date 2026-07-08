@@ -117,6 +117,15 @@ class ApiConstants {
       'GroupChat/{messageId}/EditMessage';
   static const String groupChatDeleteMessageEndPoint =
       'GroupChat/{messageId}/DeleteMessage';
+
+  // Polls EndPoints
+  static const String createPollEndPoint = 'Polls/{groupId}/CreatePoll';
+  static const String groupPollsEndPoint = 'Polls/{groupId}/GroupPolls';
+  static const String getPollByIdEndPoint = 'Polls/{pollId}/GetPollById';
+  static const String updatePollEndPoint = 'Polls/{pollId}/UpdatePoll';
+  static const String deletePollEndPoint = 'Polls/{pollId}/DeletePoll';
+  static const String toggleVoteEndPoint =
+      'Polls/{pollId}/Options/{optionId}/ToggleVote';
 }
 
 class CacheConstants {
