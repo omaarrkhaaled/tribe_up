@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tribe_up/core/constants/app_routes_constants.dart';
+
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
@@ -175,6 +178,33 @@ class TribeProfileViewState extends State<TribeProfileView> {
                               cubit.doIntent(const OpenInviteIntent()),
                           icon: const Icon(Icons.add, size: 18),
                           label: Text(UiConstants.invite),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorManager.primary,
+                            foregroundColor: ColorManager.white,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 0,
+                            ),
+                            minimumSize: const Size(0, 36),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                      // Polls button
+                      if (relation.isMemberOrAbove) ...[
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            context.pushNamed(
+                              AppRoutesConstants.groupPolls,
+                              extra: tribe,
+                            );
+                          },
+                          icon: const Icon(Icons.poll, size: 18),
+                          label: const Text("Polls"),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: ColorManager.primary,
                             foregroundColor: ColorManager.white,
