@@ -14,6 +14,13 @@ class ApiConstants {
   static const String logoutEndPoint = 'Authentication/Logout';
   //----------------------------posts EndPoints------------------------//
   static const String feedEndPoint = 'Posts/Feed';
+  static const String commentsEndPoint = 'Comment/{postId}/Comments';
+  static const String addCommentEndPoint = 'Comment/{postId}/AddComment';
+  static const String deleteCommentEndPoint =
+      'Comment/{commentId}/DeleteComment';
+  static const String editCommentEndPoint = 'Comment/{commentId}/EditComment';
+  static const String commentToggleLikeEndPoint =
+      'Comment/{commentId}/CommentToggleLike';
   static const String personalFeedEndPoint = 'Posts/PersonalFeed';
   static const String createPostEndPoint = 'Posts/CreatePost';
   static const String editPostEndPoint = 'Posts/{postId}/EditPost';
@@ -34,16 +41,6 @@ class ApiConstants {
       'Story/GetGroupStories/{groupId}';
   static const String getStoryFeedEndPoint = 'Story/GetStoryFeed';
   static const String markAsViewedEndPoint = 'Story/MarkAsViewed/{storyId}';
-
-  //----------------------------comments EndPoints------------------------//
-  static const String commentsEndPoint = 'Comment/{postId}/Comments';
-  static const String addCommentEndPoint = 'Comment/{postId}/AddComment';
-  static const String deleteCommentEndPoint =
-      'Comment/{commentId}/DeleteComment';
-  static const String editCommentEndPoint = 'Comment/{commentId}/EditComment';
-  static const String commentToggleLikeEndPoint =
-      'Comment/{commentId}/CommentToggleLike';
-
   static const String notificationsEndPoint = 'Notification';
   static const String notificationReadEndPoint = 'Notification/{id}/read';
   static const String notificationReadAllEndPoint = 'Notification/read/all';
