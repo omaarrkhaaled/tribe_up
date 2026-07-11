@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
 import 'package:tribe_up/features/story/presentation/cubit/story_cubit.dart';
 import 'package:tribe_up/features/story/presentation/cubit/story_states.dart';

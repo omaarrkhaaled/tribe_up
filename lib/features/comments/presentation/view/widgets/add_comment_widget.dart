@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/enums/comment_operations.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/comments/presentation/view_model/comments_cubit.dart';
 import 'package:tribe_up/features/comments/presentation/view_model/comments_intents.dart';
 import 'package:tribe_up/features/comments/presentation/view_model/comments_states.dart';

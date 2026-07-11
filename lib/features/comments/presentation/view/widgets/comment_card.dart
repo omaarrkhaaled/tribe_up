@@ -7,7 +7,7 @@ import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/core/constants/date_constants.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/enums/comment_operations.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/comments/domain/entities/comment_item_entity.dart';
 import 'package:tribe_up/features/comments/presentation/view_model/comments_cubit.dart';
 import 'package:tribe_up/features/comments/presentation/view_model/comments_intents.dart';

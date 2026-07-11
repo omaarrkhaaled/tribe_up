@@ -7,13 +7,13 @@ import 'package:go_router/go_router.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/enums/feed_nav_tab.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
-import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
-import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
-import 'package:tribe_up/features/auth/logout/presentation/logout_cubit.dart';
-import 'package:tribe_up/features/auth/logout/presentation/logout_intents.dart';
-import 'package:tribe_up/features/auth/logout/presentation/logout_ui_intents.dart';
+import 'package:tribe_up/features/auth/data/data_sources/local/login_local_data_source.dart';
+import 'package:tribe_up/features/auth/domain/entities/login_response/user_summary_entity.dart';
+import 'package:tribe_up/features/auth/presentation/cubit/logout/logout_cubit.dart';
+import 'package:tribe_up/features/auth/presentation/cubit/logout/logout_intents.dart';
+import 'package:tribe_up/features/auth/presentation/cubit/logout/logout_ui_intents.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_cubit.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_intents.dart';
 
@@ -221,6 +221,14 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 SelectTabIntent(FeedNavTab.groups),
               );
             }),
+          ),
+          _buildMenuItem(
+            context,
+            icon: FontAwesomeIcons.squarePollVertical,
+            title: 'Polls',
+            onTap: () => _navigateAndClose(
+              (router) => router.pushNamed(AppRoutesConstants.pollsGroups),
+            ),
           ),
           _buildMenuItem(
             context,

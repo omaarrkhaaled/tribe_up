@@ -278,6 +278,65 @@ class UiConstants {
   static const String deleteStoryMessage =
       'Are you sure you want to delete this story? This cannot be undone.';
   static const String deleteStory = 'Delete Story';
+
+  // Polls
+  static const String selectTribeForPolls = 'Select Tribe for Polls';
+  static const String havenotJoinedTribesYet =
+      "You haven't joined any tribes yet.";
+  static const String joinTribeToViewOrCreatePolls =
+      "Join a tribe to view or create polls!";
+  static const String selectTribe = 'Select a tribe';
+  static const String editPoll = 'Edit Poll';
+  static const String createPoll = 'Create Poll';
+  static const String questionLabel = 'Question';
+  static const String questionHint = 'What do you want to ask?';
+  static const String optionsLabel = 'Options';
+  static const String existingAndNewOptionsLabel = 'Existing & New Options';
+  static const String addOption = 'Add Option';
+  static const String allowMultipleAnswers = 'Allow Multiple Answers';
+  static const String multipleAnswersSubtitle =
+      'Users can vote for more than one option';
+  static const String expirationDateTime = 'Expiration Date & Time';
+  static const String neverExpires = 'Never expires';
+  static const String maxOptionsError = 'You can add at most 10 options.';
+  static const String maxOptionsTotalError =
+      'A poll cannot have more than 10 options in total.';
+  static const String minOptionsError =
+      'Please provide at least 2 non-empty options.';
+  static const String pollCreatedSuccessfully = 'Poll created successfully!';
+  static const String pollUpdatedSuccessfully = 'Poll updated successfully!';
+  static const String pollDeletedSuccessfully = 'Poll deleted successfully!';
+  static const String enterQuestionError = 'Please enter a question';
+  static const String existingOptionsWarning =
+      '* Existing options cannot be modified or removed to preserve voting integrity.';
+  static const String votersFor = 'Voters for';
+  static const String noVotesYet = 'No votes yet.';
+  static const String deletePollConfirm =
+      'Are you sure you want to delete this poll? This cannot be undone.';
+  static const String deletePoll = 'Delete Poll';
+  static const String deleteAction = 'Delete';
+  static const String cancelAction = 'Cancel';
+  static const String tribalDecisionDashboard = 'Tribal Decision Dashboard';
+  static const String noActivePolls = 'No active polls in this Tribe.';
+  static const String beFirstToCreatePoll =
+      'Be the first to create a poll and gather votes!';
+  static const String expired = 'Expired';
+  static const String active = 'Active';
+  static const String multipleAnswersAllowed = 'Multiple answers allowed';
+  static const String votes = 'votes';
+  static const String totalVoters = 'total voters';
+  static const String closed = 'Closed';
+  static const String ends = 'Ends:';
+
+  static String membersCountLabel(int count) => "$count members";
+  static String newOptionHint(int index) => "New Option #$index";
+  static String optionHint(int index) => "Option #$index";
+  static String optionRequiredErrorLabel(int index) =>
+      "Option #$index is required";
+  static String votersForLabel(String optionText) =>
+      "Voters for: \"$optionText\"";
+  static String votedAtLabel(String time) => "Voted at: $time";
+  static String endsLabel(String time) => "Ends: $time";
 }
 
 class GoogleFontsKeys {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/group_chat/presentation/view/widgets/chat_inbox_empty.dart';
 import 'package:tribe_up/features/group_chat/presentation/view/widgets/chat_inbox_item_card.dart';
 import 'package:tribe_up/features/group_chat/presentation/view/widgets/chat_inbox_skelton.dart';

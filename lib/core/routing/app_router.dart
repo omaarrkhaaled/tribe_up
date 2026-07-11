@@ -4,13 +4,13 @@ import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/core/network/device_id_manager.dart';
-import 'package:tribe_up/features/auth/change_password/presentation/screens/change_password_screen.dart';
-import 'package:tribe_up/features/auth/forget_password/presentation/view/forget_pasword_screen.dart';
-import 'package:tribe_up/features/auth/forget_password/presentation/view/verify_email_screen.dart';
-import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
-import 'package:tribe_up/features/auth/login/domain/use_cases/refresh_token_use_case.dart';
-import 'package:tribe_up/features/auth/login/presentation/view/screens/login_screen.dart';
-import 'package:tribe_up/features/auth/sign_up/presentation/view/screens/sign_up_screen.dart';
+import 'package:tribe_up/features/auth/presentation/screens/change_password/change_password_screen.dart';
+import 'package:tribe_up/features/auth/presentation/screens/forget_password/forget_pasword_screen.dart';
+import 'package:tribe_up/features/auth/presentation/screens/sign_up/verify_email_screen.dart';
+import 'package:tribe_up/features/auth/data/data_sources/local/login_local_data_source.dart';
+import 'package:tribe_up/features/auth/domain/use_cases/refresh_token_use_case.dart';
+import 'package:tribe_up/features/auth/presentation/screens/login/login_screen.dart';
+import 'package:tribe_up/features/auth/presentation/screens/sign_up/sign_up_screen.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/feed_screen.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view/screens/edit_profile_screen.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
@@ -24,6 +24,8 @@ import 'package:tribe_up/features/groups/presentation/view/screens/leaderboard_s
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/leaderboard/leaderboard_cubit.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/leaderboard/leaderboard_intents.dart';
+import 'package:tribe_up/features/polls/presentation/view/screens/polls_groups_screen.dart';
+import 'package:tribe_up/features/polls/presentation/view/screens/group_polls_screen.dart';
 
 abstract class AppRouter {
   static GoRouter router = GoRouter(
@@ -139,6 +141,17 @@ abstract class AppRouter {
         path: AppRoutesConstants.notifications,
         name: AppRoutesConstants.notifications,
         builder: (context, state) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutesConstants.pollsGroups,
+        name: AppRoutesConstants.pollsGroups,
+        builder: (context, state) => const PollsGroupsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutesConstants.groupPolls,
+        name: AppRoutesConstants.groupPolls,
+        builder: (context, state) =>
+            GroupPollsScreen(group: state.extra as Group),
       ),
     ],
   );

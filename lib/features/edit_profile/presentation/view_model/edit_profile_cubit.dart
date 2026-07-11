@@ -8,8 +8,8 @@ import 'package:tribe_up/features/edit_profile/domain/use_cases/edit_profile_use
 import 'package:tribe_up/features/edit_profile/presentation/view_model/edit_profile_intents.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view_model/edit_profile_states.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view_model/edit_profile_ui_intents.dart';
-import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
-import 'package:tribe_up/features/auth/login/data/models/login_response/user_summary_model.dart';
+import 'package:tribe_up/features/auth/data/data_sources/local/login_local_data_source.dart';
+import 'package:tribe_up/features/auth/data/models/login_response/user_summary_model.dart';
 
 @injectable
 class EditProfileCubit extends Cubit<EditProfileStates> {

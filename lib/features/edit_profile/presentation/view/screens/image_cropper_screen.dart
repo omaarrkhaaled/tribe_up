@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 
 class ImageCropperScreen extends StatefulWidget {
   final File imageFile;
@@ -328,7 +328,10 @@ class _ImageCropperScreenState extends State<ImageCropperScreen>
                       child: Text(
                         "Cancel",
                         style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.w600),
+                            ?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: ColorManager.white,
+                            ),
                       ),
                     ),
                   ),
@@ -357,7 +360,10 @@ class _ImageCropperScreenState extends State<ImageCropperScreen>
                           : Text(
                               "Apply",
                               style: Theme.of(context).textTheme.titleMedium
-                                  ?.copyWith(fontWeight: FontWeight.w600),
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: ColorManager.white,
+                                  ),
                             ),
                     ),
                   ),

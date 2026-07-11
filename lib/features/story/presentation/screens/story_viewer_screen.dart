@@ -1,16 +1,21 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tribe_up/config/di/di.dart';
-import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
-import 'package:tribe_up/features/auth/login/data/data_sources/login_local_data_source.dart';
-import 'package:tribe_up/features/profile/presentation/view/screens/profile_screen.dart';
+
+import 'package:tribe_up/features/auth/data/data_sources/local/login_local_data_source.dart';
 import 'package:tribe_up/features/story/domain/entities/story_entity.dart';
 import 'package:tribe_up/features/story/domain/entities/story_feed_item_entity.dart';
 import 'package:tribe_up/features/story/presentation/cubit/story_cubit.dart';
 import 'package:tribe_up/features/story/presentation/cubit/story_states.dart';
+import 'package:tribe_up/features/story/presentation/widgets/story_header.dart';
+import 'package:tribe_up/features/story/presentation/widgets/story_media_content.dart';
+import 'package:tribe_up/features/story/presentation/widgets/story_progress_bars.dart';
+import 'package:tribe_up/features/story/presentation/widgets/story_caption.dart';
+import 'package:tribe_up/features/story/presentation/widgets/story_delete_dialog.dart';
+import 'package:tribe_up/features/story/presentation/widgets/story_empty_view.dart';
+import 'package:tribe_up/features/story/presentation/widgets/story_loading_view.dart';
+import 'package:tribe_up/features/story/presentation/widgets/story_overlays.dart';
 
 class StoryViewerScreen extends StatefulWidget {
   final List<StoryFeedItemEntity> allFeedItems;
@@ -181,53 +186,10 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
 
   void _confirmDelete(StoryEntity story) {
     _pauseStory();
-    showDialog(
+    StoryDeleteDialog.show(
       context: context,
-      barrierDismissible: false,
-      builder: (dialogCtx) => AlertDialog(
-        backgroundColor: Colors.grey[900],
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(
-          UiConstants.delete,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: Text(
-          UiConstants.deleteStoryMessage,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(dialogCtx);
-              _resumeStory();
-            },
-            child: Text(
-              UiConstants.cancel,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(dialogCtx);
-              _performDelete(story);
-            },
-            child: Text(
-              UiConstants.delete,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.redAccent,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
+      onCancel: _resumeStory,
+      onConfirm: () => _performDelete(story),
     );
   }
 
@@ -293,42 +255,11 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
               state.isLoadingGroupStories[_currentGroupId] ?? false;
 
           if (isLoading || !_isGroupLoaded) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(color: ColorManager.primary),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Loading $_currentGroupName stories...',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.titleMedium?.copyWith(color: Colors.white),
-                  ),
-                ],
-              ),
-            );
+            return StoryLoadingView(groupName: _currentGroupName);
           }
 
           if (_stories.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'No stories found in this Tribe.',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.titleMedium?.copyWith(color: Colors.white),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Back'),
-                  ),
-                ],
-              ),
-            );
+            return const StoryEmptyView();
           }
 
           final story = _stories[_currentStoryIndex];
@@ -356,98 +287,24 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
             child: Stack(
               fit: StackFit.expand,
               children: [
-                // ── Media Content ──
-                story.mediaURL != null
-                    ? CachedNetworkImage(
-                        imageUrl: story.mediaURL!,
-                        fit: BoxFit.contain,
-                        imageBuilder: (context, imageProvider) {
-                          if (!_hasStartedCurrentStory) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              if (mounted && !_hasStartedCurrentStory) {
-                                _hasStartedCurrentStory = true;
-                                if (!_isUserHolding) {
-                                  _animationController.forward();
-                                }
-                              }
-                            });
-                          }
-                          return Image(
-                            image: imageProvider,
-                            fit: BoxFit.contain,
-                          );
-                        },
-                        placeholder: (context, url) => const Center(
-                          child: CircularProgressIndicator(color: Colors.white),
-                        ),
-                        errorWidget: (context, url, error) => const Center(
-                          child: Icon(
-                            Icons.error,
-                            color: Colors.white,
-                            size: 40,
-                          ),
-                        ),
-                      )
-                    : Container(
-                        color: Colors.black54,
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(24.0),
-                            child: Text(
-                              story.caption ?? '',
-                              style: Theme.of(context).textTheme.headlineMedium
-                                  ?.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-
-                // ── Gradient Shadow overlays ──
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: 140,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.black.withValues(alpha: 0.7),
-                          Colors.transparent,
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                    ),
-                  ),
+                StoryMediaContent(
+                  story: story,
+                  hasStartedCurrentStory: _hasStartedCurrentStory,
+                  onMediaLoaded: () {
+                    _hasStartedCurrentStory = true;
+                    if (!_isUserHolding) {
+                      _animationController.forward();
+                    }
+                  },
                 ),
-                if (story.mediaURL != null &&
-                    story.caption != null &&
-                    story.caption!.isNotEmpty)
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: 120,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.transparent,
-                            Colors.black.withValues(alpha: 0.8),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                      ),
-                    ),
-                  ),
 
-                // ── Top Bar: Progress Bars + Header info ──
+                StoryOverlays(
+                  showBottomOverlay:
+                      story.mediaURL != null &&
+                      story.caption != null &&
+                      story.caption!.isNotEmpty,
+                ),
+
                 Positioned(
                   top: MediaQuery.of(context).padding.top + 8,
                   left: 8,
@@ -455,166 +312,27 @@ class _StoryViewerScreenState extends State<StoryViewerScreen>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // ── Animated Progress Bars ──
-                      AnimatedBuilder(
-                        animation: _animationController,
-                        builder: (context, _) {
-                          return Row(
-                            children: List.generate(_stories.length, (index) {
-                              double progressValue;
-                              if (index < _currentStoryIndex) {
-                                progressValue = 1.0;
-                              } else if (index == _currentStoryIndex) {
-                                progressValue = _animationController.value;
-                              } else {
-                                progressValue = 0.0;
-                              }
-                              return Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 2.0,
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(2),
-                                    child: LinearProgressIndicator(
-                                      value: progressValue,
-                                      backgroundColor: Colors.white.withValues(
-                                        alpha: 0.3,
-                                      ),
-                                      valueColor:
-                                          const AlwaysStoppedAnimation<Color>(
-                                            Colors.white,
-                                          ),
-                                      minHeight: 3,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                          );
-                        },
+                      StoryProgressBars(
+                        animationController: _animationController,
+                        storyCount: _stories.length,
+                        currentStoryIndex: _currentStoryIndex,
                       ),
                       const SizedBox(height: 12),
-
-                      // ── Header: Group details + Close button ──
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 18,
-                            backgroundColor: Colors.grey,
-                            backgroundImage:
-                                (story.groupProfilePicture != null &&
-                                    story.groupProfilePicture!.startsWith(
-                                      'http',
-                                    ))
-                                ? CachedNetworkImageProvider(
-                                    story.groupProfilePicture!,
-                                  )
-                                : null,
-                            child:
-                                (story.groupProfilePicture == null ||
-                                    !story.groupProfilePicture!.startsWith(
-                                      'http',
-                                    ))
-                                ? const Icon(
-                                    Icons.groups,
-                                    color: Colors.white,
-                                    size: 18,
-                                  )
-                                : null,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _currentGroupName,
-                                  style: Theme.of(context).textTheme.bodyMedium
-                                      ?.copyWith(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                if (story.creatorUserName != null)
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ProfileScreen(
-                                            userName:
-                                                story.creatorUserName ?? '',
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      'by @${story.creatorUserName}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelSmall
-                                          ?.copyWith(
-                                            color: Colors.white.withValues(
-                                              alpha: 0.7,
-                                            ),
-                                          ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                          if (_isOwner(story))
-                            IconButton(
-                              icon: const Icon(
-                                Icons.delete_outline,
-                                color: Colors.white,
-                                size: 26,
-                              ),
-                              onPressed: () => _confirmDelete(story),
-                            ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.close,
-                              color: Colors.white,
-                              size: 28,
-                            ),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ],
+                      StoryHeader(
+                        story: story,
+                        currentGroupName: _currentGroupName,
+                        isOwner: _isOwner(story),
+                        onDeleteTap: () => _confirmDelete(story),
+                        onCloseTap: () => Navigator.pop(context),
                       ),
                     ],
                   ),
                 ),
 
-                // ── Bottom Caption Overlay ──
                 if (story.mediaURL != null &&
                     story.caption != null &&
                     story.caption!.isNotEmpty)
-                  Positioned(
-                    bottom: MediaQuery.of(context).padding.bottom + 24,
-                    left: 20,
-                    right: 20,
-                    child: Text(
-                      story.caption!,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black54,
-                            offset: Offset(0, 1),
-                            blurRadius: 2,
-                          ),
-                        ],
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                  StoryCaption(caption: story.caption!),
               ],
             ),
           );

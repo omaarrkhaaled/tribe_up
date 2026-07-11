@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
-import 'package:tribe_up/features/auth/login/domain/entities/login_response/user_summary_entity.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
+import 'package:tribe_up/features/auth/domain/entities/login_response/user_summary_entity.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class FeedAppBar extends StatefulWidget implements PreferredSizeWidget {

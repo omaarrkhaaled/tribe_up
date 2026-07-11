@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tribe_up/features/edit_profile/presentation/view/screens/image_cropper_screen.dart';
 import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
-import 'package:tribe_up/core/resources/color_managar.dart';
+import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/groups/presentation/view/widgets/privacy_row.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/create_tribe/create_tribe_cubit.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/create_tribe/create_tribe_intents.dart';
@@ -233,11 +234,30 @@ class _CreateTribeSheetState extends State<CreateTribeSheet> {
     );
   }
 
+  bool _isPickingImage = false;
+
   Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final picked = await picker.pickImage(source: ImageSource.gallery);
-    if (picked != null) {
-      setState(() => _pickedImage = File(picked.path));
+    if (_isPickingImage) return;
+    _isPickingImage = true;
+    try {
+      final picker = ImagePicker();
+      final picked = await picker.pickImage(source: ImageSource.gallery);
+      if (picked != null) {
+        final file = File(picked.path);
+        if (!mounted) return;
+        final croppedFile = await Navigator.of(context).push<File>(
+          MaterialPageRoute(
+            builder: (context) =>
+                ImageCropperScreen(imageFile: file, isCover: true),
+          ),
+        );
+
+        if (croppedFile != null) {
+          setState(() => _pickedImage = File(croppedFile.path));
+        }
+      }
+    } finally {
+      _isPickingImage = false;
     }
   }
 }
