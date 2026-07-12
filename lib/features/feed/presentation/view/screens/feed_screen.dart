@@ -70,10 +70,6 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
     _userSummary = widget.userSummary;
     if (_userSummary == null) _loadUserSummary();
 
-    // Start the notifications SignalR hub immediately so real-time banners
-    // are active as soon as the user reaches the home screen.
-    getIt<NotificationSignalRService>().connect();
-
     final cubit = context.read<FeedCubit>();
     cubit.doIntent(const LoadFeedIntent());
 
