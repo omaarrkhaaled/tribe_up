@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/bloc/auth/auth_cubit.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
+import 'package:tribe_up/core/routing/go_router_refresh_stream.dart';
 import 'package:tribe_up/features/auth/presentation/screens/change_password/change_password_screen.dart';
 import 'package:tribe_up/features/auth/presentation/screens/forget_password/forget_pasword_screen.dart';
 import 'package:tribe_up/features/auth/presentation/screens/sign_up/verify_email_screen.dart';
@@ -26,21 +27,24 @@ import 'package:tribe_up/features/polls/presentation/view/screens/group_polls_sc
 abstract class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: AppRoutesConstants.login,
-    refreshListenable: getIt<AuthCubit>(),
+    refreshListenable: GoRouterRefreshStream(getIt<AuthCubit>().stream),
     redirect: (context, state) {
       final authStatus = getIt<AuthCubit>().state.status;
       final isLogin = state.matchedLocation == AppRoutesConstants.login;
 
+      final unprotectedRoutes = [
+        AppRoutesConstants.login,
+        AppRoutesConstants.signUp,
+        AppRoutesConstants.forgetPassword,
+        AppRoutesConstants.verifyEmail,
+      ];
+      final isUnprotected = unprotectedRoutes.contains(state.matchedLocation);
+
       if (authStatus == AuthStatus.authenticated && isLogin) {
         return AppRoutesConstants.feed;
       }
-      if (authStatus == AuthStatus.unauthenticated && !isLogin) {
-        // If they need to be logged in but are not, redirect to login
-        // But only if it's a protected route. For now, assume all routes except login/signup are protected
-        if (state.matchedLocation != AppRoutesConstants.signUp &&
-            state.matchedLocation != AppRoutesConstants.forgetPassword) {
-          return AppRoutesConstants.login;
-        }
+      if (authStatus == AuthStatus.unauthenticated && !isUnprotected) {
+        return AppRoutesConstants.login;
       }
       return null;
     },
