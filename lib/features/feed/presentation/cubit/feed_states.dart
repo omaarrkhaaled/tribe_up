@@ -2,10 +2,12 @@ import 'package:tribe_up/config/base_state/base_state.dart';
 import 'package:tribe_up/core/enums/feed_nav_tab.dart';
 import 'package:tribe_up/features/feed/domain/entities/post_entity.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
+import 'package:tribe_up/features/auth/domain/entities/login_response/user_summary_entity.dart';
 
 class FeedStates extends BaseState<void> {
   final FeedNavTab currentTab;
   final List<PostEntity> posts;
+  final UserSummaryEntity? userSummary;
 
   // Joined groups for create-post trigger
   final List<Group> joinedGroups;
@@ -19,6 +21,7 @@ class FeedStates extends BaseState<void> {
   const FeedStates({
     this.currentTab = FeedNavTab.feed,
     this.posts = const [],
+    this.userSummary,
     this.joinedGroups = const [],
     this.isLoadingGroups = false,
     this.togglingLikePostIds = const {},
@@ -31,6 +34,7 @@ class FeedStates extends BaseState<void> {
   FeedStates copyWith({
     FeedNavTab? currentTab,
     List<PostEntity>? posts,
+    UserSummaryEntity? userSummary,
     List<Group>? joinedGroups,
     bool? isLoadingGroups,
     Set<int>? togglingLikePostIds,
@@ -43,6 +47,7 @@ class FeedStates extends BaseState<void> {
     return FeedStates(
       currentTab: currentTab ?? this.currentTab,
       posts: posts ?? this.posts,
+      userSummary: userSummary ?? this.userSummary,
       joinedGroups: joinedGroups ?? this.joinedGroups,
       isLoadingGroups: isLoadingGroups ?? this.isLoadingGroups,
       togglingLikePostIds: togglingLikePostIds ?? this.togglingLikePostIds,
@@ -57,6 +62,7 @@ class FeedStates extends BaseState<void> {
   List<Object?> get props => [
     currentTab,
     posts,
+    userSummary,
     joinedGroups,
     isLoadingGroups,
     togglingLikePostIds,

@@ -6,12 +6,12 @@ import 'package:tribe_up/core/network/device_id_manager.dart';
 import 'package:tribe_up/features/auth/data/data_sources/local/login_local_data_source.dart';
 import 'package:tribe_up/features/auth/domain/use_cases/refresh_token_use_case.dart';
 import 'package:tribe_up/core/services/signalr/notification_signalr_service.dart';
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
 
 part 'auth_state.dart';
 
 @singleton
-class AuthCubit extends Cubit<AuthState> with ChangeNotifier {
+class AuthCubit extends Cubit<AuthState> {
   final LoginLocalDataSource _localDataSource;
   final RefreshTokenUseCase _refreshTokenUseCase;
   final DeviceIdManager _deviceIdManager;
@@ -57,13 +57,11 @@ class AuthCubit extends Cubit<AuthState> with ChangeNotifier {
   void _emitAuthenticated() {
     emit(const AuthState.authenticated());
     _notificationSignalRService.connect();
-    notifyListeners();
   }
 
   void _emitUnauthenticated() {
     emit(const AuthState.unauthenticated());
     _notificationSignalRService.disconnect();
-    notifyListeners();
   }
 
   void loggedIn() => _emitAuthenticated();
