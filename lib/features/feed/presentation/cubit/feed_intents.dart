@@ -24,6 +24,10 @@ final class LoadJoinedGroupsIntent extends FeedIntents {
   const LoadJoinedGroupsIntent();
 }
 
+final class LoadUserSummaryIntent extends FeedIntents {
+  const LoadUserSummaryIntent();
+}
+
 final class DeletePostIntent extends FeedIntents {
   final int postId;
   const DeletePostIntent(this.postId);
