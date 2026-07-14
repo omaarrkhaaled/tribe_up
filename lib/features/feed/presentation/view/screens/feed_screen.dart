@@ -21,9 +21,6 @@ import 'package:tribe_up/features/feed/presentation/view/widgets/feed_posts_list
 import 'package:tribe_up/features/auth/domain/entities/login_response/user_summary_entity.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/menu_drawer.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/sliding_drawer_wrapper.dart';
-import 'package:tribe_up/config/base_response/base_response.dart';
-import 'package:tribe_up/features/edit_profile/domain/use_cases/get_profile_info_use_case.dart';
-import 'package:tribe_up/features/auth/data/models/login_response/user_summary_model.dart';
 import 'package:tribe_up/core/services/signalr/notification_signalr_service.dart';
 import 'package:tribe_up/core/widgets/in_app_notification_banner.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
@@ -61,51 +58,20 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
       GlobalKey<SlidingDrawerWrapperState>();
   bool _isAppBarVisible = true;
   double _lastScrollOffset = 0;
-  UserSummaryEntity? _userSummary;
   StreamSubscription<FeedUiIntents>? _uiIntentSub;
 
   @override
   void initState() {
     super.initState();
-    _userSummary = widget.userSummary;
-    if (_userSummary == null) _loadUserSummary();
-
-    // Start the notifications SignalR hub immediately so real-time banners
-    // are active as soon as the user reaches the home screen.
-    getIt<NotificationSignalRService>().connect();
 
     final cubit = context.read<FeedCubit>();
+    if (widget.userSummary == null) {
+      cubit.doIntent(const LoadUserSummaryIntent());
+    }
     cubit.doIntent(const LoadFeedIntent());
 
     _uiIntentSub = cubit.uiIntents.listen(_handleUiIntent);
     _scrollController.addListener(_onScroll);
-  }
-
-  Future<void> _loadUserSummary() async {
-    final localDataSource = getIt<LoginLocalDataSource>();
-    final model = await localDataSource.getUserSummary();
-    if (model != null && mounted) {
-      setState(() => _userSummary = model.toEntity());
-    }
-
-    try {
-      final result = await getIt<GetProfileInfoUseCase>().call();
-      switch (result) {
-        case SuccessResponse(:final data):
-          final newSummary = UserSummaryModel(
-            id: model?.id,
-            userName: data.userName,
-            fullName: '${data.firstName} ${data.lastName}'.trim(),
-            profilePicture: data.profilePicture,
-          );
-          await localDataSource.saveUserSummary(userSummary: newSummary);
-          if (mounted) {
-            setState(() => _userSummary = newSummary.toEntity());
-          }
-        case ErrorResponse():
-          break;
-      }
-    } catch (_) {}
   }
 
   void _handleUiIntent(FeedUiIntents intent) {
@@ -167,8 +133,10 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
             key: _drawerKey,
             drawer: MenuDrawer(
               localDataSource: getIt<LoginLocalDataSource>(),
-              userSummary: _userSummary,
-              onProfilePopped: _loadUserSummary,
+              userSummary: state.userSummary ?? widget.userSummary,
+              onProfilePopped: () => context.read<FeedCubit>().doIntent(
+                const LoadUserSummaryIntent(),
+              ),
               onClose: () => _drawerKey.currentState?.close(),
             ),
             child: Scaffold(
@@ -186,7 +154,7 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
                     left: 0,
                     right: 0,
                     child: FeedAppBar(
-                      userSummary: _userSummary,
+                      userSummary: state.userSummary ?? widget.userSummary,
                       onMenuTap: () {
                         final drawerState = _drawerKey.currentState;
                         if (drawerState == null) {
@@ -221,7 +189,8 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
       FeedNavTab.feed => FeedPostsList(
         state: state,
         scrollController: _scrollController,
-        currentUserProfilePicture: _userSummary?.profilePicture,
+        currentUserProfilePicture:
+            (state.userSummary ?? widget.userSummary)?.profilePicture,
       ),
       FeedNavTab.groups => const GroupsScreen(),
       FeedNavTab.notifications => const NotificationsScreen(),

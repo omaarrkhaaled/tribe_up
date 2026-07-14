@@ -14,11 +14,16 @@ import 'package:tribe_up/features/feed/presentation/cubit/feed_intents.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_states.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_ui_intents.dart';
 import 'package:tribe_up/features/groups/domain/use_cases/my_groups_use_case.dart';
+import 'package:tribe_up/features/auth/data/data_sources/local/login_local_data_source.dart';
+import 'package:tribe_up/features/edit_profile/domain/use_cases/get_profile_info_use_case.dart';
+import 'package:tribe_up/features/auth/data/models/login_response/user_summary_model.dart';
 
 @injectable
 class FeedCubit extends Cubit<FeedStates> with PostActionsMixin {
   final FeedUseCase _feedUseCase;
   final MyGroupsUseCase _myGroupsUseCase;
+  final LoginLocalDataSource _localDataSource;
+  final GetProfileInfoUseCase _getProfileInfoUseCase;
 
   @override
   final DeletePostUseCase deletePostUseCase;
@@ -38,6 +43,8 @@ class FeedCubit extends Cubit<FeedStates> with PostActionsMixin {
     this.editPostUseCase,
     this.toggleLikePostUseCase,
     this._myGroupsUseCase,
+    this._localDataSource,
+    this._getProfileInfoUseCase,
   ) : super(const FeedStates());
 
   // ── Mixin state accessors ────────────────────────────────────────────────────
@@ -92,6 +99,8 @@ class FeedCubit extends Cubit<FeedStates> with PostActionsMixin {
         _loadFeed();
       case LoadJoinedGroupsIntent():
         _loadJoinedGroups();
+      case LoadUserSummaryIntent():
+        _loadUserSummary();
       case DeletePostIntent(:final postId):
         performDeletePost(postId);
       case ToggleLikeIntent(:final postId):
@@ -146,6 +155,32 @@ class FeedCubit extends Cubit<FeedStates> with PostActionsMixin {
       case ErrorResponse():
         emit(state.copyWith(isLoadingGroups: false));
     }
+  }
+
+  Future<void> _loadUserSummary() async {
+    final model = await _localDataSource.getUserSummary();
+    if (model != null && !isClosed) {
+      emit(state.copyWith(userSummary: model.toEntity()));
+    }
+
+    try {
+      final result = await _getProfileInfoUseCase.call();
+      switch (result) {
+        case SuccessResponse(:final data):
+          final newSummary = UserSummaryModel(
+            id: model?.id,
+            userName: data.userName,
+            fullName: '${data.firstName} ${data.lastName}'.trim(),
+            profilePicture: data.profilePicture,
+          );
+          await _localDataSource.saveUserSummary(userSummary: newSummary);
+          if (!isClosed) {
+            emit(state.copyWith(userSummary: newSummary.toEntity()));
+          }
+        case ErrorResponse():
+          break;
+      }
+    } catch (_) {}
   }
 
   void _onPostCreated(PostEntity post) {

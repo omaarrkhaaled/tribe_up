@@ -1,14 +1,11 @@
 import 'package:go_router/go_router.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:tribe_up/config/base_response/base_response.dart';
 import 'package:tribe_up/config/di/di.dart';
+import 'package:tribe_up/core/bloc/auth/auth_cubit.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
-import 'package:tribe_up/core/network/device_id_manager.dart';
+import 'package:tribe_up/core/routing/go_router_refresh_stream.dart';
 import 'package:tribe_up/features/auth/presentation/screens/change_password/change_password_screen.dart';
 import 'package:tribe_up/features/auth/presentation/screens/forget_password/forget_pasword_screen.dart';
 import 'package:tribe_up/features/auth/presentation/screens/sign_up/verify_email_screen.dart';
-import 'package:tribe_up/features/auth/data/data_sources/local/login_local_data_source.dart';
-import 'package:tribe_up/features/auth/domain/use_cases/refresh_token_use_case.dart';
 import 'package:tribe_up/features/auth/presentation/screens/login/login_screen.dart';
 import 'package:tribe_up/features/auth/presentation/screens/sign_up/sign_up_screen.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/feed_screen.dart';
@@ -28,27 +25,28 @@ import 'package:tribe_up/features/polls/presentation/view/screens/polls_groups_s
 import 'package:tribe_up/features/polls/presentation/view/screens/group_polls_screen.dart';
 
 abstract class AppRouter {
-  static GoRouter router = GoRouter(
+  static final GoRouter router = GoRouter(
     initialLocation: AppRoutesConstants.login,
-    redirect: (context, state) async {
-      if (state.matchedLocation != AppRoutesConstants.login) return null;
-      final localDataSource = getIt<LoginLocalDataSource>();
-      final String? accessToken = await localDataSource.getAccessToken();
-      if (accessToken == null) return null;
-      if (!JwtDecoder.isExpired(accessToken)) {
+    refreshListenable: GoRouterRefreshStream(getIt<AuthCubit>().stream),
+    redirect: (context, state) {
+      final authStatus = getIt<AuthCubit>().state.status;
+      final isLogin = state.matchedLocation == AppRoutesConstants.login;
+
+      final unprotectedRoutes = [
+        AppRoutesConstants.login,
+        AppRoutesConstants.signUp,
+        AppRoutesConstants.forgetPassword,
+        AppRoutesConstants.verifyEmail,
+      ];
+      final isUnprotected = unprotectedRoutes.contains(state.matchedLocation);
+
+      if (authStatus == AuthStatus.authenticated && isLogin) {
         return AppRoutesConstants.feed;
       }
-      final String? refreshToken = await localDataSource.getRefreshToken();
-      if (refreshToken == null) return AppRoutesConstants.login;
-      final deviceId = getIt<DeviceIdManager>().deviceId;
-      final result = await getIt<RefreshTokenUseCase>().call(
-        refreshToken: refreshToken,
-        deviceId: deviceId,
-      );
-      return switch (result) {
-        SuccessResponse() => AppRoutesConstants.feed,
-        ErrorResponse() => AppRoutesConstants.login,
-      };
+      if (authStatus == AuthStatus.unauthenticated && !isUnprotected) {
+        return AppRoutesConstants.login;
+      }
+      return null;
     },
     routes: [
       GoRoute(
