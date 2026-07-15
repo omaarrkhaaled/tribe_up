@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/features/comments/domain/entities/comment_permissions_entity.dart';
 
-class CommentItemEntity {
+class CommentItemEntity extends Equatable {
   final String? userId;
   final String? username;
   final String? profilePicture;
@@ -62,7 +64,7 @@ class CommentItemEntity {
       profilePicture:
           'https://ui-avatars.com/api/?name=John+Doe&background=random',
       id: 1,
-      content: 'This is a comment',
+      content: UiConstants.dummyCommentContent,
       createdAt: '2022-01-01T00:00:00Z',
       postId: 1,
       isAuthor: true,
@@ -75,4 +77,19 @@ class CommentItemEntity {
       ),
     );
   }
+
+  @override
+  List<Object?> get props => [
+    userId,
+    username,
+    profilePicture,
+    id,
+    content,
+    createdAt,
+    postId,
+    isAuthor,
+    isLikedByCurrentUser,
+    likesCount,
+    permissions,
+  ];
 }

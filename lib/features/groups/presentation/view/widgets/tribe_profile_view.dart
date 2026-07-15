@@ -204,7 +204,7 @@ class TribeProfileViewState extends State<TribeProfileView> {
                             );
                           },
                           icon: const Icon(Icons.poll, size: 18),
-                          label: const Text("Polls"),
+                          label: const Text(UiConstants.polls),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: ColorManager.primary,
                             foregroundColor: ColorManager.white,

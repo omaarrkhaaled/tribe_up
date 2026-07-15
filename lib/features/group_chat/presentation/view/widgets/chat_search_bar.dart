@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_manager.dart';
 
 class ChatSearchBar extends StatelessWidget {
@@ -38,7 +39,7 @@ class ChatSearchBar extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
           decoration: InputDecoration(
-            hintText: 'chat',
+            hintText: UiConstants.chat,
             hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: ColorManager.black,
               fontWeight: FontWeight.w600,

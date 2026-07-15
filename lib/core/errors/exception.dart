@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:tribe_up/core/constants/ui_constants.dart';
 
 abstract class AppException implements Exception {
   final String message;
@@ -13,9 +14,13 @@ class RemoteException extends AppException {
     if (e is DioException) {
       switch (e.type) {
         case DioExceptionType.connectionTimeout:
-          return const RemoteException(message: 'Connection timeout');
+          return const RemoteException(
+            message: UiConstants.exceptionConnectionTimeout,
+          );
         case DioExceptionType.receiveTimeout:
-          return const RemoteException(message: 'Receive timeout');
+          return const RemoteException(
+            message: UiConstants.exceptionReceiveTimeout,
+          );
         case DioExceptionType.badResponse:
           final data = e.response?.data;
           String? errorMessage;
@@ -44,18 +49,30 @@ class RemoteException extends AppException {
             message: errorMessage ?? 'Bad response: ${e.response?.statusCode}',
           );
         case DioExceptionType.connectionError:
-          return RemoteException(message: 'Connection error: ${e.message}');
+          return RemoteException(
+            message: UiConstants.exceptionConnectionError(e.message ?? ''),
+          );
         case DioExceptionType.cancel:
-          return const RemoteException(message: 'Request was canceled');
+          return const RemoteException(
+            message: UiConstants.exceptionRequestCanceled,
+          );
         case DioExceptionType.unknown:
-          return RemoteException(message: 'Unexpected error: ${e.message}');
+          return RemoteException(
+            message: UiConstants.exceptionUnexpectedError(e.message ?? ''),
+          );
         case DioExceptionType.sendTimeout:
-          return const RemoteException(message: 'Send timeout');
+          return const RemoteException(
+            message: UiConstants.exceptionSendTimeout,
+          );
         case DioExceptionType.badCertificate:
-          return const RemoteException(message: 'Bad certificate');
+          return const RemoteException(
+            message: UiConstants.exceptionBadCertificate,
+          );
       }
     } else {
-      return RemoteException(message: 'Unexpected error: ${e.toString()}');
+      return RemoteException(
+        message: UiConstants.exceptionUnexpectedError(e.toString()),
+      );
     }
   }
 }

@@ -95,7 +95,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           title: Text(UiConstants.notifications),
           actions: [
             Tooltip(
-              message: 'Mark all as read',
+              message: UiConstants.markAllAsRead,
               child: IconButton(
                 onPressed: () =>
                     _cubit.doIntent(const ReadAllNotificationsIntent()),

@@ -6,6 +6,7 @@ import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/enums/feed_nav_tab.dart';
 import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
+import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/features/auth/data/data_sources/local/login_local_data_source.dart';
 import 'package:tribe_up/features/auth/presentation/cubit/logout/logout_cubit.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_cubit.dart';
@@ -160,7 +161,7 @@ class _FeedScreenContentState extends State<FeedScreenContent> {
                         if (drawerState == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text("Drawer state is null!"),
+                              content: Text(UiConstants.drawerStateIsNull),
                             ),
                           );
                         } else {
