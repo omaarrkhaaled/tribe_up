@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/ui_constants.dart';
 
 class StoryEmptyView extends StatelessWidget {
   const StoryEmptyView({super.key});
@@ -10,7 +11,7 @@ class StoryEmptyView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'No stories found in this Tribe.',
+            UiConstants.noStoriesFoundInThisTribe,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(color: Colors.white),
@@ -18,7 +19,7 @@ class StoryEmptyView extends StatelessWidget {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Back'),
+            child: const Text(UiConstants.back),
           ),
         ],
       ),

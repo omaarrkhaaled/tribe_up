@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view/screens/image_cropper_screen.dart';
@@ -163,7 +164,7 @@ class _CoverAndProfilePictureSectionState
                               color: Colors.redAccent,
                               onPressed: () => UIUtils.showPremiumDialog(
                                 context: context,
-                                title: "Remove Cover Photo",
+                                title: UiConstants.removeCoverPhoto,
                                 message:
                                     "Are you sure you want to remove your cover photo?",
                                 posActionName: "Remove",
@@ -290,7 +291,7 @@ class _CoverAndProfilePictureSectionState
                             color: Colors.redAccent,
                             onPressed: () => UIUtils.showPremiumDialog(
                               context: context,
-                              title: "Remove Profile Picture",
+                              title: UiConstants.removeProfilePicture,
                               message:
                                   "Are you sure you want to remove your profile picture?",
                               posActionName: "Remove",

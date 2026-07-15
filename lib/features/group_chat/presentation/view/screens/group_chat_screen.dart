@@ -7,6 +7,7 @@ import 'package:tribe_up/config/di/di.dart';
 import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/core/services/signalr/group_chat_signalr_service.dart';
 import 'package:tribe_up/core/utils/ui_utils.dart';
+import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/features/auth/data/data_sources/local/login_local_data_source.dart';
 import 'package:tribe_up/features/group_chat/presentation/view/widgets/chat_app_bar.dart';
 import 'package:tribe_up/features/group_chat/presentation/view/widgets/chat_edit_banner.dart';
@@ -319,7 +320,7 @@ class _MessageOptionsSheet extends StatelessWidget {
           const SizedBox(height: 16),
           _OptionTile(
             icon: Icons.edit_outlined,
-            label: 'Edit Message',
+            label: UiConstants.editMessage,
             color: ColorManager.primary,
             onTap: () {
               Navigator.pop(context);
@@ -332,7 +333,7 @@ class _MessageOptionsSheet extends StatelessWidget {
           ),
           _OptionTile(
             icon: Icons.delete_outline_rounded,
-            label: 'Delete Message',
+            label: UiConstants.deleteMessage,
             color: ColorManager.red,
             onTap: () {
               Navigator.pop(context);

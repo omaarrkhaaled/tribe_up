@@ -132,7 +132,7 @@ class ActiveInvitationCard extends StatelessWidget {
                   _infoCell(
                     context,
                     icon: Icons.hourglass_bottom_outlined,
-                    label: 'Expires',
+                    label: UiConstants.expires,
                     value: _formatDate(invitation.expiresAt),
                   ),
                 ],
@@ -145,14 +145,14 @@ class ActiveInvitationCard extends StatelessWidget {
                   _infoCell(
                     context,
                     icon: Icons.group_outlined,
-                    label: 'Max Usage',
+                    label: UiConstants.maxUsage,
                     value: invitation.maxUses?.toString() ?? '∞',
                   ),
                   const SizedBox(width: 16),
                   _infoCell(
                     context,
                     icon: Icons.check_circle_outline,
-                    label: 'Used Count',
+                    label: UiConstants.usedCount,
                     value: invitation.usedCount?.toString() ?? '0',
                   ),
                 ],
