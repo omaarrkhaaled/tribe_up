@@ -199,7 +199,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
           _buildMenuItem(
             context,
             icon: FontAwesomeIcons.trophy,
-            title: 'Leaderboard',
+            title: UiConstants.leaderboard,
             onTap: () => _navigateAndClose(
               (router) => router.pushNamed(AppRoutesConstants.leaderboard),
             ),
@@ -225,7 +225,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
           _buildMenuItem(
             context,
             icon: FontAwesomeIcons.squarePollVertical,
-            title: 'Polls',
+            title: UiConstants.polls,
             onTap: () => _navigateAndClose(
               (router) => router.pushNamed(AppRoutesConstants.pollsGroups),
             ),

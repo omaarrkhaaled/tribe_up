@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_manager.dart';
 
 class ImageCropperScreen extends StatefulWidget {
@@ -168,7 +169,7 @@ class _ImageCropperScreenState extends State<ImageCropperScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text("Failed to crop image. Please try again."),
+            content: const Text(UiConstants.failedToCropImage),
             backgroundColor: ColorManager.red,
           ),
         );

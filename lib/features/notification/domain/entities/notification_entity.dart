@@ -1,3 +1,5 @@
+import 'package:tribe_up/core/constants/ui_constants.dart';
+
 class NotificationEntity {
   final int? id;
   final String? title;
@@ -48,8 +50,8 @@ class NotificationEntity {
   factory NotificationEntity.fake() {
     return const NotificationEntity(
       id: 1,
-      title: 'Notification',
-      message: 'Omar liked your post',
+      title: UiConstants.dummyNotificationTitle,
+      message: UiConstants.dummyNotificationMessage,
       type: 'Notification',
       isRead: false,
       createdAt: '2 hours ago',

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/comments/domain/entities/comment_item_entity.dart';
 import 'package:tribe_up/features/comments/presentation/view_model/comments_cubit.dart';
@@ -118,7 +119,7 @@ class _ActionsCard extends StatelessWidget {
           children: [
             _ActionTile(
               icon: Icons.edit_rounded,
-              label: 'Edit comment',
+              label: UiConstants.editCommentAction,
               iconColor: ColorManager.white,
               labelColor: ColorManager.white,
               onTap: () {
@@ -133,7 +134,7 @@ class _ActionsCard extends StatelessWidget {
             ),
             _ActionTile(
               icon: Icons.delete_rounded,
-              label: 'Delete comment',
+              label: UiConstants.deleteCommentAction,
               iconColor: ColorManager.red,
               labelColor: ColorManager.red,
               onTap: () {

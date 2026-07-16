@@ -337,6 +337,43 @@ class UiConstants {
       "Voters for: \"$optionText\"";
   static String votedAtLabel(String time) => "Voted at: $time";
   static String endsLabel(String time) => "Ends: $time";
+  // Extracted strings
+  static const String searchScreen = 'Search Screen';
+  static const String drawerStateIsNull = 'Drawer state is null!';
+  static const String failedToCropImage =
+      'Failed to crop image. Please try again.';
+  static const String markAllAsRead = 'Mark all as read';
+  static const String polls = 'Polls';
+  static const String expires = 'Expires';
+  static const String maxUsage = 'Max Usage';
+  static const String usedCount = 'Used Count';
+  static const String removeCoverPhoto = 'Remove Cover Photo';
+  static const String removeProfilePicture = 'Remove Profile Picture';
+  static const String nameUpdatedSuccessfully = 'Name updated successfully';
+  static const String bioUpdatedSuccessfully = 'Bio updated successfully';
+  static const String bioRemoved = 'Bio removed';
+  static const String phoneUpdatedSuccessfully = 'Phone updated successfully';
+  static const String phoneNumberRemoved = 'Phone number removed';
+  static const String editCommentAction = 'Edit comment';
+  static const String deleteCommentAction = 'Delete comment';
+
+  // Dummy Data
+  static const String dummyNotificationTitle = 'Notification';
+  static const String dummyNotificationMessage = 'Omar liked your post';
+  static const String dummyCommentContent = 'This is a comment';
+
+  // Exceptions
+  static const String exceptionConnectionTimeout = 'Connection timeout';
+  static const String exceptionReceiveTimeout = 'Receive timeout';
+  static const String exceptionRequestCanceled = 'Request was canceled';
+  static const String exceptionSendTimeout = 'Send timeout';
+  static const String exceptionBadCertificate = 'Bad certificate';
+  static String exceptionConnectionError(String msg) =>
+      'Connection error: $msg';
+  static String exceptionUnexpectedError(String msg) =>
+      'Unexpected error: $msg';
+  static const String noStoriesFoundInThisTribe =
+      'No stories found in this Tribe.';
 }
 
 class GoogleFontsKeys {

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
+import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/features/edit_profile/data/models/request/update_name_request.dart';
 import 'package:tribe_up/features/edit_profile/domain/use_cases/edit_profile_use_cases.dart';
 import 'package:tribe_up/features/edit_profile/presentation/view_model/edit_profile_intents.dart';
@@ -214,7 +215,7 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
         emit(state.copyWith(isUpdatingName: false));
         _uiIntentsController.add(DismissDialogIntent());
         _uiIntentsController.add(
-          ShowSuccessIntent(message: 'Name updated successfully'),
+          ShowSuccessIntent(message: UiConstants.nameUpdatedSuccessfully),
         );
         _getProfileInfo(quiet: true);
       case ErrorResponse(error: final error):
@@ -241,7 +242,7 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
         emit(state.copyWith(isUpdatingBio: false));
         _uiIntentsController.add(DismissDialogIntent());
         _uiIntentsController.add(
-          ShowSuccessIntent(message: 'Bio updated successfully'),
+          ShowSuccessIntent(message: UiConstants.bioUpdatedSuccessfully),
         );
         _getProfileInfo(quiet: true);
       case ErrorResponse(error: final error):
@@ -268,7 +269,9 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
     switch (result) {
       case SuccessResponse():
         emit(state.copyWith(isUpdatingBio: false));
-        _uiIntentsController.add(ShowSuccessIntent(message: 'Bio removed'));
+        _uiIntentsController.add(
+          ShowSuccessIntent(message: UiConstants.bioRemoved),
+        );
         _getProfileInfo(quiet: true);
       case ErrorResponse(error: final error):
         emit(state.copyWith(isUpdatingBio: false));
@@ -294,7 +297,7 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
         emit(state.copyWith(isUpdatingPhone: false));
         _uiIntentsController.add(DismissDialogIntent());
         _uiIntentsController.add(
-          ShowSuccessIntent(message: 'Phone updated successfully'),
+          ShowSuccessIntent(message: UiConstants.phoneUpdatedSuccessfully),
         );
         _getProfileInfo(quiet: true);
       case ErrorResponse(error: final error):
@@ -322,7 +325,7 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
       case SuccessResponse():
         emit(state.copyWith(isUpdatingPhone: false));
         _uiIntentsController.add(
-          ShowSuccessIntent(message: 'Phone number removed'),
+          ShowSuccessIntent(message: UiConstants.phoneNumberRemoved),
         );
         _getProfileInfo(quiet: true);
       case ErrorResponse(error: final error):
