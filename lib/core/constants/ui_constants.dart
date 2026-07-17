@@ -356,6 +356,8 @@ class UiConstants {
   static const String phoneNumberRemoved = 'Phone number removed';
   static const String editCommentAction = 'Edit comment';
   static const String deleteCommentAction = 'Delete comment';
+  static const String copyTextAction = 'Copy text';
+  static const String textCopiedSuccessfully = 'Text copied to clipboard';
 
   // Dummy Data
   static const String dummyNotificationTitle = 'Notification';
