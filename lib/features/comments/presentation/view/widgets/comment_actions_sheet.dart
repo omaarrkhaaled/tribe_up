@@ -118,31 +118,52 @@ class _ActionsCard extends StatelessWidget {
         child: Column(
           children: [
             _ActionTile(
-              icon: Icons.edit_rounded,
-              label: UiConstants.editCommentAction,
+              icon: Icons.copy_rounded,
+              label: UiConstants.copyTextAction,
               iconColor: ColorManager.white,
               labelColor: ColorManager.white,
               onTap: () {
                 HapticFeedback.selectionClick();
+                Clipboard.setData(ClipboardData(text: comment.content ?? ''));
                 onClose();
-                cubit.doIntent(StartEditCommentIntent(commentId: comment.id!));
               },
             ),
-            Divider(
-              height: 1,
-              color: ColorManager.white.withValues(alpha: 0.1),
-            ),
-            _ActionTile(
-              icon: Icons.delete_rounded,
-              label: UiConstants.deleteCommentAction,
-              iconColor: ColorManager.red,
-              labelColor: ColorManager.red,
-              onTap: () {
-                HapticFeedback.heavyImpact();
-                onClose();
-                cubit.doIntent(DeleteCommentIntent(commentId: comment.id!));
-              },
-            ),
+            if (comment.permissions?.canEdit == true) ...[
+              Divider(
+                height: 1,
+                color: ColorManager.white.withValues(alpha: 0.1),
+              ),
+              _ActionTile(
+                icon: Icons.edit_rounded,
+                label: UiConstants.editCommentAction,
+                iconColor: ColorManager.white,
+                labelColor: ColorManager.white,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  onClose();
+                  cubit.doIntent(
+                    StartEditCommentIntent(commentId: comment.id!),
+                  );
+                },
+              ),
+            ],
+            if (comment.permissions?.canDelete == true) ...[
+              Divider(
+                height: 1,
+                color: ColorManager.white.withValues(alpha: 0.1),
+              ),
+              _ActionTile(
+                icon: Icons.delete_rounded,
+                label: UiConstants.deleteCommentAction,
+                iconColor: ColorManager.red,
+                labelColor: ColorManager.red,
+                onTap: () {
+                  HapticFeedback.heavyImpact();
+                  onClose();
+                  cubit.doIntent(DeleteCommentIntent(commentId: comment.id!));
+                },
+              ),
+            ],
           ],
         ),
       ),
