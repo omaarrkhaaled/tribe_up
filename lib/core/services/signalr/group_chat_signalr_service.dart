@@ -6,8 +6,8 @@ import 'package:logger/logger.dart';
 import 'package:logging/logging.dart' as app_logging;
 import 'package:signalr_netcore/signalr_client.dart';
 import 'package:tribe_up/core/constants/api_constants.dart';
-import 'package:tribe_up/features/group_chat/data/models/chat_message_model.dart';
-import 'package:tribe_up/features/group_chat/domain/entities/chat_message_entity.dart';
+import 'package:tribe_up/features/groups/data/models/chat_message_model.dart';
+import 'package:tribe_up/features/groups/domain/entities/chat_message_entity.dart';
 
 /// Connection status of the SignalR group-chat hub.
 enum SignalRConnectionStatus { disconnected, connecting, connected, error }

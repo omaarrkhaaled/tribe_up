@@ -14,7 +14,7 @@ import 'package:tribe_up/features/groups/data/models/response/groups_response.da
 import 'package:tribe_up/features/groups/presentation/view/screens/tribe_profile_screen.dart';
 import 'package:tribe_up/features/notification/presentation/view/screens/notification_screen.dart';
 import 'package:tribe_up/features/profile/presentation/view/screens/profile_screen.dart';
-import 'package:tribe_up/features/group_chat/presentation/view/screens/group_chat_screen.dart';
+import 'package:tribe_up/features/groups/presentation/view/screens/group_chat_screen.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/post_detail_screen.dart';
 import 'package:tribe_up/features/settings/presentation/view/screens/settings_screen.dart';
 import 'package:tribe_up/features/groups/presentation/view/screens/leaderboard_screen.dart';
