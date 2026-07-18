@@ -13,7 +13,7 @@ import 'package:tribe_up/features/feed/domain/use_case/toggle_like_post_use_case
 import 'package:tribe_up/features/feed/presentation/cubit/feed_intents.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_states.dart';
 import 'package:tribe_up/features/feed/presentation/cubit/feed_ui_intents.dart';
-import 'package:tribe_up/features/groups/domain/use_cases/my_groups_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/groups/my_groups_use_case.dart';
 import 'package:tribe_up/features/auth/data/data_sources/local/login_local_data_source.dart';
 import 'package:tribe_up/features/profile/domain/use_cases/get_profile_info_use_case.dart';
 import 'package:tribe_up/features/auth/data/models/login_response/user_summary_model.dart';

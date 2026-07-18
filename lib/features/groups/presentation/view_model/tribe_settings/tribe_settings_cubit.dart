@@ -8,16 +8,16 @@ import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/enums/settings_tab.dart';
 import 'package:tribe_up/features/groups/data/models/request/update_group_request.dart';
 import 'package:tribe_up/features/groups/data/models/response/group_members_response.dart';
-import 'package:tribe_up/features/groups/domain/use_cases/delete_follower_use_case.dart';
-import 'package:tribe_up/features/groups/domain/use_cases/delete_group_picture_use_case.dart';
-import 'package:tribe_up/features/groups/domain/use_cases/delete_group_use_case.dart';
-import 'package:tribe_up/features/groups/domain/use_cases/demote_member_use_case.dart';
-import 'package:tribe_up/features/groups/domain/use_cases/get_followers_use_case.dart';
-import 'package:tribe_up/features/groups/domain/use_cases/get_group_members_use_case.dart';
-import 'package:tribe_up/features/groups/domain/use_cases/kick_member_use_case.dart';
-import 'package:tribe_up/features/groups/domain/use_cases/promote_member_use_case.dart';
-import 'package:tribe_up/features/groups/domain/use_cases/update_group_picture_use_case.dart';
-import 'package:tribe_up/features/groups/domain/use_cases/update_group_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/group_followers/delete_follower_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/groups/delete_group_picture_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/groups/delete_group_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/group_members/demote_member_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/group_followers/get_followers_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/group_members/get_group_members_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/group_members/kick_member_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/group_members/promote_member_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/groups/update_group_picture_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/groups/update_group_use_case.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_settings/tribe_settings_intents.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_settings/tribe_settings_states.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/tribe_settings/tribe_settings_ui_intents.dart';
@@ -284,36 +284,42 @@ class TribeSettingsCubit extends Cubit<TribeSettingsState> {
   }
 
   Future<void> _promoteMember(int groupId, int memberId) async {
+    final previousMembers = state.members;
+    final updatedMembers = state.members.map((m) {
+      if (m.id == memberId) {
+        return GroupMemberResultDTO(
+          id: m.id,
+          userId: m.userId,
+          userName: m.userName,
+          userProfilePicture: m.userProfilePicture,
+          role: 'Admin',
+          joinedAt: m.joinedAt,
+        );
+      }
+      return m;
+    }).toList();
+
     emit(
-      state.copyWith(pendingMemberIds: {...state.pendingMemberIds, memberId}),
+      state.copyWith(
+        pendingMemberIds: {...state.pendingMemberIds, memberId},
+        members: updatedMembers,
+      ),
     );
+
     final response = await _promoteMemberUseCase(groupId, memberId);
-    final updated = {...state.pendingMemberIds}..remove(memberId);
+    final updatedPending = {...state.pendingMemberIds}..remove(memberId);
+
     switch (response) {
       case SuccessResponse():
-        final updatedMembers = state.members.map((m) {
-          if (m.id == memberId) {
-            return GroupMemberResultDTO(
-              id: m.id,
-              userId: m.userId,
-              userName: m.userName,
-              userProfilePicture: m.userProfilePicture,
-              role: 'Admin',
-              joinedAt: m.joinedAt,
-            );
-          }
-          return m;
-        }).toList();
-        emit(
-          state.copyWith(members: updatedMembers, pendingMemberIds: updated),
-        );
+        emit(state.copyWith(pendingMemberIds: updatedPending));
         _uiController.add(
           const ShowSuccessUiIntent(UiConstants.memberPromoted),
         );
       case ErrorResponse(:final error):
         emit(
           state.copyWith(
-            pendingMemberIds: updated,
+            members: previousMembers,
+            pendingMemberIds: updatedPending,
             errorMessage: error.message,
           ),
         );
@@ -322,34 +328,40 @@ class TribeSettingsCubit extends Cubit<TribeSettingsState> {
   }
 
   Future<void> _demoteMember(int groupId, int memberId) async {
+    final previousMembers = state.members;
+    final updatedMembers = state.members.map((m) {
+      if (m.id == memberId) {
+        return GroupMemberResultDTO(
+          id: m.id,
+          userId: m.userId,
+          userName: m.userName,
+          userProfilePicture: m.userProfilePicture,
+          role: 'Member',
+          joinedAt: m.joinedAt,
+        );
+      }
+      return m;
+    }).toList();
+
     emit(
-      state.copyWith(pendingMemberIds: {...state.pendingMemberIds, memberId}),
+      state.copyWith(
+        pendingMemberIds: {...state.pendingMemberIds, memberId},
+        members: updatedMembers,
+      ),
     );
+
     final response = await _demoteMemberUseCase(groupId, memberId);
-    final updated = {...state.pendingMemberIds}..remove(memberId);
+    final updatedPending = {...state.pendingMemberIds}..remove(memberId);
+
     switch (response) {
       case SuccessResponse():
-        final updatedMembers = state.members.map((m) {
-          if (m.id == memberId) {
-            return GroupMemberResultDTO(
-              id: m.id,
-              userId: m.userId,
-              userName: m.userName,
-              userProfilePicture: m.userProfilePicture,
-              role: 'Member',
-              joinedAt: m.joinedAt,
-            );
-          }
-          return m;
-        }).toList();
-        emit(
-          state.copyWith(members: updatedMembers, pendingMemberIds: updated),
-        );
+        emit(state.copyWith(pendingMemberIds: updatedPending));
         _uiController.add(const ShowSuccessUiIntent(UiConstants.adminDemoted));
       case ErrorResponse(:final error):
         emit(
           state.copyWith(
-            pendingMemberIds: updated,
+            members: previousMembers,
+            pendingMemberIds: updatedPending,
             errorMessage: error.message,
           ),
         );
@@ -358,24 +370,26 @@ class TribeSettingsCubit extends Cubit<TribeSettingsState> {
   }
 
   Future<void> _kickMember(int groupId, int memberId) async {
+    final previousMembers = state.members;
     emit(
-      state.copyWith(pendingMemberIds: {...state.pendingMemberIds, memberId}),
+      state.copyWith(
+        pendingMemberIds: {...state.pendingMemberIds, memberId},
+        members: state.members.where((m) => m.id != memberId).toList(),
+      ),
     );
+
     final response = await _kickMemberUseCase(groupId, memberId);
-    final updated = {...state.pendingMemberIds}..remove(memberId);
+    final updatedPending = {...state.pendingMemberIds}..remove(memberId);
+
     switch (response) {
       case SuccessResponse():
-        emit(
-          state.copyWith(
-            members: state.members.where((m) => m.id != memberId).toList(),
-            pendingMemberIds: updated,
-          ),
-        );
-        _uiController.add(ShowSuccessUiIntent(UiConstants.memberRemoved));
+        emit(state.copyWith(pendingMemberIds: updatedPending));
+        _uiController.add(const ShowSuccessUiIntent(UiConstants.memberRemoved));
       case ErrorResponse(:final error):
         emit(
           state.copyWith(
-            pendingMemberIds: updated,
+            members: previousMembers,
+            pendingMemberIds: updatedPending,
             errorMessage: error.message,
           ),
         );
@@ -384,19 +398,28 @@ class TribeSettingsCubit extends Cubit<TribeSettingsState> {
   }
 
   Future<void> _deleteFollower(int groupId, String followerId) async {
+    final previousFollowers = state.followers;
+    emit(
+      state.copyWith(
+        followers: state.followers
+            .where((f) => f.userId != followerId)
+            .toList(),
+      ),
+    );
+
     final response = await _deleteFollowerUseCase(groupId, followerId);
     switch (response) {
       case SuccessResponse():
+        _uiController.add(
+          const ShowSuccessUiIntent(UiConstants.followerRemoved),
+        );
+      case ErrorResponse(:final error):
         emit(
           state.copyWith(
-            followers: state.followers
-                .where((f) => f.userId != followerId)
-                .toList(),
+            followers: previousFollowers,
+            errorMessage: error.message,
           ),
         );
-        _uiController.add(ShowSuccessUiIntent(UiConstants.followerRemoved));
-      case ErrorResponse(:final error):
-        emit(state.copyWith(errorMessage: error.message));
         _uiController.add(ShowErrorUiIntent(error.message));
     }
   }
