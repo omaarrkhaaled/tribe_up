@@ -9,12 +9,12 @@ import 'package:tribe_up/features/auth/presentation/screens/sign_up/verify_email
 import 'package:tribe_up/features/auth/presentation/screens/login/login_screen.dart';
 import 'package:tribe_up/features/auth/presentation/screens/sign_up/sign_up_screen.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/feed_screen.dart';
-import 'package:tribe_up/features/edit_profile/presentation/view/screens/edit_profile_screen.dart';
+import 'package:tribe_up/features/profile/presentation/view/screens/edit_profile_screen.dart';
 import 'package:tribe_up/features/groups/data/models/response/groups_response.dart';
 import 'package:tribe_up/features/groups/presentation/view/screens/tribe_profile_screen.dart';
 import 'package:tribe_up/features/notification/presentation/view/screens/notification_screen.dart';
 import 'package:tribe_up/features/profile/presentation/view/screens/profile_screen.dart';
-import 'package:tribe_up/features/group_chat/presentation/view/screens/group_chat_screen.dart';
+import 'package:tribe_up/features/groups/presentation/view/screens/group_chat_screen.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/post_detail_screen.dart';
 import 'package:tribe_up/features/settings/presentation/view/screens/settings_screen.dart';
 import 'package:tribe_up/features/groups/presentation/view/screens/leaderboard_screen.dart';

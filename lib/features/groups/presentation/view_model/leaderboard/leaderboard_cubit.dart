@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
-import 'package:tribe_up/features/groups/domain/use_cases/get_leaderboard_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/groups/get_leaderboard_use_case.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/leaderboard/leaderboard_intents.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/leaderboard/leaderboard_states.dart';
 

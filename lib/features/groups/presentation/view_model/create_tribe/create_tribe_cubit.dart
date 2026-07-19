@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tribe_up/config/base_response/base_response.dart';
-import 'package:tribe_up/features/groups/domain/use_cases/create_group_use_case.dart';
+import 'package:tribe_up/features/groups/domain/use_cases/groups/create_group_use_case.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/create_tribe/create_tribe_intents.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/create_tribe/create_tribe_states.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/create_tribe/create_tribe_ui_intents.dart';

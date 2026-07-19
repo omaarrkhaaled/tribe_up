@@ -4,9 +4,9 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_manager.dart';
 import 'package:tribe_up/features/feed/presentation/view/widgets/post_card.dart';
-import 'package:tribe_up/features/profile/presentation/view_model/profile_cubit.dart';
-import 'package:tribe_up/features/profile/presentation/view_model/profile_intents.dart';
-import 'package:tribe_up/features/profile/presentation/view_model/profile_states.dart';
+import 'package:tribe_up/features/profile/presentation/view_model/profile/profile_cubit.dart';
+import 'package:tribe_up/features/profile/presentation/view_model/profile/profile_intents.dart';
+import 'package:tribe_up/features/profile/presentation/view_model/profile/profile_states.dart';
 
 class PersonalPosts extends StatelessWidget {
   const PersonalPosts({super.key, required this.state});
