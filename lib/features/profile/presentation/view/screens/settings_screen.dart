@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tribe_up/core/constants/app_routes_constants.dart';
 import 'package:tribe_up/core/constants/ui_constants.dart';
 import 'package:tribe_up/core/resources/color_manager.dart';
-import 'package:tribe_up/features/settings/presentation/view/widgets/setting_row.dart';
+import 'package:tribe_up/features/profile/presentation/view/widgets/setting_row.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
