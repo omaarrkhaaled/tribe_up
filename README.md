@@ -39,8 +39,7 @@ This is a **Graduation Project** designed and developed with production-grade co
 
 ## 🎬 Demo
 
-<!-- 🔗 ADD YOUR DEMO LINK HERE -->
-> **📹 Video Demo:** [Watch the full walkthrough on YouTube / Google Drive](#)
+> **📹 Video Demo:** [Watch the full walkthrough on Google Drive](https://drive.google.com/file/d/1YLVqGzHwQtVn28BpbvRwzz3s3S7qHJBv/view)
 
 ---
 
@@ -60,13 +59,21 @@ This is a **Graduation Project** designed and developed with production-grade co
   <img src="screenshots/feed.png" width="230" alt="Feed"/>
   &nbsp;&nbsp;
   <img src="screenshots/story.png" width="230" alt="Story Viewer"/>
+  &nbsp;&nbsp;
+  <img src="screenshots/comments.png" width="230" alt="Comments"/>
 </p>
 
 ### 👥 Tribes
 <p align="center">
   <img src="screenshots/tribes.png" width="230" alt="Tribes"/>
   &nbsp;&nbsp;
+  <img src="screenshots/create_tribe.png" width="230" alt="Create Tribe"/>
+  &nbsp;&nbsp;
   <img src="screenshots/tribe_profile.png" width="230" alt="Tribe Profile"/>
+  <br/><br/>
+  <img src="screenshots/tribe_setting.png" width="230" alt="Tribe Settings"/>
+  &nbsp;&nbsp;
+  <img src="screenshots/invite_members.png" width="230" alt="Invite Members"/>
 </p>
 
 ### 💬 Real-Time Chat

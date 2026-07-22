@@ -7,10 +7,9 @@ import 'package:tribe_up/app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
-  runApp(
-    BlocProvider(
-      create: (context) => getIt<AuthCubit>()..checkAuthStatus(),
-      child: const TribeUpApp(),
-    ),
-  );
+
+  final authCubit = getIt<AuthCubit>();
+  await authCubit.checkAuthStatus();
+
+  runApp(BlocProvider.value(value: authCubit, child: const TribeUpApp()));
 }
