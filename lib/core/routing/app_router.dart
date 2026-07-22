@@ -16,7 +16,7 @@ import 'package:tribe_up/features/notification/presentation/view/screens/notific
 import 'package:tribe_up/features/profile/presentation/view/screens/profile_screen.dart';
 import 'package:tribe_up/features/groups/presentation/view/screens/group_chat_screen.dart';
 import 'package:tribe_up/features/feed/presentation/view/screens/post_detail_screen.dart';
-import 'package:tribe_up/features/settings/presentation/view/screens/settings_screen.dart';
+import 'package:tribe_up/features/profile/presentation/view/screens/settings_screen.dart';
 import 'package:tribe_up/features/groups/presentation/view/screens/leaderboard_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/leaderboard/leaderboard_cubit.dart';

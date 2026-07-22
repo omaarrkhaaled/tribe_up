@@ -24,6 +24,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final _newpassword = TextEditingController();
   final _confirmPassword = TextEditingController();
 
+  bool _obscureCurrent = true;
+  bool _obscureNew = true;
+  bool _obscureConfirm = true;
+
   @override
   void initState() {
     super.initState();
@@ -95,10 +99,20 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 SizedBox(height: 10),
                 TextFormField(
                   controller: _currentPassword,
+                  obscureText: _obscureCurrent,
                   decoration: InputDecoration(
                     label: Text(UiConstants.currentPassword),
                     hintText: UiConstants.currentPassword,
                     helperText: '',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureCurrent
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                      ),
+                      onPressed: () =>
+                          setState(() => _obscureCurrent = !_obscureCurrent),
+                    ),
                   ),
                   validator: Validator.validatePassword,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -106,10 +120,20 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 SizedBox(height: 10),
                 TextFormField(
                   controller: _newpassword,
+                  obscureText: _obscureNew,
                   decoration: InputDecoration(
                     label: Text(UiConstants.newPassword),
                     hintText: UiConstants.newPassword,
                     helperText: '',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureNew
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                      ),
+                      onPressed: () =>
+                          setState(() => _obscureNew = !_obscureNew),
+                    ),
                   ),
                   validator: Validator.validatePassword,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -118,10 +142,20 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
                 TextFormField(
                   controller: _confirmPassword,
+                  obscureText: _obscureConfirm,
                   decoration: InputDecoration(
                     label: Text(UiConstants.confirmPassword),
                     hintText: UiConstants.confirmPassword,
                     helperText: '',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureConfirm
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                      ),
+                      onPressed: () =>
+                          setState(() => _obscureConfirm = !_obscureConfirm),
+                    ),
                   ),
                   validator: (value) => Validator.validateConfirmPassword(
                     value,
