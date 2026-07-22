@@ -21,7 +21,7 @@ import 'package:tribe_up/features/groups/presentation/view/screens/leaderboard_s
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/leaderboard/leaderboard_cubit.dart';
 import 'package:tribe_up/features/groups/presentation/view_model/leaderboard/leaderboard_intents.dart';
-import 'package:tribe_up/features/polls/presentation/view/screens/polls_groups_screen.dart';
+
 import 'package:tribe_up/features/polls/presentation/view/screens/group_polls_screen.dart';
 
 abstract class AppRouter {
@@ -140,11 +140,7 @@ abstract class AppRouter {
         name: AppRoutesConstants.notifications,
         builder: (context, state) => const NotificationsScreen(),
       ),
-      GoRoute(
-        path: AppRoutesConstants.pollsGroups,
-        name: AppRoutesConstants.pollsGroups,
-        builder: (context, state) => const PollsGroupsScreen(),
-      ),
+
       GoRoute(
         path: AppRoutesConstants.groupPolls,
         name: AppRoutesConstants.groupPolls,
